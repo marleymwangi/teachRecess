@@ -1,0 +1,64 @@
+.work__modal{
+  @apply h-full w-full text-slate-900;
+}
+
+.work__modal > .heading{
+  @apply flex justify-between items-center mt-6;
+}
+
+.work__modal > .heading h1{
+  @apply text-slate-500 font-light my-3;
+}
+
+.work__modal > .heading > .child{
+  @apply flex items-center my-3 ml-6;
+}
+
+.work__modal > .heading > .child h1{
+  @apply text-slate-500 max-w-fit overflow-hidden truncate mr-3 
+  text-sm font-medium;
+}
+
+.work__modal > h2{
+  @apply text-xl text-slate-800 font-semibold my-5;
+}
+
+.work__modal .details{
+  @apply flex flex-col items-center px-6;
+}
+
+.work__modal .item{
+  @apply flex justify-between w-full py-3 border-b border-dashed border-gray-300;
+}
+
+.work__modal .item:last-child{
+  @apply border-0;
+}
+
+.work__modal .item > div{
+  @apply flex items-center text-slate-400;
+}
+
+.work__modal .item > div > span{
+  @apply ml-4;
+}
+
+.work__modal .item > span{
+  @apply font-medium ml-4 text-right;
+}
+
+.work__modal .item > span:empty{
+  @apply w-20 h-5 blur animate-pulse bg-gray-300;
+}
+
+.work__modal .button__sec{
+  @apply my-6 grid sm:grid-cols-2 gap-3 flex-col md:flex-row;
+}
+
+.work__modal .button__sec button{
+  @apply rounded-xl btn btn-lg btn-block text-sm mx-auto btn-info gap-2 text-white;
+}
+
+.work__modal .button__sec label{
+  @apply rounded-xl btn btn-lg btn-block text-sm mx-auto btn-error gap-2 text-white;
+}

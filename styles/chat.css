@@ -1,0 +1,68 @@
+.chats__page{
+  @apply container px-2 mx-auto;
+}
+
+.chats__page h1{
+  @apply text-3xl font-medium text-white;
+}
+
+.chats__page > .chats__sec .chats__list {
+  @apply px-6 mt-3;
+}
+
+.chats__page > .chats__sec .chats__list .chat{
+  @apply flex items-center rounded-3xl border-b border-dashed cursor-pointer px-4 py-3 mb-1 bg-white;
+}
+
+.chats__page > .chats__sec .chats__list .chat .content{
+  @apply flex flex-col grow ml-4;
+}
+
+.chats__page > .chats__sec .chats__list .chat .content p{
+  @apply text-ellipsis;
+}
+
+.chats__page > .chats__sec .chats__list .chat > span{
+  @apply text-gray-400 text-sm ;
+}
+
+.chat__page{
+  height: calc(100vh - 5em);
+  @apply container mx-auto p-4 max-h-screen;
+}
+
+.chat__page > .background{
+  @apply w-full h-full rounded-2xl p-2 bg-white flex flex-col overflow-hidden;
+}
+
+.chat__page > .background > .messages{
+  @apply  h-full flex flex-col justify-end mb-2 pl-2 overflow-y-scroll;
+}
+
+.chat__page > .background > .messages .content{
+  @apply font-medium w-4/5;
+}
+
+.chat__page > .background > .messages .content.right{
+  @apply mr-0 ml-auto;
+}
+
+.chat__page > .background > .messages .content.left{
+  @apply ml-0 mr-auto;
+}
+
+.chat__page > .background > .messages .content .message{
+  @apply max-w-fit flex flex-col px-3 py-2 my-0.5 bg-white font-medium;
+}
+
+.chat__page > .background > .messages .content.right .message{
+  @apply float-right rounded-l-2xl rounded-tr-2xl bg-gray-200;
+}
+
+.chat__page > .background > .messages .content.left .message{
+  @apply rounded-r-2xl rounded-tl-2xl bg-primary text-primary-content;
+}
+
+.chat__page > .background > .messages .content .message span{
+  @apply text-right text-2xs;
+}

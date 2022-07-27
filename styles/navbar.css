@@ -1,0 +1,55 @@
+.main-nav {
+  @apply fixed top-0 z-30 w-full transition-all duration-500 
+  ease-in-out;
+}
+
+.left-nav {
+  @apply flex space-x-4 ;
+}
+
+.right-nav {
+  @apply hidden md:flex items-center space-x-1 ;
+}
+
+.mobilebtn-nav {
+  @apply flex items-center md:hidden ;
+}
+
+.logo-nav {
+  @apply flex items-center py-5 px-3 ;
+}
+
+.left-link-nav {
+  @apply hidden md:flex items-center space-x-1 ;
+}
+
+nav .logo{
+  @apply flex;
+}
+
+.bottom__nav__cont{
+  @apply  fixed md:hidden block inset-x-2 bottom-3 z-10 
+  bg-cyan-500 shadow rounded-full
+}
+
+.bottom__nav__cont > .bottom__nav{
+  @apply flex justify-between mx-6 sm:mx-0 pb-2 pt-1
+}
+
+.bottom__nav  a{
+  @apply flex flex-col items-center justify-center;
+}
+
+.bottom__nav  a .icon__cont__out{
+  @apply bg-cyan-500 flex justify-center items-center -mb-1
+  !h-11 !w-11 rounded-full;
+}
+
+.bottom__nav  a .icon__cont__in{
+  @apply flex justify-center items-center
+  !h-9 !w-9 rounded-full;
+}
+
+.bottom__nav a > span{
+  @apply text-xs font-medium capitalize;
+}

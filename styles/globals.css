@@ -1,0 +1,92 @@
+/* Font import */
+@import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import "./kids.css";
+@import "./news.css";
+@import "./chat.css";
+@import "./work.css";
+@import "./index.css";
+@import "./banner.css";
+@import "./signin.css";
+@import "./navbar.css";
+@import "./diaries.css";
+@import "./profile.css";
+@import "./results.css";
+@import "./calendar.css";
+@import "./contacts.css";
+@import "./reminders.css";
+@import "./attendance.css";
+@import "./notifications.css";
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  @apply p-0 m-0;
+}
+
+.gradient {
+  background: linear-gradient(90deg, #d53369 0%, #daae51 100%);
+}
+
+body{
+  caret-color: transparent; 
+  @apply font-body leading-normal tracking-normal overflow-x-hidden
+  text-white custom-scroll;
+}
+
+/* width */
+.custom-scroll::-webkit-scrollbar {
+  @apply w-2 h-2;
+}
+
+/* Track */
+.custom-scroll::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+/* Handle */
+.custom-scroll::-webkit-scrollbar-thumb {
+  @apply bg-cyan-600 hover:bg-cyan-300 rounded-full 
+  bg-opacity-70 transition-colors duration-500;
+}
+
+.page-content{
+  @apply text-slate-900 !w-screen overflow-x-hidden;
+}
+
+.page__gradient{
+  border-bottom-right-radius: 25%;
+  @apply absolute h-60 w-full !-z-10
+  bg-gradient-to-r from-sky-400 to-cyan-300
+}
+
+.abs-center{
+  @apply absolute top-1/2 left-1/2 
+  transform -translate-x-1/2 -translate-y-1/2;
+}
+
+/* hide scrollbar but allow scrolling */
+.no-scroll {
+    -ms-overflow-style: none; /* for Internet Explorer, Edge */
+    scrollbar-width: none; /* for Firefox */
+    overflow-y: scroll; 
+}
+
+.no-scroll::-webkit-scrollbar {
+    display: none; /* for Chrome, Safari, and Opera */
+}
+
+#nprogress .bar {
+  background: #22d3ee !important;
+}
+
+#nprogress .peg {
+  box-shadow: 0 0 10px #22d3ee, 0 0 5px #22d3ee;
+}
+
+#nprogress .spinner .spinner-icon{
+  border-top-color: #22d3ee;
+  border-left-color: #22d3ee;
+}

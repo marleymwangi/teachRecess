@@ -1,0 +1,15 @@
+.index__page{
+  @apply container mx-auto pb-32;
+}
+
+.welcome__tag{
+  @apply flex items-center justify-start px-6;
+}
+
+.welcome__tag span{
+  @apply text-gray-500 font-medium;
+}
+
+.welcome__tag h4{
+  @apply text-gray-800 font-semibold text-2xl -mt-2;
+}

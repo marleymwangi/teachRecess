@@ -1,0 +1,8 @@
+.signIn-page{
+  @apply container mx-auto flex items-center justify-center min-h-[calc(100vh-10em)];
+}
+
+.signIn-page button{
+  @apply font-semibold shadow-md btn-md btn-primary 
+  mx-auto mt-6 overflow-hidden rounded-full;
+}

@@ -1,0 +1,48 @@
+.notifications__page{
+  @apply container mx-auto;
+}
+
+.notifications__page .tabs{
+  @apply mx-6 bg-base-100;
+}
+
+.notifications__page .tabs a{
+  @apply capitalize;
+}
+
+.notifications__page > .not__list{
+  height: calc(100vh - 13em);
+  @apply mx-6 overflow-hidden overflow-y-scroll;
+}
+
+.notifications__page > .not__list .notification{
+  @apply flex items-center my-3 px-4 py-3 w-full bg-neutral rounded-3xl;
+}
+
+.notifications__page > .not__list .notification .content{
+  @apply w-full text-sm ml-5;
+}
+
+.notifications__page > .not__list .notification .content h5{
+  @apply font-semibold;
+}
+
+.notifications__page > .not__list .notification .content h6{
+  @apply text-gray-400 font-normal text-xs capitalize;
+}
+
+.notifications__page > .not__list .notification .content p{
+  @apply text-gray-500 my-0.5 ml-3;
+}
+
+.notifications__page > .not__list .notification .content p{
+  @apply text-gray-500 my-0.5 ml-1;
+}
+
+.notifications__page > .not__list .notification .content p.s{
+  @apply ml-0;
+}
+
+.notifications__page > .not__list .notification .content span{
+  @apply text-gray-500 text-xs float-right mr-10;
+}

@@ -1,0 +1,47 @@
+.results__page {
+  @apply container mx-auto px-8 pb-32;
+}
+
+.results__page section{
+  @apply bg-white rounded-2xl shadow-md px-4 py-3 my-10;
+}
+
+.results__page .overall > h1{
+  @apply text-gray-400 text-lg font-bold my-3;
+}
+
+.results__page .overall > .results .result{
+  @apply flex flex-col items-center my-3;
+}
+
+.results__page .overall > .results .result span{
+  @apply text-gray-600 text-sm font-semibold;
+}
+
+.results__page .overall > .results .result h6{
+  @apply text-cyan-500 text-4xl font-bold;
+}
+
+.results__page .overall > .results .result h6 > span{
+  @apply text-gray-400 font-bold;
+}
+
+.results__page .subjects > h1{
+  @apply text-gray-400 text-lg font-bold my-3;
+}
+
+.results__page .subjects .subject > div{
+  @apply grid my-2;
+}
+
+.results__page .subjects .subject > div > div{
+  @apply flex flex-col items-center;
+}
+
+.results__page .subjects .subject > div > div > span:first-child{
+  @apply text-gray-400 text-xs font-bold;
+}
+
+.results__page .subjects .subject > div > div > span:last-child{
+  @apply text-cyan-500 text-lg font-extrabold;
+} 

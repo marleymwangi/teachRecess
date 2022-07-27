@@ -1,0 +1,64 @@
+.contacts__modal{
+  @apply h-full w-full pt-6;
+}
+
+.contacts__modal h1{
+  @apply font-medium text-primary ;
+}
+
+.contacts__modal >  .contacts__list{
+  @apply h-96 overflow-y-auto pr-2 mt-6 mb-10;
+}
+
+.contacts__modal >  .contacts__list .teacher{
+  @apply flex items-center justify-between w-full py-4 border-b border-dashed 
+  cursor-pointer border-gray-200;
+}
+
+.contacts__modal >  .contacts__list .teacher.purple{
+  @apply hover:bg-purple-50
+}
+
+.contacts__modal >  .contacts__list .teacher.red{
+  @apply hover:bg-red-50;
+}
+
+.contacts__modal >  .contacts__list .teacher .avatar{
+  @apply mx-5;
+}
+
+.contacts__modal >  .contacts__list .teacher .avatar div{
+  @apply w-8 min-w-[40px] rounded-full ring ring-offset-base-100 ring-offset-2;
+}
+
+.contacts__modal >  .contacts__list .teacher.purple .avatar div{
+  @apply ring-purple-400;
+}
+
+.contacts__modal >  .contacts__list .teacher.red .avatar div{
+  @apply ring-red-400;
+}
+
+.contacts__modal >  .contacts__list .teacher .content h2{
+  @apply text-sm font-medium grow;
+}
+
+.contacts__modal >  .contacts__list .teacher.purple .content h2{
+  @apply text-purple-800;
+}
+
+.contacts__modal >  .contacts__list .teacher.red .content h2{
+  @apply text-red-800;
+}
+
+.contacts__modal >  .contacts__list .teacher .content h3{
+  @apply text-xs;
+}
+
+.contacts__modal >  .contacts__list .teacher.purple .content h3{
+  @apply text-purple-400 font-medium;
+}
+
+.contacts__modal >  .contacts__list .teacher.red .content h3{
+  @apply text-red-400 font-medium;
+}

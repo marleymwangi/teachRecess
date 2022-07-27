@@ -1,0 +1,86 @@
+.news__sec{
+  @apply container mx-auto px-8 pt-4 
+}
+
+.news__sec .incident{
+  @apply bg-white my-3 p-2 pl-4 rounded-full flex items-center shadow-lg
+  overflow-hidden min-w-[300px]
+}
+
+.news__sec .incident > .icon{
+  @apply bg-gray-100 h-12 w-12 rounded-full flex items-center 
+  justify-center min-w-[3rem] min-h-[3rem]
+}
+
+.news__sec .incident > .content{
+  @apply grow h-full ml-1 flex items-center;
+}
+
+.news__sec .incident > .content > div:nth-of-type(1) {
+  @apply grow;
+}
+
+.news__sec .incident > .content > .child {
+  @apply flex flex-col items-center pr-6;
+}
+
+.news__sec .incident > .content > .child .avatar{
+  @apply mb-2;
+}
+.news__sec .incident > .content > .child .avatar > div{
+  @apply w-7 rounded-full ring ring-purple-400 ring-offset-base-100 ring-offset-2;
+}
+.news__sec .incident > .content.info > .child .avatar > div{
+  @apply ring-cyan-500;
+}
+.news__sec .incident > .content.warn > .child .avatar > div{
+  @apply ring-orange-500;
+}
+.news__sec .incident > .content.urg > .child .avatar > div{
+  @apply ring-red-500;
+}
+.news__sec .incident > .content.good > .child .avatar > div{
+  @apply ring-green-600;
+}
+
+
+.news__sec .incident > .content > .child > h1{
+  @apply text-purple-500 font-medium text-sm whitespace-nowrap;
+}
+.news__sec .incident > .content.info > .child > h1{
+  @apply text-cyan-500 whitespace-nowrap;
+}
+.news__sec .incident > .content.warn > .child > h1{
+  @apply text-orange-500 whitespace-nowrap;
+}
+.news__sec .incident > .content.urg > .child > h1{
+  @apply text-red-500 whitespace-nowrap;
+}
+.news__sec .incident > .content.good > .child > h1{
+  @apply text-green-600 whitespace-nowrap;
+}
+
+
+.news__sec .incident > .content > .child {
+  @apply flex flex-col items-center pr-6 ml-2;
+}
+
+.news__sec .incident > .content h6{
+  @apply text-gray-500;
+}
+
+.news__sec .incident > .content p{
+  @apply text-xs font-semibold;
+}
+.news__sec .incident > .content.info p{
+  @apply text-cyan-500;
+}
+.news__sec .incident > .content.warn p{
+  @apply text-orange-500;
+}
+.news__sec .incident > .content.urg p{
+  @apply text-red-500;
+}
+.news__sec .incident > .content.good p{
+  @apply text-green-600;
+}

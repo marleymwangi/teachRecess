@@ -11,7 +11,7 @@ const BiDotsVerticalRounded = dynamic(
   async () => (await import("react-icons/bi")).BiDotsVerticalRounded
 );
 
-export default function ReminderComp({ data }) {
+export default function ReminderComp({ data, home }) {
   const { setSelRemindersMode, setSelReminder, removeReminderInfo } = useData();
   let today = startOfToday();
 
@@ -30,38 +30,40 @@ export default function ReminderComp({ data }) {
   };
 
   const deleteHandleClick = () => {
-    setSelReminder(data);
-    removeReminderInfo()
-        .then((res) => {
-          console.log(res);
-          swal("Done!", "Deleted Successfully!", "success");3
-        })
-        .catch((err) => {
-          console.log(err);
-          swal("Sorry!", "Error while deleting!", "error");
-        });
+    removeReminderInfo(data)
+      .then((res) => {
+        console.log(res);
+        swal("Done!", "Deleted Successfully!", "success");
+        3;
+      })
+      .catch((err) => {
+        console.log(err);
+        swal("Sorry!", "Error while deleting!", "error");
+      });
   };
 
   return (
     <div className="reminder">
-      <div className="dropdown dropdown-right">
-        <label tabIndex="0" className="btn btn-circle btn-ghost">
-          <button className="btn btn-ghost btn-circle text-gray-400">
-            <BiDotsVerticalRounded size="2em" />
-          </button>
-        </label>
-        <ul
-          tabIndex="0"
-          className="dropdown-content menu shadow font-semibold bg-gray-100 rounded-box w-24"
-        >
-          <li className="text-gray-700" onClick={editHandleClick}>
-            <a>Edit</a>
-          </li>
-          <li className="text-gray-700" onClick={deleteHandleClick}>
-            <a>Delete</a>
-          </li>
-        </ul>
-      </div>
+      {!home && (
+        <div className="dropdown dropdown-right">
+          <label tabIndex="0" className="btn btn-circle btn-ghost">
+            <button className="btn btn-ghost btn-circle text-gray-400">
+              <BiDotsVerticalRounded size="2em" />
+            </button>
+          </label>
+          <ul
+            tabIndex="0"
+            className="dropdown-content menu shadow font-semibold bg-gray-100 rounded-box w-24"
+          >
+            <li className="text-gray-700" onClick={editHandleClick}>
+              <a>Edit</a>
+            </li>
+            <li className="text-gray-700" onClick={deleteHandleClick}>
+              <a>Delete</a>
+            </li>
+          </ul>
+        </div>
+      )}
       <div className="content">
         <h5 className="font-bold text-gray-400 mb-2">
           Class : <span className="text-gray-600 uppercase">2b</span>

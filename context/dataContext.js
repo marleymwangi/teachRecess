@@ -295,20 +295,20 @@ function useProvideData() {
     });
   }
 
-  async function removeReminderInfo() {
+  async function removeReminderInfo(data) {
     return new Promise(async (resolve, reject) => {
       try {
-        if (teacher && selReminder) {
+        if (teacher && data) {
           let docRef;
-          if (selReminder?.scope === "School") {
+          if (data?.scope === "School") {
             docRef = doc(
               db,
               "schools",
               teacher?.schoolId,
               "reminders",
-              selReminder?.id
+              data?.id
             );
-          } else if (selReminder?.scope === "Class") {
+          } else if (data?.scope === "Class") {
             docRef = doc(
               db,
               "schools",
@@ -316,7 +316,7 @@ function useProvideData() {
               "classes",
               teacher?.classId,
               "reminders",
-              selReminder?.id
+              data?.id
             );
           } else {
             throw "Scope required.";

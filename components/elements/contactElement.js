@@ -65,7 +65,7 @@ export default function ContactElement({ data }) {
         <div className="content">
           <h2>{data.name}</h2>
           <h3>
-            {data?.student?.name} {data.subject} Teacher
+            {data?.student?.name} {data.subject} 
           </h3>
         </div>
       </div>

@@ -1,11 +1,41 @@
+import { useEffect } from "react";
 import Image from "next/image";
 import Router from "next/router";
+//custom packages
 import {
   getProviders,
   signIn as SignInProvider,
   useSession,
 } from "next-auth/react";
-import { useEffect } from "react";
+import { motion } from "framer-motion";
+
+const contVar = {
+  open: {
+    opacity: 1,
+    transition: {
+      delay: 1,
+      staggerChildren: 0.35,
+      when: "beforeChildren",
+    },
+  },
+};
+
+const childVar = {
+  closed: {
+    y: -10,
+    scale: 0.95,
+    opacity: 0,
+  },
+  open: {
+    y: 0,
+    scale: 1,
+    opacity: 1,
+    transition: {
+      duration: 0.45,
+    },
+  },
+};
+
 
 export default function SignIn({ providers }) {
   const { data: session, status } = useSession();
@@ -22,18 +52,19 @@ export default function SignIn({ providers }) {
 
   return (
     <div className="signIn-page">
-      <div className="flex flex-col h-full justify-start items-center">
-        <div className="h-52 w-52 ring-4 ring-sky-600 rounded-full mt-10 overflow-hidden relative">
+      <motion.div variants={contVar} initial="closed" animate="open" className="flex flex-col w-full h-full justify-start items-center">
+        <motion.div variants={childVar} className="h-52 w-52 ring-4 ring-sky-600 rounded-full mt-10 overflow-hidden relative">
           <Image
-            src="/assets/logo1.webp"
-            alt="Taka"
+            alt="logo"
             layout="fill"
-            blurDataURL="/assets/loading.svg"
+            placeholder="blur"
+            src="/assets/logo.webp"
+            blurDataURL="/assets/logosm.webp"
           />
-        </div>
+        </motion.div>
         {providers &&
           Object.values(providers).map((provider) => (
-            <div key={provider.name}>
+            <motion.div variants={childVar} key={provider.name}>
               <button
                 onClick={() =>
                   SignInProvider(provider.id, { callbackUrl: "/" })
@@ -41,9 +72,9 @@ export default function SignIn({ providers }) {
               >
                 Sign in with {provider.name}
               </button>
-            </div>
+            </motion.div>
           ))}
-      </div>
+      </motion.div>
     </div>
   );
 }

@@ -16,10 +16,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { getSession, useSession } from "next-auth/react";
 //custom
 import { db } from "../firebase";
-import { useData } from "../context/dataContext";
-import Entry from "../components/diaries/entry";
 import Title from "../components/elements/title";
-import ReminderCalendar from "../components/elements/calendar/attendanceCalendar";
 import ReminderComp from "../components/reminders/reminderComp";
 //dynamic
 const BiMessageAltAdd = dynamic(
@@ -66,9 +63,7 @@ export default function Reminders({
   schoolRemindersInit,
 }) {
   const { data: session, status } = useSession();
-  const { setSelDiary } = useData();
   let today = startOfToday();
-  const [selectedDay, setSelectedDay] = useState(today);
 
   const [teacher, setTeacher] = useState(teacherInit);
   const [classReminders, setClassReminders] = useState([]);

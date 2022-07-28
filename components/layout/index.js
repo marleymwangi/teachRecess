@@ -32,7 +32,7 @@ export default function Layout({ children, path }) {
   return (
     <>
       <Head>
-        <title>Recess. Enhance Communication.</title>
+        <title>Recess. School made easy.</title>
       </Head>
       <Banner />
       <Navbar />

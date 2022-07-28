@@ -14,10 +14,19 @@ const BiLeftArrow = dynamic(
   async () => (await import("react-icons/bi")).BiLeftArrow
 );
 const FaRegUserCircle = dynamic(
-  async () => (await import("react-icons/fa")).FaRegUserCircle
+  async () => (await import("react-icons/bi")).FaRegUserCircle
 );
 
 const contVar = {
+  open: {
+    transition: {
+      staggerChildren: 0.35,
+      when: "beforeChildren",
+    },
+  },
+};
+
+const childVar = {
   closed: {
     y: -10,
     scale: 0.95,
@@ -28,23 +37,7 @@ const contVar = {
     scale: 1,
     opacity: 1,
     transition: {
-      when: "beforeChildren",
-      duration: 0.5,
-      staggerChildren: 0.15,
-    },
-  },
-};
-
-const childVar = {
-  closed: {
-    scale: 0.95,
-    opacity: 0,
-  },
-  open: {
-    scale: 1,
-    opacity: 1,
-    transition: {
-      duration: 0.25,
+      duration: 0.45,
     },
   },
 };
@@ -65,16 +58,24 @@ export default function Navbar() {
         variants={contVar}
         initial="closed"
         animate="open"
-        className="flex justify-around items-center text-gray-900 min-w-full h-20 pt-6"
+        className="text-gray-900 min-w-full h-20 pt-6"
       >
-        <motion.div variants={childVar} className="flex items-center">
-          <span
+        <div className="flex flex-col items-center">
+          <motion.h1
+            variants={childVar}
             className="flex-shrink-0 flex items-center font-extrabold text-4xl
               transition-all duration-200 ease-in-out mb-0.5"
           >
             RECESS
-          </span>
-        </motion.div>
+          </motion.h1>
+          <motion.span
+            variants={childVar}
+            className="flex-shrink-0 text-primary flex items-center font-semibold text-lg
+              transition-all duration-200 ease-in-out mb-0.5"
+          >
+            School made easy
+          </motion.span>
+        </div>
       </motion.nav>
     );
   } else if (router.pathname.indexOf("/chats/") === 0) {
@@ -92,10 +93,11 @@ export default function Navbar() {
         >
           <BiLeftArrow size="1.5em" />
         </motion.button>
-        <motion.div
-          variants={childVar}
-          className="flex items-center"
-        ></motion.div>
+        <motion.div variants={childVar} className="flex items-center">
+          <motion.span variants={childVar} className="uppercase font-medium">
+            <Title title={router.pathname.slice(7)} light />
+          </motion.span>
+        </motion.div>
         <motion.div variants={childVar} className="dropdown dropdown-end">
           <label tabIndex="0" className="btn btn-circle btn-ghost">
             {session?.user ? (
@@ -119,10 +121,10 @@ export default function Navbar() {
 
           <ul
             tabIndex="0"
-            className="dropdown-content menu p-2 shadow font-semibold bg-sky-600 rounded-box w-52"
+            className="dropdown-content menu p-2 shadow text-white font-semibold bg-sky-600 rounded-box w-52"
             onClick={signOut}
           >
-            <li className="text-white">
+            <li>
               <a>Sign Out</a>
             </li>
           </ul>
@@ -134,7 +136,7 @@ export default function Navbar() {
       <motion.nav
         variants={contVar}
         initial="closed"
-        animate="open"  
+        animate="open"
         className="flex justify-around items-center text-gray-900 min-w-full h-20 pt-6"
       >
         <motion.button
@@ -171,10 +173,10 @@ export default function Navbar() {
           </label>
           <ul
             tabIndex="0"
-            className="dropdown-content menu p-2 shadow font-semibold bg-sky-600 rounded-box w-52"
+            className="dropdown-content menu p-2 shadow text-white font-semibold bg-sky-600 rounded-box w-52"
             onClick={signOut}
           >
-            <li className="text-white">
+            <li>
               <a>Sign Out</a>
             </li>
           </ul>
@@ -198,9 +200,9 @@ export default function Navbar() {
         </motion.button>
         <motion.span variants={childVar} className="uppercase font-medium">
           {router.pathname === "/" ? (
-            <Title title="home" light />
+            <Title title="home" />
           ) : (
-            <Title title={router.pathname.slice(1)} light />
+            <Title title={router.pathname.slice(1)} />
           )}
         </motion.span>
         <motion.div variants={childVar} className="dropdown dropdown-end">
@@ -226,10 +228,10 @@ export default function Navbar() {
 
           <ul
             tabIndex="0"
-            className="dropdown-content menu p-2 shadow font-semibold bg-sky-600 rounded-box w-52"
+            className="dropdown-content menu p-2 shadow font-semibold text-white bg-sky-600 rounded-box w-52"
             onClick={signOut}
           >
-            <li className="text-white">
+            <li>
               <a>Sign Out</a>
             </li>
           </ul>

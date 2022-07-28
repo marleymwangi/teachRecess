@@ -79,7 +79,7 @@ export default function Reminders({ students, remindersParam }) {
       <div className="reminders no-scroll">
         {reminders?.length > 0 &&
           reminders.slice(0,3).map((e, i) => {
-            return <ReminderComp key={i} data={e} />;
+            return <ReminderComp key={i} data={e} home/>;
           })}
       </div>
       <div className="flex justify-end">

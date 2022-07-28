@@ -17,10 +17,10 @@ class MyDocument extends Document {
             name="description"
             content="Recess is a platform that improves the communication between parents and the school."
           />
-          <meta property="og:title" content="Taka. Earn as you throw waste." />
-          <meta property="og:url" content="https://www.taka.earth" />
+          <meta property="og:title" content="Recess. School made easy." />
+          <meta property="og:url" content="https://recess254.vercel.app" />
           <meta property="og:image" content="assets/logo1.webp" />
-          <meta name="twitter:title" content="Taka. Earn as you throw waste." />
+          <meta name="twitter:title" content="Recess. School made easy." />
           <meta
             name="twitter:description"
             content="Recess is a platform that improves the communication between parents and the school."
@@ -29,7 +29,7 @@ class MyDocument extends Document {
           <meta name="twitter:card" content="summary_large_image" />
           <meta
             name="keywords"
-            content="recycle waste rewards offers discounts kenya"
+            content="Recess is a platform that improves the communication between parents and the school."
           />
         </Head>
         <body>

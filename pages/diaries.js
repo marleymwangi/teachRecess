@@ -18,7 +18,6 @@ import { getSession, useSession } from "next-auth/react";
 import { db } from "../firebase";
 import { useData } from "../context/dataContext";
 import Entry from "../components/diaries/entry";
-import Title from "../components/elements/title";
 import DiaryCalendar from "../components/elements/calendar/diaryCalendar";
 //dynamic
 const BiMessageAltAdd = dynamic(
@@ -30,7 +29,7 @@ const contVar = {
     opacity: 1,
     transition: {
       when: "beforeChildren",
-      staggerChildren: 0.5,
+      staggerChildren: 0.15,
     },
   },
 };
@@ -45,14 +44,6 @@ const riseVar = {
     opacity: 1,
     y: 0,
     scale: 1,
-    transition: {
-      duration: 0.5,
-    },
-  },
-  exit: {
-    opacity: 0,
-    y: -10,
-    scale: 0.9,
     transition: {
       duration: 0.5,
     },
@@ -116,65 +107,72 @@ export default function Diaries({ diariesInit }) {
   );
 
   return (
-    <div className="diaries__page">
-      <div className="mb-6">
+    <motion.div
+      variants={contVar}
+      initial="hide"
+      animate="show"
+      className="diaries__page"
+    >
+      <motion.div variants={riseVar} className="mb-6">
         <p className="text-gray-500 font-medium text-sm mt-2 md:ml-16">
           Clicking on a date will show when the Assignment was given and when
           its due.
           <br /> Top number shows assignments given while the number at the
           bottom show assignments due.
         </p>
-      </div>
-      <div className="flex flex-col lg:flex-row items-center">
+      </motion.div>
+      <motion.div
+        variants={contVar}
+        className="flex flex-col lg:flex-row items-center"
+      >
         <DiaryCalendar
           selectedDay={selectedDay}
           setSelectedDay={setSelectedDay}
           diaries={diaries}
         />
         <section className="w-full backdrop-blur pt-6 rounded-3xl overflow-hidden">
-          <h2 className="font-semibold text-gray-900">
-            Diaries for{" "}
-            <time dateTime={format(selectedDay, "yyyy-MM-dd")}>
+          <motion.h2
+            variants={riseVar}
+            className="font-bold text-gray-400 mt-6 mb-3"
+          >
+            Diary Entries for{" "}
+            <time
+              className="text-gray-900 font-extrabold"
+              dateTime={format(selectedDay, "yyyy-MM-dd")}
+            >
               {format(selectedDay, "MMM dd, yyy")}
             </time>
-          </h2>
-          <p className="text-sm text-gray-500">
-            <br /> Check more for additional information
-          </p>
-          <motion.div
-            variants={contVar}
-            initial="hide"
-            animate="show"
-            exit="exit"
-            className="diaries"
+          </motion.h2>
+          <motion.p
+            variants={riseVar}
+            className="text-sm font-bold text-gray-400"
           >
-            <AnimatePresence>
-              {selectedDayDiaries.length > 0 ? (
-                selectedDayDiaries.map((diary, i) => (
-                  <motion.div variants={riseVar} key={`${diary?.id}`}>
-                    <Entry
-                      refData={{
-                        school: teacher?.schoolId,
-                        class: teacher?.classId,
-                      }}
-                      data={diary}
-                    />
-                  </motion.div>
-                ))
-              ) : (
-                <p className="p-6">No diaries for today.</p>
-              )}
-            </AnimatePresence>
+            Check more for additional information
+          </motion.p>
+          <motion.div variants={contVar} className="diaries">
+            {selectedDayDiaries.length > 0 ? (
+              selectedDayDiaries.map((diary, i) => (
+                <Entry data={diary} key={`${diary?.id}${diary?.student?.id}`} />
+              ))
+            ) : (
+              <motion.p
+                variants={riseVar}
+                className="p-6 font-bold text-center text-gray-600"
+              >
+                No diaries for today.
+              </motion.p>
+            )}
           </motion.div>
         </section>
-      </div>
-      <label
+      </motion.div>
+      <motion.label
+        variants={riseVar}
         htmlFor="diary_modal"
         className=" modal-button btn btn-circle btn-primary btn-md fixed right-5 bottom-28"
       >
         <BiMessageAltAdd size="2rem" />
-      </label>
-    </div>
+      </motion.label>
+    </motion.div>
   );
 }
 

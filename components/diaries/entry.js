@@ -2,15 +2,30 @@ import Image from "next/image";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 //custom packages
-import { onSnapshot, doc, collection } from "firebase/firestore";
+import { motion } from "framer-motion";
+import { onSnapshot, doc } from "firebase/firestore";
 //custom
 import { db } from "../../firebase";
 import { useData } from "../../context/dataContext";
-import ImageLoader from "../elements/imageLoader";
 import { classNames } from "../../context/vars";
 //dynamic
-const FaSchool = dynamic(async () => (await import("react-icons/fa")).FaSchool);
 const MdClass = dynamic(async () => (await import("react-icons/md")).MdClass);
+
+const riseVar = {
+  hide: {
+    opacity: 0,
+    y: 10,
+    scale: 0.9,
+  },
+  show: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 0.25,
+    },
+  },
+};
 
 export default function Entry({ data, refData }) {
   const { selDiary, setSelDiary } = useData();
@@ -50,7 +65,10 @@ export default function Entry({ data, refData }) {
   };
 
   return (
-    <div onClick={handleClick} className="diary__entry">
+    <motion.div
+      variants={riseVar}
+      onClick={handleClick}
+      className="diary__entry">
       {diary.type === "Craft" ? (
         <div className="absolute top-0 right-0 rotate-12">
           <Image src="/assets/craft.png" width={130} height={110} alt="" />
@@ -94,6 +112,6 @@ export default function Entry({ data, refData }) {
           </label>
         </div>
       </section>
-    </div>
+    </motion.div>
   );
 }

@@ -1,12 +1,29 @@
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
-//custom packs
+//custom package
+import { motion } from "framer-motion";
 import { formatDistance } from "date-fns";
 //custom
 import { useSession } from "next-auth/react";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import ImageLoader from "./imageLoader";
+
+const riseVar = {
+  hide: {
+    opacity: 0,
+    y: -  10,
+    scale: 0.9,
+  },
+  show: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 0.15,
+    },
+  },
+};
 
 export default function ChatElement({ data }) {
   const router = useRouter();
@@ -35,7 +52,7 @@ export default function ChatElement({ data }) {
   };
 
   return (
-    <div className="chat" onClick={handleClick}>
+    <motion.div variants={riseVar} className="chat" onClick={handleClick}>
       <div className="avatar">
         <div className="w-16 rounded-full shadow-md">
           <ImageLoader src={part?.image} fallbackSrc="/assets/person.webp" />
@@ -49,6 +66,6 @@ export default function ChatElement({ data }) {
         {data?.timestamp &&
           formatDistance(new Date(), new Date(data?.timestamp))}
       </span>
-    </div>
+    </motion.div>
   );
 }

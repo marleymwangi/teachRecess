@@ -1,66 +1,45 @@
 import Image from "next/image";
 import { useRef, useState, useEffect } from "react";
-//context
-import { useData } from "../../context/dataContext";
-//custom
-import { useSession } from "next-auth/react";
-import { AnimatePresence, motion } from "framer-motion";
-import ContactElement from "../elements/contactElement";
-import { db } from "../../firebase";
+//custom packages
 import {
-  collection,
+  doc,
   query,
   where,
-  onSnapshot,
+  getDoc,
   orderBy,
+  collection,
+  onSnapshot,
 } from "firebase/firestore";
-
-const slideVar = {
-  hide: {
-    x: "200%",
-    opacity: 1,
-  },
-  show: {
-    x: 0,
-    opacity: 1,
-    transition: {
-      delay: 0.25,
-      type: "spring",
-      mass: 0.8,
-      damping: 10,
-      staggerChildren: 0.25,
-    },
-  },
-  exit: {
-    x: "-100%",
-    opacity: 0,
-    transition: {
-      duration: 0.25,
-    },
-  },
-};
+import { useSession } from "next-auth/react";
+import { AnimatePresence, motion } from "framer-motion";
+//custom
+import { db } from "../../firebase";
+import ContactElement from "../elements/contactElement";
+//context
+import { useData } from "../../context/dataContext";
 
 export default function ContactsModal() {
-  const [kids, setKids] = useState([]);
-  const [teachers, setTeachers] = useState([]);
-  const { data: session, status } = useSession();
+  const [guardians, setGuardians] = useState([]);
+  const { teacher } = useData();
+  const { data: session } = useSession();
 
-  async function getTeachers(student) {
+  async function getStudents(teacher) {
     return new Promise((resolve, reject) => {
       try {
         const q = query(
-          collection(db, `teachers`),
-          where("schoolId", "==", `${student.schoolId || ""}`),
-          where("classId", "==", `${student.classId || ""}`),
+          collection(db, `students`),
+          where("schoolId", "==", `${teacher.schoolId || ""}`),
+          where("classId", "==", `${teacher.classId || ""}`),
           orderBy("name", "desc")
         );
-        const listener = onSnapshot(q, (snapshot) => {
+        return onSnapshot(q, (snapshot) => {
           const tmp = [];
           snapshot.forEach((doc) => {
-            tmp.push({ ...doc.data(), student, id: doc.id });
+            tmp.push({ ...doc.data(), id: doc.id });
           });
+
           if (tmp.length > 0) {
-            resolve({ listener, data: tmp });
+            resolve(tmp);
           }
         });
       } catch (error) {
@@ -71,55 +50,69 @@ export default function ContactsModal() {
   }
 
   useEffect(() => {
-    let promises = [];
-    kids.forEach(async (student) => {
-      let p = getTeachers(student);
-      promises.push(p);
-    });
+    if (teacher?.schoolId && teacher?.classId) {
+      getStudents(teacher)
+        .then((res) => {
+          let studs = [];
+          let names = [];
 
-    Promise.all(promises).then((results) => {
-      let tmp = [];
-      results.forEach((r) => {
-        tmp.push(...r.data);
-        r.listener();
-      });
-      if (tmp !== teachers) {
-        tmp.sort((a, b) => {
-          let fa = a.name.toLowerCase(),
-            fb = b.name.toLowerCase();
+          res.forEach((stud) => {
+            names.push(stud.name);
+            studs.push(stud.guardians);
+          });
+          let gs = studentProcessGuardians(studs);
 
-          if (fa < fb) {
-            return -1;
-          }
-          if (fa > fb) {
-            return 1;
-          }
-          return 0;
-        });
-        //console.log(tmp)
+          let promises = [];
+          gs.forEach(async (g) => {
+            let p = getGuardian(g);
+            promises.push(p);
+          });
 
-        setTeachers(tmp);
-      }
-    });
-  }, [kids, teachers]);
+          Promise.all(promises).then((results) => {
+            let guards = [];
+            results.forEach((r) => {
+              guards.push(r);
+            });
+            if (guards.length > 0) {
+              let tmp = [];
+              guards.forEach((g) => {
+                let obj = {
+                  students: names,
+                  guardian: g,
+                };
+                tmp.push(obj);
+              });
+              if (tmp.length > 0 && tmp !== guardians) {
+                setGuardians(tmp);
+              }
+            }
+          });
+        })
+        .catch((error) => console.log(error));
+    }
+  }, [teacher]);
 
   useEffect(() => {
-    //get students for teacher search
-    if (session) {
-      const q = query(
-        collection(db, "students"),
-        where("guardians", "array-contains", session?.user?.id || "")
-      );
+    //console.log(guardians)
+  }, [guardians]);
 
-      return onSnapshot(q, (snapshot) => {
-        let tmp = [];
-        snapshot.forEach((doc) => {
-          tmp.push({ ...doc.data(), id: doc.id });
-        });
-        setKids(tmp);
-      });
-    }
-  }, [session]);
+  const studentProcessGuardians = (array) => {
+    let flatArray = array.reduce((acc, curVal) => {
+      return acc.concat(curVal);
+    }, []);
+    let withoutDuplicates = [...new Set(flatArray)];
+    return withoutDuplicates;
+  };
+
+  const getGuardian = (id) => {
+    const docRef = doc(db, "users", id);
+
+    return getDoc(docRef).then((docSnap) => {
+      if (docSnap.exists()) {
+        return {...docSnap.data(), id };
+      }
+    });
+  };
 
   return (
     <div>
@@ -138,10 +131,8 @@ export default function ContactsModal() {
           <div className="contacts__modal">
             <h1>Click on Contacts to start the Chat</h1>
             <section className="contacts__list custom-scroll">
-              <section className="contacts__list custom-scroll">
-                {teachers?.length &&
-                  teachers.map((t, i) => <ContactElement key={i} data={t} />)}
-              </section>
+              {guardians?.length &&
+                guardians.map((t, i) => <ContactElement key={i} data={t} />)}
             </section>
           </div>
         </label>

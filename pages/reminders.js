@@ -116,14 +116,7 @@ export default function Reminders({
     //listen for changes and update kids information
 
     if (teacher?.schoolId) {
-      const q = query(
-        collection(
-          db,
-          "schools",
-          teacher.schoolId,
-          "reminders"
-        )
-      );
+      const q = query(collection(db, "schools", teacher.schoolId, "reminders"));
 
       return onSnapshot(q, (snapshot) => {
         const tmp = [];
@@ -160,8 +153,13 @@ export default function Reminders({
   }, [schoolRemindersInit]);
 
   return (
-    <div className="diaries__page">
-      <div className="my-6">
+    <motion.div
+      variants={contVar}
+      initial="hide"
+      animate="show"
+      className="diaries__page"
+    >
+      <motion.div variants={contVar} className="my-6">
         <Title title="Class Events" />
         {classReminders?.length > 0 &&
           classReminders.map((r, i) => (
@@ -169,8 +167,8 @@ export default function Reminders({
               <ReminderComp data={r} />
             </div>
           ))}
-      </div>
-      <div className="my-6">
+      </motion.div>
+      <motion.div variants={contVar} className="my-6">
         <Title title="School Events" />
         {schoolReminders?.length > 0 &&
           schoolReminders.map((r, i) => (
@@ -178,14 +176,15 @@ export default function Reminders({
               <ReminderComp data={r} />
             </div>
           ))}
-      </div>
-      <label
+      </motion.div>
+      <motion.label
+        variants={riseVar}
         htmlFor="reminder_modal"
         className=" modal-button btn btn-circle btn-primary btn-md fixed right-5 bottom-28"
       >
         <BiMessageAltAdd size="2rem" />
-      </label>
-    </div>
+      </motion.label>
+    </motion.div>
   );
 }
 

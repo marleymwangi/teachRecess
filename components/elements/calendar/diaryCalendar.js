@@ -17,6 +17,7 @@ import {
   startOfWeek,
   startOfToday,
 } from "date-fns";
+import { motion } from "framer-motion";
 //custom
 import { classNames } from "../../../context/vars";
 import { useData } from "../../../context/dataContext";
@@ -29,12 +30,27 @@ const IoIosArrowDropright = dynamic(
   async () => (await import("react-icons/io")).IoIosArrowDropright
 );
 
+const riseVar = {
+  hide: {
+    opacity: 0,
+    y: 10,
+    scale: 0.9,
+  },
+  show: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 0.5,
+    },
+  }
+};
+
 export default function DiaryCalender({
   selectedDay,
   setSelectedDay,
   diaries,
 }) {
-  const { selDiary } = useData();
   let today = startOfToday();
   let [currentWeek, setCurrentWeek] = useState(today);
   let firstDayCurrentWeek = startOfWeek(currentWeek, { weekStartsOn: 1 });
@@ -47,12 +63,12 @@ export default function DiaryCalender({
     end: endDayCurrentWeek,
   });
 
-  function previousMonth() {
+  function perviousWeek() {
     let firstDayCurrentWeek = addWeeks(currentWeek, -1);
     setCurrentWeek(firstDayCurrentWeek);
   }
 
-  function nextMonth() {
+  function nextWeek() {
     let firstDayCurrentWeek = addWeeks(currentWeek, 1);
     setCurrentWeek(firstDayCurrentWeek);
   }
@@ -111,15 +127,13 @@ export default function DiaryCalender({
       if (list?.length > 0) {
         let c = `hover:bg-cyan-400`;
         return c;
-      } else if (list?.length > 1) {
-        return "hover:bg-gradient-to-r from-red-400 to-purple-400";
       }
       return "hover:bg-cyan-50";
     }
   };
 
   return (
-    <div className="lg:mr-14 bg-white w-full min-w-md max-w-md p-6 rounded-3xl">
+    <motion.div variants={riseVar} className="lg:mr-14 bg-white w-full min-w-md max-w-md p-6 rounded-3xl">
       <div className="flex items-center">
         <h2 className="flex-auto font-semibold text-gray-900">
           {`Week ${getWeekOfMonth(firstDayCurrentWeek)}, ${format(
@@ -129,14 +143,14 @@ export default function DiaryCalender({
         </h2>
         <button
           type="button"
-          onClick={previousMonth}
+          onClick={perviousWeek}
           className="-my-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-primary"
         >
           <span className="sr-only">Previous Week</span>
           <IoIosArrowDropleft size="1.75em" />
         </button>
         <button
-          onClick={nextMonth}
+          onClick={nextWeek}
           type="button"
           className="-my-1.5 -mr-1.5 ml-2 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-primary"
         >
@@ -206,6 +220,6 @@ export default function DiaryCalender({
           </div>
         ))}
       </div>
-    </div>
+    </motion.div>
   );
 }

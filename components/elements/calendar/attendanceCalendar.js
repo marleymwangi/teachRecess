@@ -58,7 +58,7 @@ export default function AttendanceCalendar({
   }
 
   useEffect(() => {
-    console.log(attendancees);
+    //console.log(attendancees);
   }, [attendancees]);
 
   const backgroundColor = (day) => {

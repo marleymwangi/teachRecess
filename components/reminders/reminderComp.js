@@ -1,15 +1,31 @@
 import { useEffect } from "react";
 import dynamic from "next/dynamic";
 //custom packages
+import { motion } from "framer-motion";
 import { format, isBefore, startOfToday, addDays } from "date-fns";
 //custom
 import { classNames } from "../../context/vars";
-import ImageLoader from "../elements/imageLoader";
 import { useData } from "../../context/dataContext";
 //dymanic
 const BiDotsVerticalRounded = dynamic(
   async () => (await import("react-icons/bi")).BiDotsVerticalRounded
 );
+
+const riseVar = {
+  hide: {
+    opacity: 0,
+    y: 10,
+    scale: 0.9,
+  },
+  show: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 0.15,
+    },
+  },
+};
 
 export default function ReminderComp({ data, home }) {
   const { setSelRemindersMode, setSelReminder, removeReminderInfo } = useData();
@@ -43,7 +59,7 @@ export default function ReminderComp({ data, home }) {
   };
 
   return (
-    <div className="reminder">
+    <motion.div variants={riseVar} className="reminder">
       {!home && (
         <div className="dropdown dropdown-right">
           <label tabIndex="0" className="btn btn-circle btn-ghost">
@@ -120,6 +136,6 @@ export default function ReminderComp({ data, home }) {
           <span>{data?.timestamp && format(data.timestamp, "d")}</span>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

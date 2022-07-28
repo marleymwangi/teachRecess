@@ -13,7 +13,7 @@ export function AuthGuard({ children }) {
   /* show loading indicator while the auth provider is still initializing */
   if (status === "loading") {
     return (
-      <h1 className="text-center mt-20 font-semibold text-xl text-white">
+      <h1 className="text-center mt-20 font-semibold text-xl">
         ... Loading
       </h1>
     );

@@ -10,11 +10,22 @@ import {
   query,
   getDocs,
 } from "firebase/firestore";
+import { motion } from "framer-motion";
 //custom
 import { db } from "../../firebase";
-import Title from "../../components/elements/title";
 import { AuthGuard } from "../../components/elements/authGuard";
 import ChatElement from "../../components/elements/chatElement";
+
+const contVar = {
+  show: {
+    opacity: 1,
+    transition: {
+      delay: 0.75,
+      when: "beforeChildren",
+      staggerChildren: 0.15,
+    },
+  },
+};
 
 const BiMessageAltAdd = dynamic(
   async () => (await import("react-icons/bi")).BiMessageAltAdd
@@ -50,10 +61,12 @@ export default function Chat({ chatsInit }) {
     <AuthGuard>
       <div className="chats__page">
         <section className="chats__sec">
-          <div className="flex items-center justify-center mb-6">
-            <Title title="Recent Chats" light />
-          </div>
-          <div className="chats__list">
+          <motion.div
+            initial="hide"
+            animate="show"
+            variants={contVar}
+            className="chats__list"
+          >
             {chats?.length > 0 ? (
               chats.map((c, i) => <ChatElement key={i} data={c} />)
             ) : (
@@ -63,7 +76,7 @@ export default function Chat({ chatsInit }) {
                 </p>
               </div>
             )}
-          </div>
+          </motion.div>
         </section>
         <label
           htmlFor="contacts_modal"

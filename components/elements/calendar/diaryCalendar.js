@@ -20,7 +20,6 @@ import {
 import { motion } from "framer-motion";
 //custom
 import { classNames } from "../../../context/vars";
-import { useData } from "../../../context/dataContext";
 import { colStartClasses } from "../../../context/vars";
 //dynamic
 const IoIosArrowDropleft = dynamic(

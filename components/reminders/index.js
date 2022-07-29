@@ -8,80 +8,104 @@ import {
   query,
   where,
 } from "firebase/firestore";
+import { motion } from "framer-motion";
 //custom
 import { db } from "../../firebase";
 import Title from "../elements/title";
 import ReminderComp from "./reminderComp";
+import { useData } from "../../context/dataContext";
 
-export default function Reminders({ students, remindersParam }) {
-  const [reminders, setReminders] = useState(remindersParam);
+const contVar = {
+  hide: {
+    opacity: 1,
+  },
+  show: {
+    opacity: 1,
+    transition: {
+      when: "beforeChildren",
+      staggerChildren: 0.15,
+    },
+  },
+};
 
-  async function getReminders(student) {
-    return new Promise((resolve, reject) => {
-      try {
-        const q = query(
-          collection(db, `students/${student.id}/reminders`),
-          orderBy("timestamp", "desc")
-        );
+const riseVar = {
+  hide: {
+    opacity: 0,
+    y: 10,
+    scale: 0.9,
+  },
+  show: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 0.25,
+    },
+  },
+};
 
-        const listener = onSnapshot(q, (snapshot) => {
-          const tmp = [];
-          snapshot.forEach((doc) => {
-            tmp.push({
-              ...doc.data(),
-              student,
-              id: doc.id,
-              timestamp: doc.data().timestamp.toDate(),
-            });
-          });
-
-          if (tmp.length > 0) {
-            resolve({ listener, data: tmp });
-          }
-        });
-      } catch (error) {
-        console.warn(error);
-        reject(error);
-      }
-    });
-  }
+export default function Reminders() {
+  const { teacher } = useData();
+  const [reminders, setReminders] = useState([]);
 
   useEffect(() => {
-    let lis = [];
-    if (students?.length > 0) {
-      let promises = [];
-      students.forEach((student) => {
-        let p = getReminders(student);
-        promises.push(p);
-      });
+    //listen for changes and update kids information
 
-      Promise.all(promises).then((results) => {
-        let tmp = [];
-        results.forEach((r) => {
-          tmp.push(...r.data);
-          lis.push(r.listener);
+    if (teacher?.schoolId && teacher?.classId) {
+      const q = query(
+        collection(
+          db,
+          "schools",
+          teacher.schoolId,
+          "classes",
+          teacher.classId,
+          "reminders"
+        )
+      );
+
+      return onSnapshot(q, (snapshot) => {
+        const tmp = [];
+        snapshot.forEach((doc) => {
+          tmp.push({
+            ...doc.data(),
+            id: doc.id,
+            timestamp: doc.data().timestamp.toDate(),
+          });
         });
 
-        
-        tmp.sort((a,b)=> new Date(b.timestamp).getTime()-new Date(a.timestamp).getTime());
         setReminders(tmp);
       });
     }
-    lis.forEach((l) => l());
-  }, [students]);
+  }, [teacher]);
 
   return (
     <section className="reminder__sec">
       <Title title="Reminders" />
-      <p className="text-gray-400 text-sm">
-        This area show reminders. Scroll right to see more.
-      </p>
-      <div className="reminders no-scroll">
+      <motion.p variants={riseVar} className="text-gray-400 text-sm ">
+        This area show reminders
+      </motion.p>
+      <motion.div
+        variants={contVar}
+        initial="hide"
+        animate="show"
+        className="reminders no-scroll"
+      >
         {reminders?.length > 0 &&
-          reminders.slice(0,3).map((e, i) => {
-            return <ReminderComp key={i} data={e} home/>;
-          })}
-      </div>
+          reminders
+            .slice(0, 3)
+            .map((e, i) => <ReminderComp key={i} data={e} />)}
+        {reminders?.length < 1 && (
+          <motion.div
+            variants={riseVar}
+            className="rounded-3xl bg-white h-30 w-full p-6"
+          >
+            <p className="text-center text-lg font-semibold text-gray-400">
+              No reminders for the
+              <br /> current week
+            </p>
+          </motion.div>
+        )}
+      </motion.div>
       <div className="flex justify-end">
         <Link href="/reminders">
           <button className="btn btn-ghost">See All</button>

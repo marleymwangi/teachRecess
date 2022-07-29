@@ -1,84 +1,104 @@
+import Link from "next/link";
+import { useEffect, useState } from "react";
+//custom packages
+import { motion } from "framer-motion";
+import { format, isSameDay, startOfToday } from "date-fns";
+import { collection, onSnapshot, query } from "firebase/firestore";
 //custom
+import { db } from "../../firebase";
 import Title from "../elements/title";
 import { useData } from "../../context/dataContext";
 import Entry from "./entry";
-import Link from "next/link";
-//custom
-import { db } from "../../firebase";
-import {
-  collection,
-  onSnapshot,
-  orderBy,
-  query,
-  where,
-  getDocs,
-} from "firebase/firestore";
-import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
 
-export default function DiariesSection({ students, diariesParam }) {
-  const { data: session, status } = useSession();
-  const [diaries, setDiaries] = useState(diariesParam);
+const contVar = {
+  hide: {
+    opacity: 1,
+  },
+  show: {
+    opacity: 1,
+    transition: {
+      when: "beforeChildren",
+      staggerChildren: 0.15,
+    },
+  },
+};
 
-  async function getDiaries(student) {
-    return new Promise((resolve, reject) => {
-      try {
-        const q = query(collection(db, `students/${student.id}/diaries`));
+const riseVar = {
+  hide: {
+    opacity: 0,
+    y: 10,
+    scale: 0.9,
+  },
+  show: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 0.25,
+    },
+  },
+};
 
-        const listener = onSnapshot(q, (snapshot) => {
-          const tmp = [];
-          snapshot.forEach((doc) => {
-            tmp.push({
-              ...doc.data(),
-              student,
-              id: doc.id,
-              timestamp: doc.data().timestamp.toDate(),
-              due: doc.data().due.toDate(),
-            });
-          });
-
-          if (tmp.length > 0) {
-            resolve({ listener, data: tmp });
-          }
-        });
-      } catch (error) {
-        console.warn(error);
-        reject(error);
-      }
-    });
-  }
+export default function DiariesSection() {
+  const { teacher } = useData();
+  const [diaries, setDiaries] = useState([]);
 
   useEffect(() => {
-    let lis = [];
-    if (students?.length > 0) {
-      let promises = [];
-      students.forEach((student) => {
-        let p = getDiaries(student);
-        promises.push(p);
-      });
+    //listen for changes and update kids information
 
-      Promise.all(promises).then((results) => {
-        let tmp = [];
-        results.forEach((r) => {
-          tmp.push(...r.data);
-          lis.push(r.listener);
+    if (teacher?.schoolId && teacher?.classId) {
+      const q = query(
+        collection(
+          db,
+          "schools",
+          teacher.schoolId,
+          "classes",
+          teacher.classId,
+          "diaries"
+        )
+      );
+
+      return onSnapshot(q, (snapshot) => {
+        const tmp = [];
+        snapshot.forEach((doc) => {
+          tmp.push({
+            ...doc.data(),
+            id: doc.id,
+            timestamp: doc.data().timestamp.toDate(),
+            due: doc.data().due.toDate(),
+          });
         });
 
         setDiaries(tmp);
       });
     }
-    lis.forEach((l) => l());
-  }, [students]);
+  }, [teacher]);
 
   return (
     <section className="diaries px-8">
       <Title title="Todays Assignments" />
-      <div className="mt-6">
-        {diaries?.length > 0 &&
-          diaries.slice(0, 3).map((e, i) => {
-            return <Entry key={i} data={e} />;
-          })}
-      </div>
+      <motion.div
+        variants={contVar}
+        initial="hide"
+        animate="show"
+        className="diaries"
+      >
+        {diaries.length > 0 ? (
+          diaries.map((diary, i) => (
+            <Entry data={diary} key={`${diary?.id}${diary?.student?.id}`} />
+          ))
+        ) : (
+          <motion.div
+            variants={riseVar}
+            className="rounded-3xl bg-white h-30 w-full p-6"
+          >
+            <p className="text-center text-lg font-semibold text-gray-400">
+              No Diary entries for the
+              <br /> current week
+            </p>
+          </motion.div>
+        )}
+      </motion.div>
       <div className="flex justify-end">
         <Link href="/diaries">
           <button className="btn btn-ghost">See All</button>

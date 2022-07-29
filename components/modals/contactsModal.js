@@ -38,9 +38,7 @@ export default function ContactsModal() {
             tmp.push({ ...doc.data(), id: doc.id });
           });
 
-          if (tmp.length > 0) {
-            resolve(tmp);
-          }
+          resolve(tmp);
         });
       } catch (error) {
         console.warn(error);
@@ -109,7 +107,7 @@ export default function ContactsModal() {
 
     return getDoc(docRef).then((docSnap) => {
       if (docSnap.exists()) {
-        return {...docSnap.data(), id };
+        return { ...docSnap.data(), id };
       }
     });
   };

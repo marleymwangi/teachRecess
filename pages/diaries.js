@@ -1,19 +1,9 @@
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 //custom packages
+import { motion } from "framer-motion";
 import { format, isSameDay, startOfToday } from "date-fns";
-import {
-  doc,
-  query,
-  collection,
-  where,
-  orderBy,
-  getDoc,
-  getDocs,
-  onSnapshot,
-} from "firebase/firestore";
-import { AnimatePresence, motion } from "framer-motion";
-import { getSession, useSession } from "next-auth/react";
+import { collection, onSnapshot, query } from "firebase/firestore";
 //custom
 import { db } from "../firebase";
 import { useData } from "../context/dataContext";
@@ -50,9 +40,8 @@ const riseVar = {
   },
 };
 
-export default function Diaries({ diariesInit }) {
-  const { data: session, status } = useSession();
-  const { teacher, setSelDiary } = useData();
+export default function Diaries() {
+  const { teacher } = useData();
   let today = startOfToday();
   const [selectedDay, setSelectedDay] = useState(today);
 
@@ -83,22 +72,11 @@ export default function Diaries({ diariesInit }) {
             due: doc.data().due.toDate(),
           });
         });
-        if (tmp.length > 0) {
-          setDiaries(tmp);
-        }
+
+        setDiaries(tmp);
       });
     }
   }, [teacher]);
-
-  useEffect(() => {
-    let tmp = JSON.parse(diariesInit);
-    tmp.forEach((d) => {
-      d.timestamp = new Date(d.timestamp);
-      d.due = new Date(d.due);
-    });
-
-    setDiaries(tmp);
-  }, [diariesInit]);
 
   let selectedDayDiaries = diaries?.filter(
     (diary) =>
@@ -155,12 +133,17 @@ export default function Diaries({ diariesInit }) {
                 <Entry data={diary} key={`${diary?.id}${diary?.student?.id}`} />
               ))
             ) : (
-              <motion.p
+              <motion.div
                 variants={riseVar}
-                className="p-6 font-bold text-center text-gray-600"
+                className="rounded-3xl bg-white h-30 w-full p-6 mt-6 text-center"
               >
-                No diaries for today.
-              </motion.p>
+                <h2 className="font-semibold text-gray-600">
+                  No Diary entries for
+                </h2>
+                <h3 className="text-lg text-gray-400 font-bold">
+                  {format(selectedDay, "MMM dd, yyy")}
+                </h3>
+              </motion.div>
             )}
           </motion.div>
         </section>
@@ -175,52 +158,3 @@ export default function Diaries({ diariesInit }) {
     </motion.div>
   );
 }
-
-export const getServerSideProps = async (context) => {
-  try {
-    const session = await getSession(context);
-
-    const docRef = doc(db, "teachers", session?.user?.id || "");
-    const docSnap = await getDoc(docRef);
-
-    let teacher = null;
-    let tmp = [];
-    if (docSnap.exists()) {
-      teacher = docSnap.data();
-      const q = query(
-        collection(
-          db,
-          "schools",
-          teacher.schoolId,
-          "classes",
-          teacher.classId,
-          "diaries"
-        )
-      );
-
-      const querySnapshot = await getDocs(q);
-      querySnapshot.forEach((doc) => {
-        // doc.data() is never undefined for query doc snapshots
-        tmp.push({
-          ...doc.data(),
-          id: doc.id,
-          timestamp: doc.data().timestamp.toDate(),
-          due: doc.data().due.toDate(),
-        });
-      });
-    }
-
-    return {
-      props: {
-        diariesInit: JSON.stringify(tmp),
-      },
-    };
-  } catch (error) {
-    console.log(error);
-    return {
-      props: {
-        diariesInit: JSON.stringify([]),
-      },
-    };
-  }
-};

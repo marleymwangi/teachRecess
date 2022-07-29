@@ -199,7 +199,7 @@ function useProvideData() {
     });
   }
 
-  async function removeDiaryInfo() {
+  async function removeDiaryInfo(data) {
     return new Promise(async (resolve, reject) => {
       try {
         if (teacher) {
@@ -210,7 +210,7 @@ function useProvideData() {
             "classes",
             teacher?.classId,
             "diaries",
-            selDiary?.id
+            data?.id
           );
 
           deleteDoc(docRef).then((res) => {

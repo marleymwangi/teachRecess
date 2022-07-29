@@ -1,22 +1,14 @@
 import Image from "next/image";
 import dynamic from "next/dynamic";
-import { useRef, useState, useEffect } from "react";
-//custom
+import { useState, useEffect } from "react";
+//custom packages
 import swal from "sweetalert";
-import { useSession } from "next-auth/react";
-import { AnimatePresence, motion } from "framer-motion";
-import { useData } from "../../context/dataContext";
 import { isToday, format, formatDistance } from "date-fns";
-import { db } from "../../firebase";
 import { doc, getDoc, onSnapshot } from "firebase/firestore";
-import ImageLoader from "../elements/imageLoader";
+//custom
+import { db } from "../../firebase";
+import { useData } from "../../context/dataContext";
 //dynamic
-const FaCheckCircle = dynamic(
-  async () => (await import("react-icons/fa")).FaCheckCircle
-);
-const FaRegCheckCircle = dynamic(
-  async () => (await import("react-icons/fa")).FaRegCheckCircle
-);
 const BsBook = dynamic(async () => (await import("react-icons/bs")).BsBook);
 const RiPagesLine = dynamic(
   async () => (await import("react-icons/ri")).RiPagesLine
@@ -97,7 +89,7 @@ export default function WorkModal() {
 
   const handleDeleteClick = () => {
     if (diary) {
-      removeDiaryInfo()
+      removeDiaryInfo(diary)
         .then((res) => {
           console.log(res);
           setLoading(false);

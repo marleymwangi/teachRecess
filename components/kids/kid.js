@@ -1,15 +1,18 @@
+import Link from "next/link";
+import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 //custom packages
 import { motion } from "framer-motion";
+import { doc, getDoc } from "firebase/firestore";
 //custom
 import { db } from "../../firebase";
-import { doc, getDoc } from "firebase/firestore";
 import ImageLoader from "../elements/imageLoader";
+import { useData } from "../../context/dataContext";
 
 const slideVar = {
   hide: {
     opacity: 0,
-    x: 100,
+    x: 10,
     scale: 0.9,
   },
   show: {
@@ -22,8 +25,10 @@ const slideVar = {
   },
 };
 
-export default function Kid({ id }) {
-  const [student, setStudent] = useState({});
+export default function Kid({ id, data }) {
+  const router = useRouter();
+  const { classData } = useData();
+  const [student, setStudent] = useState(data || {});
 
   useEffect(() => {
     if (id) {
@@ -37,16 +42,32 @@ export default function Kid({ id }) {
     }
   }, [id]);
 
+  const handleClick = () => {
+    if (data?.id) {
+      router.push(`/attendance/profile?id=${data?.id}`);
+    }
+  };
+
   return (
-    <motion.div variants={slideVar} className="child my-3">
-      <div className="flex items-center w-full bg-white p-4 rounded-2xl">
+    <motion.div variants={slideVar} className="child" onClick={handleClick}>
+      <div className={`kid ${student?.color}`}>
         <div className="avatar">
-          <div className="w-10 rounded-full">
-            <ImageLoader src={student.image} />
+          <div className="ring-offset-base-100 ring-offset-2">
+            <ImageLoader
+              src={student?.image}
+              fallbackSrc="/assets/person.webp"
+            />
           </div>
         </div>
         <div>
-          <h1 className="font-extrabold ml-3">{student.name}</h1>
+          <h1>{student?.name}</h1>
+          <h2>
+            class : <span>{classData.name}</span>
+          </h2>
+        </div>
+        <div className="status">
+          <div className="indicator" />
+          <span>Present</span>
         </div>
       </div>
     </motion.div>

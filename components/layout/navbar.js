@@ -131,7 +131,7 @@ export default function Navbar() {
         </motion.div>
       </motion.nav>
     );
-  } else if (router.pathname.indexOf("/child/") === 0) {
+  } else if (router.pathname.indexOf("/attendance/") === 0) {
     return (
       <motion.nav
         variants={contVar}
@@ -148,7 +148,7 @@ export default function Navbar() {
         </motion.button>
         <motion.div variants={childVar} className="flex items-center">
           <motion.span variants={childVar} className="uppercase font-medium">
-            <Title title={router.pathname.slice(7)} light />
+            <Title title={router.pathname.slice(12)} light />
           </motion.span>
         </motion.div>
         <motion.div variants={childVar} className="dropdown dropdown-end">

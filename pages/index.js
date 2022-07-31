@@ -11,6 +11,7 @@ import Diaries from "../components/diaries";
 import Reminders from "../components/reminders";
 
 import { AuthGuard } from "../components/elements/authGuard";
+import Classes from "../components/classes";
 
 const contVar = {
   hide: {
@@ -74,6 +75,7 @@ export default function Profile() {
             <h4>{session?.user.name}</h4>
           </div>
         </motion.div>
+        <Classes/>
         <Reminders />
         <Diaries  />
       </motion.div>

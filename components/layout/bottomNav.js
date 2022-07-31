@@ -57,8 +57,8 @@ export default function BottomNav() {
           />
           <NavTab
             icon={<FaChild size="1.5em" />}
-            href="/child"
-            text={"children"}
+            href="/attendance"
+            text={"attendance"}
             selected={selected}
             setSelected={setSelected}
           />

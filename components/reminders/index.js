@@ -93,7 +93,7 @@ export default function Reminders() {
         {reminders?.length > 0 &&
           reminders
             .slice(0, 3)
-            .map((e, i) => <ReminderComp key={i} data={e} />)}
+            .map((e, i) => <ReminderComp key={i} data={e} home/>)}
         {reminders?.length < 1 && (
           <motion.div
             variants={riseVar}

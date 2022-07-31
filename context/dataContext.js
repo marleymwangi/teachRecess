@@ -34,6 +34,8 @@ function useProvideData() {
   const { data: session, status } = useSession();
   //shared app data
   const [teacher, setTeacher] = useState({});
+  const [schoolData, setSchoolData] = useState({});
+  const [classData, setClassData] = useState({});
 
   const [selChatPart, setSelChatPart] = useState(null);
 
@@ -47,6 +49,13 @@ function useProvideData() {
     createUser();
     getTeacherInfo();
   }, [db, session, status]);
+  
+  useEffect(() => {
+    if(teacher){
+      getSchoolInfo(teacher);
+      getClassInfo(teacher);
+    }
+  }, [teacher]);
 
   async function createUser() {
     if (status !== "loading" && session?.user) {
@@ -69,6 +78,26 @@ function useProvideData() {
 
       return onSnapshot(docRef, (doc) => {
         setTeacher(doc.data());
+      });
+    }
+  }
+
+  async function getSchoolInfo(teacher) {
+    if (teacher?.schoolId) {
+      const docRef = doc(db, "schools", teacher.schoolId);
+
+      return onSnapshot(docRef, (doc) => {
+        setSchoolData(doc.data());
+      });
+    }
+  }
+
+  async function getClassInfo(teacher) {
+    if (teacher?.schoolId && teacher?.classId) {
+      const docRef = doc(db, "schools", teacher.schoolId, "classes", teacher.classId);
+
+      return onSnapshot(docRef, (doc) => {
+        setClassData(doc.data());
       });
     }
   }
@@ -334,6 +363,8 @@ function useProvideData() {
 
   return {
     teacher,
+    classData,
+    schoolData,
 
     selDiaryMode,
     setSelDiaryMode,

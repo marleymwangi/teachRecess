@@ -28,7 +28,7 @@
 }
 
 .diaries .diary__entry > section > .info > div h4 {
-  @apply font-bold text-lg uppercase;
+  @apply font-bold text-lg uppercase text-gray-400;
 }
 
 .diaries .diary__entry > section > .info > div h4 span{
@@ -97,7 +97,7 @@
 }
 
 .diaries__page .diary__dates {
-  @apply bg-white rounded-3xl px-4 py-8;
+  @apply bg-white px-4 py-8;
 }
 
 .diaries__page .diary__dates h4 {

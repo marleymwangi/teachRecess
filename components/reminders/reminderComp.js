@@ -85,7 +85,9 @@ export default function ReminderComp({ data, home }) {
           Class : <span className="text-gray-600 uppercase">2b</span>
         </h5>
         <p>{data?.content ? data.content : "Student Reminder"}</p>
-        <span>{data?.scope} Reminder</span>
+        <span>
+          {data?.scope === "School" ? data.scope : data?.eventType} Reminder
+        </span>
       </div>
       <div className="def">
         <div className="type">

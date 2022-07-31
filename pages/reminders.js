@@ -15,6 +15,7 @@ import {
 import { AnimatePresence, motion } from "framer-motion";
 import { getSession, useSession } from "next-auth/react";
 //custom
+import { useData } from "../context/dataContext";
 import { db } from "../firebase";
 import Title from "../components/elements/title";
 import ReminderComp from "../components/reminders/reminderComp";
@@ -57,34 +58,21 @@ const riseVar = {
   },
 };
 
-export default function Reminders({
-  teacherInit,
-  classRemindersInit,
-  schoolRemindersInit,
-}) {
+export default function Reminders() {
   const { data: session, status } = useSession();
-  let today = startOfToday();
+  const { teacher } = useData();
 
-  const [teacher, setTeacher] = useState(teacherInit);
+  const [loadingClass, setLoadingClass] = useState(false);
+  const [loadingSch, setLoadingSch] = useState(false);
+
   const [classReminders, setClassReminders] = useState([]);
   const [schoolReminders, setSchoolReminders] = useState([]);
-
-  useEffect(() => {
-    //read firebase teacher document
-
-    if (status !== "loading" && session?.user?.id) {
-      const docRef = doc(db, "teachers", session.user.id);
-
-      return onSnapshot(docRef, (doc) => {
-        setTeacher(doc.data());
-      });
-    }
-  }, [status, session]);
 
   useEffect(() => {
     //listen for changes and update kids information
 
     if (teacher?.schoolId && teacher?.classId) {
+      setLoadingClass(true);
       const q = query(
         collection(
           db,
@@ -107,6 +95,7 @@ export default function Reminders({
         });
         if (tmp.length > 0) {
           setClassReminders(tmp);
+          setLoadingClass(false);
         }
       });
     }
@@ -116,6 +105,7 @@ export default function Reminders({
     //listen for changes and update kids information
 
     if (teacher?.schoolId) {
+      setLoadingSch(true);
       const q = query(collection(db, "schools", teacher.schoolId, "reminders"));
 
       return onSnapshot(q, (snapshot) => {
@@ -129,6 +119,7 @@ export default function Reminders({
         });
         if (tmp.length > 0) {
           setSchoolReminders(tmp);
+          setLoadingSch(false);
         }
       });
     }
@@ -139,26 +130,62 @@ export default function Reminders({
       variants={contVar}
       initial="hide"
       animate="show"
-      className="diaries__page"
+      className="reminders__page"
     >
-      <motion.div variants={contVar} className="my-6">
-        <Title title="Class Events" />
-        {classReminders?.length > 0 &&
-          classReminders.map((r, i) => (
-            <div className="my-3" key={i}>
-              <ReminderComp data={r} />
-            </div>
+      <Title title="Class Events" />
+      {classReminders?.length > 0 ? (
+        <motion.div
+          variants={contVar}
+          initial="hide"
+          animate="show"
+          className="reminders no-scroll"
+        >
+          {classReminders.map((e, i) => (
+            <ReminderComp key={i} data={e} />
           ))}
-      </motion.div>
-      <motion.div variants={contVar} className="my-6">
-        <Title title="School Events" />
-        {schoolReminders?.length > 0 &&
-          schoolReminders.map((r, i) => (
-            <div className="my-3" key={i}>
-              <ReminderComp data={r} />
-            </div>
+        </motion.div>
+      ) : (
+        <motion.div
+          variants={riseVar}
+          className="rounded-3xl bg-white h-30 w-full p-6 mt-6"
+        >
+          {loadingClass ? (
+            <p className="text-center">Loading</p>
+          ) : (
+            <p className="text-center text-lg font-semibold text-gray-400">
+              No Reminders for the
+              <br /> current week
+            </p>
+          )}
+        </motion.div>
+      )}
+      <Title title="School Events" />
+      {schoolReminders?.length > 0 ? (
+        <motion.div
+          variants={contVar}
+          initial="hide"
+          animate="show"
+          className="reminders no-scroll"
+        >
+          {schoolReminders.map((e, i) => (
+            <ReminderComp key={i} data={e} />
           ))}
-      </motion.div>
+        </motion.div>
+      ) : (
+        <motion.div
+          variants={riseVar}
+          className="rounded-3xl bg-white h-30 w-full p-6 mt-6"
+        >
+          {loadingSch ? (
+            <p className="text-center">Loading</p>
+          ) : (
+            <p className="text-center text-lg font-semibold text-gray-400">
+              No Reminders for the
+              <br /> current week
+            </p>
+          )}
+        </motion.div>
+      )}
       <motion.label
         variants={riseVar}
         htmlFor="reminder_modal"

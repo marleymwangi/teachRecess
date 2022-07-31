@@ -46,8 +46,16 @@
   @apply font-bold text-sm mt-2;
 }
 
+.kids__sec .kids__list .child h1:empty{
+  @apply bg-gray-500 bg-opacity-20 blur animate-pulse w-3/5 mx-auto h-4;
+}
+
 .kids__sec .kids__list .child h2{
-  @apply text-gray-400 text-xs;
+  @apply text-gray-400 text-xs uppercase font-extrabold;
+}
+
+.kids__sec .kids__list .child h2 span{
+  @apply text-gray-600 text-xs uppercase;
 }
 
 .kids__sec .kids__list .child h2:empty{
@@ -56,7 +64,7 @@
 
 
 .kids__sec .kids__list .child .status{
-  @apply flex justify-center items-center border-t border-dotted border-gray-200 py-3 mt-3;
+  @apply flex justify-center items-center border-t border-dotted border-gray-200 py-2;
 }
 
 .kids__sec .kids__list.tile .child .status{

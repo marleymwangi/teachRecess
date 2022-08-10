@@ -66,13 +66,13 @@ export default function Profile() {
       >
         <motion.div variants={riseVar} className="welcome__tag">
           {session?.user && (
-            <div className="relative h-10 w-10 mr-2 rounded-full overflow-hidden">
+            <div className="user">
               <ImageLoader src={session.user.image} alt="pp" />
             </div>
           )}
           <div>
-            <span>Welcome</span>
-            <h4>{session?.user.name}</h4>
+            <h1 className="wel">Welcome</h1>
+            <h1 className="name">{session?.user.name}</h1>
           </div>
         </motion.div>
         <Classes/>

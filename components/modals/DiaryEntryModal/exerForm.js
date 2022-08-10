@@ -25,6 +25,11 @@ export default function ExerForm({
             book.state === "error" ? "input-error" : "text-primary"
           )}
         />
+        {book.state === "error" && (
+          <p className="text-error text-xs italic text-center mt-1">
+            Please fill out the field with a valid input
+          </p>
+        )}
       </motion.div>
       <motion.div variants={riseVar} className="form-control w-full">
         <label className="label">
@@ -39,6 +44,11 @@ export default function ExerForm({
             pages.state === "error" ? "input-error" : "text-primary"
           )}
         />
+        {pages.state === "error" && (
+          <p className="text-error text-xs italic text-center mt-1">
+            Please fill out the field with a valid input
+          </p>
+        )}
       </motion.div>
     </>
   );

@@ -2,12 +2,13 @@ import { Menu, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import { classNames } from "../../context/vars";
 
-export default function DropDown({ value, placeholder, list, setFunc }) {
-
+export default function DropDown({ value, placeholder, list, setFunc, error }) {
   return (
     <Menu as="div" className="relative inline-block text-left text-gray-600">
       <Menu.Button
-        className={classNames("border !z-0 border-primary focus:border-2 py-3 inline-flex w-full justify-center rounded-md ",
+        className={classNames(
+          "border !z-0 focus:border-2 py-3 inline-flex w-full justify-center rounded-md ",
+          error ? "border-red-500" : "border-primary",
           !value ? "text-gray-400" : "text-gray-900 font-semibold"
         )}
       >

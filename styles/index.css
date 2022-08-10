@@ -3,14 +3,18 @@
 }
 
 .welcome__tag{
-  @apply flex items-center justify-start px-6;
+  @apply flex items-center justify-start px-6 my-4;
 }
 
-.welcome__tag span{
-  @apply text-gray-500 font-medium;
+.welcome__tag .user{
+  @apply relative h-10 w-10 mr-2 rounded-full overflow-hidden;
 }
 
-.welcome__tag h4{
+.welcome__tag .wel{
+  @apply text-gray-500 font-semibold;
+}
+
+.welcome__tag .name{
   @apply text-gray-800 font-semibold text-2xl -mt-2;
 }
 

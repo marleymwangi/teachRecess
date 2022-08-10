@@ -138,7 +138,7 @@ export default function Diaries({ attendanceInit }) {
               </div>
               <div className="flex justify-between">
                 <h5 className="text-gray-400">Absent Students</h5>
-                <h5 className="text-error">30</h5>
+                <h5 className="text-error">1</h5>
               </div>
             </div>
           </div>
@@ -160,7 +160,7 @@ export default function Diaries({ attendanceInit }) {
                   </motion.div>
                 ))
               ) : (
-                <p className="p-6">No diaries for today.</p>
+                <p className="text-center text-gray-400 text-lg font-extrabold py-10">No Students were absent</p>
               )}
             </AnimatePresence>
           </motion.div>

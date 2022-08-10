@@ -71,7 +71,7 @@ export default function Chat({ chatsInit }) {
               chats.map((c, i) => <ChatElement key={i} data={c} />)
             ) : (
               <div className="mt-10 backdrop-blur text-center">
-                <p className="text-gray-100 font-medium">
+                <p className="text-gray-400 font-bold">
                   Click on the plus sign below to add begin chatting
                 </p>
               </div>

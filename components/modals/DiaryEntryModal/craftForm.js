@@ -25,6 +25,11 @@ export default function CraftForm({
             project.state === "error" ? "input-error" : "text-primary"
           )}
         />
+        {project.state === "error" && (
+          <p className="text-error text-xs italic text-center mt-1">
+            Please fill out the field with a valid input
+          </p>
+        )}
       </motion.div>
       <motion.div variants={riseVar} className="form-control w-full">
         <label className="label">
@@ -39,6 +44,11 @@ export default function CraftForm({
             materials.state === "error" ? "input-error" : "text-primary"
           )}
         />
+        {materials.state === "error" && (
+          <p className="text-error text-xs italic text-center mt-1">
+            Please fill out the field with a valid input
+          </p>
+        )}
       </motion.div>
     </>
   );

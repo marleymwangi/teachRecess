@@ -28,37 +28,17 @@
 }
 
 .contacts__modal >  .contacts__list .teacher .avatar div{
-  @apply w-8 min-w-[40px] rounded-full ring ring-offset-base-100 ring-offset-2;
-}
-
-.contacts__modal >  .contacts__list .teacher.purple .avatar div{
-  @apply ring-purple-400;
-}
-
-.contacts__modal >  .contacts__list .teacher.red .avatar div{
-  @apply ring-red-400;
+  @apply min-w-[50px] rounded-full ring ring-offset-base-100 ring-offset-2;
 }
 
 .contacts__modal >  .contacts__list .teacher .content h2{
-  @apply text-sm font-medium grow;
-}
-
-.contacts__modal >  .contacts__list .teacher.purple .content h2{
-  @apply text-purple-800;
-}
-
-.contacts__modal >  .contacts__list .teacher.red .content h2{
-  @apply text-red-800;
+  @apply font-semibold grow;
 }
 
 .contacts__modal >  .contacts__list .teacher .content h3{
-  @apply text-xs;
+  @apply text-sm font-bold ;
 }
 
-.contacts__modal >  .contacts__list .teacher.purple .content h3{
-  @apply text-purple-400 font-medium;
-}
-
-.contacts__modal >  .contacts__list .teacher.red .content h3{
-  @apply text-red-400 font-medium;
+.contacts__modal >  .contacts__list .teacher .content h3 span{
+  @apply text-sm font-medium ;
 }

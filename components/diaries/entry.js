@@ -28,7 +28,7 @@ const riseVar = {
 };
 
 export default function Entry({ data, refData }) {
-  const { selDiary, setSelDiary } = useData();
+  const { selDiary, setSelDiary, classData } = useData();
   const [diary, setDiary] = useState(data);
 
   useEffect(() => {
@@ -85,7 +85,7 @@ export default function Entry({ data, refData }) {
               <MdClass size="2rem" />
             </div>
             <h4>
-              <span className="text-md">class : </span>2b
+              <span className="text-md">class : </span>{classData.name}
             </h4>
           </div>
         </div>

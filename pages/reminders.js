@@ -38,20 +38,10 @@ const riseVar = {
   hide: {
     opacity: 0,
     y: 10,
-    scale: 0.9,
   },
   show: {
     opacity: 1,
     y: 0,
-    scale: 1,
-    transition: {
-      duration: 0.5,
-    },
-  },
-  exit: {
-    opacity: 0,
-    y: -10,
-    scale: 0.9,
     transition: {
       duration: 0.5,
     },
@@ -93,10 +83,8 @@ export default function Reminders() {
             timestamp: doc.data().timestamp.toDate(),
           });
         });
-        if (tmp.length > 0) {
-          setClassReminders(tmp);
-          setLoadingClass(false);
-        }
+        setClassReminders(tmp);
+        setLoadingClass(false);
       });
     }
   }, [teacher]);
@@ -117,10 +105,9 @@ export default function Reminders() {
             timestamp: doc.data().timestamp.toDate(),
           });
         });
-        if (tmp.length > 0) {
-          setSchoolReminders(tmp);
-          setLoadingSch(false);
-        }
+
+        setSchoolReminders(tmp);
+        setLoadingSch(false);
       });
     }
   }, [teacher]);
@@ -150,7 +137,7 @@ export default function Reminders() {
           className="rounded-3xl bg-white h-30 w-full p-6 mt-6"
         >
           {loadingClass ? (
-            <p className="text-center">Loading</p>
+            <p className="text-center text-gray-400 text-lg font-extrabold py-10">Loading</p>
           ) : (
             <p className="text-center text-lg font-semibold text-gray-400">
               No Reminders for the
@@ -177,7 +164,7 @@ export default function Reminders() {
           className="rounded-3xl bg-white h-30 w-full p-6 mt-6"
         >
           {loadingSch ? (
-            <p className="text-center">Loading</p>
+            <p className="text-center text-gray-400 text-lg font-extrabold py-10">Loading</p>
           ) : (
             <p className="text-center text-lg font-semibold text-gray-400">
               No Reminders for the

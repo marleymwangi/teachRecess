@@ -51,14 +51,18 @@ export default function ContactsModal() {
     if (teacher?.schoolId && teacher?.classId) {
       getStudents(teacher)
         .then((res) => {
-          let studs = [];
-          let names = [];
+          let tmp = [];
 
           res.forEach((stud) => {
-            names.push(stud.name);
-            studs.push(stud.guardians);
+            let guardians = stud.guardians;
+            delete stud.guardians;
+            guardians.forEach((guard) => {
+              let obj = { id: guard, student: stud };
+              tmp.push(obj);
+            });
           });
-          let gs = studentProcessGuardians(studs);
+
+          let gs = mergeGuardiansStudents(tmp);
 
           let promises = [];
           gs.forEach(async (g) => {
@@ -67,23 +71,7 @@ export default function ContactsModal() {
           });
 
           Promise.all(promises).then((results) => {
-            let guards = [];
-            results.forEach((r) => {
-              guards.push(r);
-            });
-            if (guards.length > 0) {
-              let tmp = [];
-              guards.forEach((g) => {
-                let obj = {
-                  students: names,
-                  guardian: g,
-                };
-                tmp.push(obj);
-              });
-              if (tmp.length > 0 && tmp !== guardians) {
-                setGuardians(tmp);
-              }
-            }
+            setGuardians(results);
           });
         })
         .catch((error) => console.log(error));
@@ -102,12 +90,28 @@ export default function ContactsModal() {
     return withoutDuplicates;
   };
 
-  const getGuardian = (id) => {
-    const docRef = doc(db, "users", id);
+  const mergeGuardiansStudents = (teachs) => {
+    const result = teachs.reduce((acc, curr) => {
+      const { id, student } = curr;
+      const findObj = acc.find((o) => o.id === id);
+      if (!findObj) {
+        curr.student = [student];
+        acc.push(curr);
+      } else {
+        findObj.student.push(student);
+      }
+      return acc;
+    }, []);
+
+    return result;
+  };
+
+  const getGuardian = (guard) => {
+    const docRef = doc(db, "users", guard.id);
 
     return getDoc(docRef).then((docSnap) => {
       if (docSnap.exists()) {
-        return { ...docSnap.data(), id };
+        return { ...docSnap.data(), id: guard.id, students: guard.student };
       }
     });
   };
@@ -130,7 +134,7 @@ export default function ContactsModal() {
             <h1>Click on Contacts to start the Chat</h1>
             <section className="contacts__list custom-scroll">
               {guardians?.length &&
-                guardians.map((t, i) => <ContactElement key={i} data={t} />)}
+                guardians.map((g, i) => <ContactElement key={i} data={g} />)}
             </section>
           </div>
         </label>

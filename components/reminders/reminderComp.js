@@ -28,7 +28,7 @@ const riseVar = {
 };
 
 export default function ReminderComp({ data, home }) {
-  const { setSelRemindersMode, setSelReminder, removeReminderInfo } = useData();
+  const { setSelRemindersMode, setSelReminder, removeReminderInfo, classData } = useData();
   let today = startOfToday();
 
   useEffect(() => {
@@ -82,7 +82,7 @@ export default function ReminderComp({ data, home }) {
       )}
       <div className="content">
         <h5 className="font-bold text-gray-400 mb-2">
-          Class : <span className="text-gray-600 uppercase">2b</span>
+          Class : <span className="text-gray-600 uppercase">{classData.name}</span>
         </h5>
         <p>{data?.content ? data.content : "Student Reminder"}</p>
         <span>

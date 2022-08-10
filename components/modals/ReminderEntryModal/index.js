@@ -110,19 +110,57 @@ export default function ReminderEntryModal() {
     setContent({ data: "", state: null });
   };
 
+  const isValidated = () => {
+    console.log(scope.state === "success" &&
+    scope.data === "School" &&
+    eventType.state === "success" &&
+    content.state === "success")
+    if (
+      scope.state === "success" &&
+      scope.data === "Class" &&
+      eventType.state === "success" &&
+      type.state === "success" &&
+      content.state === "success"
+    ) {
+      return true;
+    } else if (
+      scope.state === "success" &&
+      scope.data === "School" &&
+      eventType.state === "success" &&
+      content.state === "success"
+    ) {
+      return true;
+    } else {
+      if (scope.state !== "success") {
+        setScope({ ...scope, state: "error" });
+      }
+      if (eventType.state !== "success") {
+        setEventType({ ...eventType, state: "error" });
+      }
+      if (type.state !== "success") {
+        setType({ ...type, state: "error" });
+      }
+      if (content.state !== "success") {
+        setContent({ ...content, state: "error" });
+      }
+      return false;
+    }
+  };
+
   const handleData = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    //validate()
-    let obj = {};
-    !isEmpty(type.data) && (obj.type = type.data.trim());
-    !isEmpty(eventType.data) && (obj.eventType = eventType.data.trim());
-    !isEmpty(scope.data) && (obj.scope = scope.data.trim());
-    !isEmpty(content.data) && (obj.content = content.data.trim());
-    !isEmpty(timestamp) && (obj.timestamp = timestamp);
+    if (isValidated()) {
+      setLoading(true);
+      //validate()
+      let obj = {};
+      !isEmpty(type.data) && (obj.type = type.data.trim());
+      !isEmpty(eventType.data) && (obj.eventType = eventType.data.trim());
+      !isEmpty(scope.data) && (obj.scope = scope.data.trim());
+      !isEmpty(content.data) && (obj.content = content.data.trim());
+      !isEmpty(timestamp) && (obj.timestamp = timestamp);
 
-    console.log(obj);
-    updateReminderInfo(obj)
+      console.log(obj);
+      updateReminderInfo(obj)
       .then((res) => {
         console.log(res);
         clear();
@@ -134,6 +172,7 @@ export default function ReminderEntryModal() {
         console.log(err);
         swal("Sorry!", "Error while updating!", "error");
       });
+    }
   };
 
   const handleCloseModal = () => {
@@ -171,7 +210,13 @@ export default function ReminderEntryModal() {
                       selReminder?.scope ? selReminder.scope : "Reminder Scope"
                     }
                     list={["School", "Class"]}
+                    error={scope.state === "error"}
                   />
+                  {scope.state === "error" && (
+                    <p className="text-error text-xs italic text-center mt-1">
+                      Please select an option.
+                    </p>
+                  )}
                 </motion.div>
                 {scope?.data === "Class" && (
                   <motion.div
@@ -185,10 +230,18 @@ export default function ReminderEntryModal() {
                       value={eventType.data}
                       setFunc={setEventType}
                       placeholder={
-                        selReminder?.eventType ? selReminder.eventType : "Reminder Type"
+                        selReminder?.eventType
+                          ? selReminder.eventType
+                          : "Reminder Type"
                       }
                       list={["Single", "Recurring"]}
+                      error={eventType.state === "error"}
                     />
+                    {eventType.state === "error" && (
+                      <p className="text-error text-xs italic text-center mt-1">
+                        Please select an option.
+                      </p>
+                    )}
                   </motion.div>
                 )}
                 <motion.div variants={riseVar} className="form-control w-full">
@@ -202,7 +255,13 @@ export default function ReminderEntryModal() {
                       selReminder?.type ? selReminder.type : "Event Type"
                     }
                     list={["Info", "Urgent"]}
+                    error={type.state === "error"}
                   />
+                  {type.state === "error" && (
+                    <p className="text-error text-xs italic text-center mt-1">
+                      Please select an option.
+                    </p>
+                  )}
                 </motion.div>
                 <motion.div variants={riseVar} className="form-control w-full">
                   <label className="label">
@@ -211,9 +270,7 @@ export default function ReminderEntryModal() {
                   <textarea
                     type="text"
                     placeholder={
-                      selReminder?.content
-                        ? selReminder.content
-                        : "content"
+                      selReminder?.content ? selReminder.content : "content"
                     }
                     onChange={(event) => change(event, setContent)}
                     className={classNames(
@@ -221,6 +278,11 @@ export default function ReminderEntryModal() {
                       content.state === "error" ? "input-error" : "text-primary"
                     )}
                   />
+                  {content.state === "error" && (
+                    <p className="text-error text-xs italic text-center mt-1">
+                      Please fill out the field with a valid input
+                    </p>
+                  )}
                 </motion.div>
                 <motion.div variants={riseVar} className="form-control w-full">
                   <label className="label">

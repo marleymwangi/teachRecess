@@ -119,34 +119,76 @@ export default function DiaryEntryModal() {
     setInstr({ data: "", state: null });
   };
 
+  const isValidated = () => {
+    if (
+      subject.state === "success" &&
+      instr.state === "success" &&
+      type.state === "success" &&
+      (type.data === "Book Exercise"
+        ? book.state === "success" && pages.state === "success"
+        : project.state === "success" && materials.state === "success")
+    ) {
+      return true;
+    } else {
+      if (subject.state !== "success") {
+        setSubject({ ...subject, state: "error" });
+      }
+      if (type.state !== "success") {
+        setType({ ...type, state: "error" });
+      }
+      if (type.data === "Book Exercise") {
+        if (book.state !== "success") {
+          setBook({ ...book, state: "error" });
+        }
+        if (pages.state !== "success") {
+          setPages({ ...pages, state: "error" });
+        }
+      }
+      if (type.data === "Craft") {
+        if (project.state !== "success") {
+          setProject({ ...project, state: "error" });
+        }
+        if (materials.state !== "success") {
+          setMaterials({ ...materials, state: "error" });
+        }
+      }
+      if (instr.state !== "success") {
+        setInstr({ ...instr, state: "error" });
+      }
+      return false;
+    }
+  };
+
   const handleData = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    //validate()
-    let obj = {};
-    !isEmpty(subject.data) && (obj.subject = subject.data.trim());
-    !isEmpty(type.data) && (obj.type = type.data.trim());
-    !isEmpty(book.data) && (obj.book = book.data.trim());
-    !isEmpty(pages.data) && (obj.pages = pages.data.trim());
-    !isEmpty(project.data) && (obj.project = project.data.trim());
-    !isEmpty(materials.data) && (obj.materials = materials.data.trim());
-    !isEmpty(instr.data) && (obj.instructions = instr.data.trim());
-    !isEmpty(due) && (obj.due = due);
-    !isEmpty(timestamp) && (obj.timestamp = timestamp);
+    if (isValidated()) {
+      setLoading(true);
+      //validate()
+      let obj = {};
+      !isEmpty(subject.data) && (obj.subject = subject.data.trim());
+      !isEmpty(type.data) && (obj.type = type.data.trim());
+      !isEmpty(book.data) && (obj.book = book.data.trim());
+      !isEmpty(pages.data) && (obj.pages = pages.data.trim());
+      !isEmpty(project.data) && (obj.project = project.data.trim());
+      !isEmpty(materials.data) && (obj.materials = materials.data.trim());
+      !isEmpty(instr.data) && (obj.instructions = instr.data.trim());
+      !isEmpty(due) && (obj.due = due);
+      !isEmpty(timestamp) && (obj.timestamp = timestamp);
 
-    console.log(obj);
-    updateDiaryInfo(obj)
-      .then((res) => {
-        console.log(res);
-        clear();
-        setLoading(false);
-        swal("Done!", "Update Complete!", "success");
-        handleCloseModal();
-      })
-      .catch((err) => {
-        console.log(err);
-        swal("Sorry!", "Error while updating!", "error");
-      });
+      console.log(obj);
+      updateDiaryInfo(obj)
+        .then((res) => {
+          console.log(res);
+          clear();
+          setLoading(false);
+          swal("Done!", "Update Complete!", "success");
+          handleCloseModal();
+        })
+        .catch((err) => {
+          console.log(err);
+          swal("Sorry!", "Error while updating!", "error");
+        });
+    }
   };
 
   const handleCloseModal = () => {
@@ -190,7 +232,13 @@ export default function DiaryEntryModal() {
                       "Kiswahili",
                       "Religious Education",
                     ]}
+                    error={subject.state === "error"}
                   />
+                  {subject.state === "error" && (
+                    <p className="text-error text-xs italic text-center mt-1">
+                      Please select an option.
+                    </p>
+                  )}
                 </motion.div>
                 <motion.div variants={riseVar} className="form-control w-full">
                   <label className="label">
@@ -203,7 +251,13 @@ export default function DiaryEntryModal() {
                       selDiary?.type ? selDiary.type : "Assignment Type"
                     }
                     list={["Book Exercise", "Craft"]}
+                    error={type.state === "error"}
                   />
+                  {type.state === "error" && (
+                    <p className="text-error text-xs italic text-center mt-1">
+                      Please select an option.
+                    </p>
+                  )}
                 </motion.div>
                 {type.data
                   ? type.data === "Book Exercise" && (

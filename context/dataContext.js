@@ -130,24 +130,22 @@ function useProvideData() {
           orderBy("timestamp", "asc")
         );
 
-        const querySnapshot = await getDocs(q);
-
-        console.log("doc.data()", querySnapshot.empty);
-
-        if (querySnapshot.empty) {
-          createRoom(resolve, reject, participant);
-        } else {
-          querySnapshot.forEach((doc) => {
-            // doc.data() is never undefined for query doc snapshots
-            let parts = doc.data().participants;
-            let exists = parts.some((part) => part === participant);
-            if (exists) {
-              resolve(doc.id);
-            } else {
-              createRoom(resolve, reject, participant);
-            }
-          });
-        }
+        return onSnapshot(q, (querySnapshot) => {
+          if (querySnapshot.empty) {
+            createRoom(resolve, reject, participant);
+          } else {
+            querySnapshot.forEach((doc) => {
+              // doc.data() is never undefined for query doc snapshots
+              let parts = doc.data().participants;
+              let exists = parts.some((part) => part === participant);
+              if (exists) {
+                resolve(doc.id);
+              } else {
+                createRoom(resolve, reject, participant);
+              }
+            });
+          }
+        });
       }
     });
   }

@@ -111,22 +111,10 @@ export default function ReminderEntryModal() {
   };
 
   const isValidated = () => {
-    console.log(scope.state === "success" &&
-    scope.data === "School" &&
-    eventType.state === "success" &&
-    content.state === "success")
     if (
       scope.state === "success" &&
-      scope.data === "Class" &&
       eventType.state === "success" &&
       type.state === "success" &&
-      content.state === "success"
-    ) {
-      return true;
-    } else if (
-      scope.state === "success" &&
-      scope.data === "School" &&
-      eventType.state === "success" &&
       content.state === "success"
     ) {
       return true;
@@ -161,17 +149,17 @@ export default function ReminderEntryModal() {
 
       console.log(obj);
       updateReminderInfo(obj)
-      .then((res) => {
-        console.log(res);
-        clear();
-        setLoading(false);
-        swal("Done!", "Update Complete!", "success");
-        handleCloseModal();
-      })
-      .catch((err) => {
-        console.log(err);
-        swal("Sorry!", "Error while updating!", "error");
-      });
+        .then((res) => {
+          console.log(res);
+          clear();
+          setLoading(false);
+          swal("Done!", "Update Complete!", "success");
+          handleCloseModal();
+        })
+        .catch((err) => {
+          console.log(err);
+          swal("Sorry!", "Error while updating!", "error");
+        });
     }
   };
 
@@ -193,7 +181,7 @@ export default function ReminderEntryModal() {
           >
             ✕
           </label>
-          <div className="entry__modal">
+          <div className="entry__modal caret-black">
             <motion.div variants={FormContVar} className="grid">
               <motion.div
                 variants={FormContVar}
@@ -218,32 +206,27 @@ export default function ReminderEntryModal() {
                     </p>
                   )}
                 </motion.div>
-                {scope?.data === "Class" && (
-                  <motion.div
-                    variants={riseVar}
-                    className="form-control w-full"
-                  >
-                    <label className="label">
-                      <span className="label-text">Reminder Type</span>
-                    </label>
-                    <DropDown
-                      value={eventType.data}
-                      setFunc={setEventType}
-                      placeholder={
-                        selReminder?.eventType
-                          ? selReminder.eventType
-                          : "Reminder Type"
-                      }
-                      list={["Single", "Recurring"]}
-                      error={eventType.state === "error"}
-                    />
-                    {eventType.state === "error" && (
-                      <p className="text-error text-xs italic text-center mt-1">
-                        Please select an option.
-                      </p>
-                    )}
-                  </motion.div>
-                )}
+                <motion.div variants={riseVar} className="form-control w-full">
+                  <label className="label">
+                    <span className="label-text">Reminder Type</span>
+                  </label>
+                  <DropDown
+                    value={eventType.data}
+                    setFunc={setEventType}
+                    placeholder={
+                      selReminder?.eventType
+                        ? selReminder.eventType
+                        : "Reminder Type"
+                    }
+                    list={["Single", "Recurring"]}
+                    error={eventType.state === "error"}
+                  />
+                  {eventType.state === "error" && (
+                    <p className="text-error text-xs italic text-center mt-1">
+                      Please select an option.
+                    </p>
+                  )}
+                </motion.div>
                 <motion.div variants={riseVar} className="form-control w-full">
                   <label className="label">
                     <span className="label-text">Event Type</span>

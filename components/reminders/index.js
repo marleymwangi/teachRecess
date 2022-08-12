@@ -90,11 +90,11 @@ export default function Reminders() {
         animate="show"
         className="reminders no-scroll"
       >
-        {reminders?.length > 0 &&
+        {reminders?.length > 0 ? (
           reminders
             .slice(0, 3)
-            .map((e, i) => <ReminderComp key={i} data={e} home/>)}
-        {reminders?.length < 1 && (
+            .map((e, i) => <ReminderComp key={i} data={e} home />)
+        ) : (
           <motion.div
             variants={riseVar}
             className="rounded-3xl bg-white h-30 w-full p-6"

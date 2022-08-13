@@ -104,9 +104,13 @@ function useProvideData() {
 
   async function createRoom(resolve, reject, participant) {
     try {
-      if (session?.user) {
+      if (session?.user?.id && participant) {
         const docRef = await addDoc(collection(db, `chatrooms`), {
-          participants: [session?.user?.id, participant],
+          participants: [session.user.id, participant],
+          searchIndex: [
+            session.user.id + participant,
+            participant + session.user.id,
+          ],
           timestamp: serverTimestamp(),
         });
 
@@ -126,8 +130,9 @@ function useProvideData() {
       if (session?.user?.id) {
         const q = query(
           collection(db, "chatrooms"),
-          where("participants", "array-contains", `${session?.user?.id}`),
-          orderBy("timestamp", "asc")
+          where("searchIndex", "array-contains", session.user.id + participant),
+          orderBy("timestamp", "asc"),
+          limit(1)
         );
 
         return onSnapshot(q, (querySnapshot) => {
@@ -136,12 +141,8 @@ function useProvideData() {
           } else {
             querySnapshot.forEach((doc) => {
               // doc.data() is never undefined for query doc snapshots
-              let parts = doc.data().participants;
-              let exists = parts.some((part) => part === participant);
-              if (exists) {
+              if (doc.exists) {
                 resolve(doc.id);
-              } else {
-                createRoom(resolve, reject, participant);
               }
             });
           }

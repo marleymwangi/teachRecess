@@ -72,12 +72,16 @@ function useProvideData() {
       serviceWorkerUpdaterPath: "onesignal/OneSignalSDKUpdaterWorker.js",
     };
 
-    OneSignal.init(initConfig).then(() => {
-      setInitialized(true);
-      OneSignal.showSlidedownPrompt().then(() => {
-        // do other stuff
+    try {
+      OneSignal.init(initConfig).then(() => {
+        setInitialized(true);
+        OneSignal.showSlidedownPrompt().then(() => {
+          // do other stuff
+        });
       });
-    });
+    } catch (error) {
+      console.log(error);
+    }
   }, []);
 
   useEffect(() => {
@@ -90,9 +94,9 @@ function useProvideData() {
     createUser();
     getTeacherInfo();
   }, [db, session, status]);
-  
+
   useEffect(() => {
-    if(teacher){
+    if (teacher) {
       getSchoolInfo(teacher);
       getClassInfo(teacher);
 
@@ -100,7 +104,7 @@ function useProvideData() {
         getStudents(teacher)
           .then((res) => {
             let tmp = [];
-  
+
             res.forEach((stud) => {
               tmp.push(stud);
             });
@@ -170,7 +174,13 @@ function useProvideData() {
 
   async function getClassInfo(teacher) {
     if (teacher?.schoolId && teacher?.classId) {
-      const docRef = doc(db, "schools", teacher.schoolId, "classes", teacher.classId);
+      const docRef = doc(
+        db,
+        "schools",
+        teacher.schoolId,
+        "classes",
+        teacher.classId
+      );
 
       return onSnapshot(docRef, (doc) => {
         setClassData(doc.data());

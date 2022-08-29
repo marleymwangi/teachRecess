@@ -9,7 +9,12 @@ import { db } from "../../firebase";
 import { useData } from "../../context/dataContext";
 import { classNames } from "../../context/vars";
 //dynamic
-const MdClass = dynamic(async () => (await import("react-icons/md")).MdClass);
+const MdScience = dynamic(
+  async () => (await import("react-icons/md")).MdScience
+);
+const TbMathSymbols = dynamic(
+  async () => (await import("react-icons/tb")).TbMathSymbols
+);
 
 const riseVar = {
   hide: {
@@ -64,54 +69,83 @@ export default function Entry({ data, refData }) {
     }
   };
 
+  const backClr = (subject) => {
+    switch (subject) {
+      case "Mathematics":
+        return "bg-gradient-to-r from-red-500 to-red-800";
+      case "English":
+        return "bg-gradient-to-r from-purple-800 via-violet-900 to-purple-800";
+      case "Kiswahili":
+        return "bg-gradient-to-r from-green-500 to-green-700";
+      case "Science":
+        return "bg-gradient-to-r from-blue-700 via-blue-800 to-gray-900";
+      case "Religous Education":
+        return "bg-gradient-to-r from-orange-600 to-orange-500";
+      default:
+        return "bg-conic-to-l from-sky-400 to-blue-800";
+    }
+  };
+
+  const textClr = (subject) => {
+    switch (subject) {
+      case "Mathematics":
+        return "!text-red-500 hover:!text-red-600";
+      case "English":
+        return "!text-purple-500 hover:!text-purple-600";
+      case "Kiswahili":
+        return "!text-green-500 hover:!text-green-600";
+      case "Science":
+        return "!text-sky-500 hover:!text-sky-600";
+      case "Religous Education":
+        return "!text-amber-500 hover:!text-amber-600";
+      default:
+        return "!text-primary";
+    }
+  };
+
   return (
     <motion.div
       variants={riseVar}
       onClick={handleClick}
-      className="diary__entry">
-      {diary.type === "Craft" ? (
-        <div className="absolute top-0 right-0 rotate-12">
-          <Image src="/assets/craft.png" width={130} height={110} alt="" />
-        </div>
-      ) : (
-        <div className="absolute top-0 right-0 rotate-12">
-          <Image src="/assets/exe.png" width={130} height={110} alt="" />
-        </div>
+      className={classNames(
+        "diary__entry", backClr(diary?.subject)
       )}
-      <section>
-        <div className="info">
-          <div className="class">
-            <div>
-              <MdClass size="2rem" />
-            </div>
-            <h4>
-              <span className="text-md">class : </span>{classData.name}
-            </h4>
-          </div>
+    >
+      <div className="info">
+        <div className={textClr(diary?.subject)}>
+          {diary?.subject === "Science" && <MdScience size="2rem" />}
+          {diary?.subject === "Mathematics" && <TbMathSymbols size="2rem" />}
         </div>
-        <div className="content">
-          <h2>{`${diary.subject} Diary Entry`}</h2>
-          {diary.type === "Book Exercise" && (
-            <h3>
-              {`${diary.book}`}
-              <span>, PG : </span>
-              {`${diary.pages}`}
-            </h3>
-          )}
-          {diary.type === "Craft" && (
-            <h3>
-              {`${diary.project}`}
-              <span>, Req : </span>
-              {`${diary.materials}`}
-            </h3>
-          )}
-          <h3>{diary.instructions}</h3>
-          {diary.complete && <h1>Completed</h1>}
-          <label htmlFor="work_modal" className={classNames("modal-button")}>
+        <h4>{diary?.subject} Diary Entry</h4>
+      </div>
+      <div className="content">
+        {diary.type === "Book Exercise" && (
+          <h3>
+            {`${diary.book}`}
+            <span>, PG : </span>
+            {`${diary.pages}`}
+          </h3>
+        )}
+        {diary.type === "Craft" && (
+          <h3>
+            {`${diary.project}`}
+            <span>, Req : </span>
+            {`${diary.materials}`}
+          </h3>
+        )}
+        <h3>{diary.instructions}</h3>
+        <div className="flex justify-end">
+          <label
+            htmlFor="work_modal"
+            className={classNames(
+              "modal-button",
+              textClr(diary?.subject)
+            )}
+          >
             More Info
           </label>
         </div>
-      </section>
+      </div>
     </motion.div>
   );
 }

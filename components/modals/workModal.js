@@ -8,6 +8,8 @@ import { doc, getDoc, onSnapshot } from "firebase/firestore";
 //custom
 import { db } from "../../firebase";
 import { useData } from "../../context/dataContext";
+import PieG from "../elements/charts/pieG";
+import { classNames } from "../../context/vars";
 //dynamic
 const BsBook = dynamic(async () => (await import("react-icons/bs")).BsBook);
 const RiPagesLine = dynamic(
@@ -26,14 +28,11 @@ const MdOutlineIntegrationInstructions = dynamic(
   async () => (await import("react-icons/md")).MdOutlineIntegrationInstructions
 );
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
-
 export default function WorkModal() {
   const { teacher, selDiary, setSelDiaryMode, removeDiaryInfo } = useData();
   const [loading, setLoading] = useState(false);
   const [diary, setDiary] = useState(selDiary);
+  const [temp, setTemp] = useState(0);
 
   useEffect(() => {
     if (selDiary && teacher) {
@@ -59,6 +58,11 @@ export default function WorkModal() {
         }
       });
     }
+  }, [selDiary]);
+
+  useEffect(() => {
+    let tmp = Math.floor(Math.random() * 100) + 1;
+    setTemp(tmp);
   }, [selDiary]);
 
   useEffect(() => {
@@ -125,7 +129,8 @@ export default function WorkModal() {
             <div className="heading">
               <h1>Assignment Details</h1>
             </div>
-            <h2>Mathematic Assignment</h2>
+            <h2>{diary?.subject} Assignment</h2>
+            <PieG num={temp}/>
             <div className={classNames("details", textClr("sky"))}>
               {diary?.type === "Book Exercise" && (
                 <>

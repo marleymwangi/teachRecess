@@ -1,14 +1,24 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 //custom packages
+import {
+  format,
+  endOfWeek,
+  isWeekend,
+  nextMonday,
+  startOfWeek,
+  startOfToday,
+  eachDayOfInterval,
+} from "date-fns";
 import { motion } from "framer-motion";
-import { format, isSameDay, startOfToday } from "date-fns";
+import { Listbox } from "@headlessui/react";
 import { collection, onSnapshot, query } from "firebase/firestore";
 //custom
 import { db } from "../../firebase";
 import Title from "../elements/title";
 import { useData } from "../../context/dataContext";
 import Entry from "./entry";
+import ListBox from "../listBox";
 
 const contVar = {
   hide: {
@@ -39,9 +49,38 @@ const riseVar = {
   },
 };
 
+const subjects = [
+  { name: "All" },
+  { name: "Mathematics" },
+  { name: "English" },
+  { name: "Kiswahili" },
+  { name: "Science" },
+  { name: "Religious Education" },
+];
+
 export default function DiariesSection() {
   const { teacher } = useData();
+  const [filter, setFilter] = useState(subjects[0]);
+  let today = startOfToday();
+  let start, end;
+  if (isWeekend(today)) {
+    let tmp = nextMonday(today);
+    start = startOfWeek(tmp, { weekStartsOn: 1 });
+    end = endOfWeek(tmp, { weekStartsOn: 1 });
+  } else {
+    start = startOfWeek(today, { weekStartsOn: 1 });
+    end = endOfWeek(today, { weekStartsOn: 1 });
+  }
   const [diaries, setDiaries] = useState([]);
+
+  let days = eachDayOfInterval({
+    start,
+    end,
+  });
+
+  useEffect(() => {
+    //console.log("filter ", filter);
+  }, [filter]);
 
   useEffect(() => {
     //listen for changes and update kids information
@@ -74,17 +113,28 @@ export default function DiariesSection() {
     }
   }, [teacher]);
 
+  let filtered =
+    filter?.name === "All"
+      ? diaries
+      : diaries.filter((diary) => diary.subject === filter.name);
+
   return (
-    <section className="diaries px-8">
-      <Title title="Todays Assignments" />
+    <section className="diaries__sec px-8">
+      <Title title="Weeks Assignments" />
+      <motion.p variants={riseVar} className="text-gray-400 text-sm ">
+        This area show Diary Entries from{" "}
+        <span>{format(start, "MMM dd, yyy")}</span> to{" "}
+        <span>{format(end, "MMM dd, yyy")}</span>
+      </motion.p>
+      <ListBox list={subjects} value={filter} setFunc={setFilter} />
       <motion.div
         variants={contVar}
         initial="hide"
         animate="show"
         className="diaries"
       >
-        {diaries.length > 0 ? (
-          diaries.map((diary, i) => (
+        {filtered.length > 0 ? (
+          filtered.map((diary, i) => (
             <Entry data={diary} key={`${diary?.id}${diary?.student?.id}`} />
           ))
         ) : (

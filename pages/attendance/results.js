@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import LineG from "../../components/elements/lineG";
+import LineG from "../../components/elements/charts/lineG";
 
 const contVar = {
   show: {

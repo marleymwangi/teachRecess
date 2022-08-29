@@ -88,35 +88,3 @@ export default function Chat({ chatsInit }) {
     </AuthGuard>
   );
 }
-
-export const getServerSideProps = async (context) => {
-  try {
-    const session = await getSession(context);
-
-    const q = query(
-      collection(db, "chatrooms"),
-      where("participants", "array-contains", `${session?.user?.id}`),
-      orderBy("timestamp", "asc")
-    );
-
-    const querySnapshot = await getDocs(q);
-    let tmp = [];
-    querySnapshot.forEach((doc) => {
-      // doc.data() is never undefined for query doc snapshots
-      tmp.push({
-        ...doc.data(),
-        id: doc.id,
-        timestamp: doc.data()?.timestamp?.toDate(),
-      });
-    });
-
-    return {
-      props: { chatsInit: JSON.stringify(tmp) },
-    };
-  } catch (error) {
-    console.log(error);
-    return {
-      props: {},
-    };
-  }
-};

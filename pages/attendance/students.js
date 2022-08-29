@@ -14,6 +14,7 @@ import {
 import { db } from "../../firebase";
 import { useData } from "../../context/dataContext";
 import KidsSection from "../../components/kids";
+import { classNames } from "../../context/vars";
 
 const contVar = {
   show: {
@@ -56,52 +57,67 @@ const riseVar = {
 
 export default function StudentsPage() {
   const router = useRouter();
-  const { teacher } = useData();
-  const [students, setStudents] = useState([]);
+  const { students } = useData();
   const [loading, setLoading] = useState(false);
 
-  async function getStudents(teacher) {
-    return new Promise((resolve, reject) => {
-      try {
-        const q = query(
-          collection(db, `students`),
-          where("schoolId", "==", `${teacher.schoolId || ""}`),
-          where("classId", "==", `${teacher.classId || ""}`),
-          orderBy("name", "desc")
-        );
-        return onSnapshot(q, (snapshot) => {
-          const tmp = [];
-          snapshot.forEach((doc) => {
-            tmp.push({ ...doc.data(), id: doc.id });
-          });
-
-          resolve(tmp);
-        });
-      } catch (error) {
-        console.warn(error);
-        reject(error);
-      }
-    });
-  }
-
   useEffect(() => {
-    if (teacher?.schoolId && teacher?.classId) {
-      getStudents(teacher)
-        .then((res) => {
-          let tmp = [];
-
-          res.forEach((stud) => {
-            tmp.push(stud);
-          });
-          setStudents(tmp);
-        })
-        .catch((error) => console.log(error));
-    }
-  }, [teacher]);
-
-  useEffect(() => {
-    //console.log("students");
+    //console.log("students", students);
   }, [students]);
+
+  const handleClick = () => {
+    scan();
+  };
+
+  const scan = async () => {
+    if ("NDEFReader" in window) {
+      try {
+        const ndef = new window.NDEFReader();
+        await ndef.scan();
+
+        console.log("Scan started successfully.");
+        ndef.onreadingerror = () => {
+          console.log("Cannot read data from the NFC tag. Try another one?");
+        };
+
+        ndef.onreading = (event) => {
+          console.log("NDEF message read.");
+          onReading(event); //Find function below
+        };
+      } catch (error) {
+        console.log(`Error! Scan failed to start: ${error}.`);
+      }
+    }
+  };
+
+  const onReading = ({ message, serialNumber }) => {
+    console.log(serialNumber);
+    for (const record of message.records) {
+      switch (record.recordType) {
+        case "text":
+          const textDecoder = new TextDecoder(record.encoding);
+          console.log("Message: ", textDecoder.decode(record.data));
+          break;
+        case "url":
+          // TODO: Read URL record with record data.
+          break;
+        default:
+        // TODO: Handle other records with record data.
+      }
+    }
+  };
+
+  const onWrite = async () => {
+    try {
+      const ndef = new window.NDEFReader();
+      await ndef.write({
+        records: [{ recordType: "text", data: "Hellow World!" }],
+      });
+      console.log(`Value Saved!`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <motion.main
       variants={contVar}

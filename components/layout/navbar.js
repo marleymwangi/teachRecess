@@ -43,7 +43,7 @@ const childVar = {
 };
 
 export default function Navbar() {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const { selChatPart } = useData();
   const router = useRouter();
 
@@ -76,6 +76,65 @@ export default function Navbar() {
             School made easy
           </motion.span>
         </div>
+      </motion.nav>
+    );
+  } else if (router.pathname.indexOf("/chats/chat") === 0) {
+    return (
+      <motion.nav
+        variants={contVar}
+        initial="closed"
+        animate="open"
+        className="flex justify-around items-center text-gray-900 min-w-full h-20 pt-6"
+      >
+        <motion.button
+          variants={childVar}
+          className="btn btn-ghost btn-circle"
+          onClick={handleClick}
+        >
+          <BiLeftArrow size="1.5em" />
+        </motion.button>
+        <motion.div variants={childVar} className="flex items-center">
+          <div className="avatar flex items-center">
+            <h1 className="mr-2 font-semibold">{selChatPart?.name}</h1>
+            <div className="w-6 rounded-full">
+              <ImageLoader
+                src={selChatPart?.image}
+                fallbackSrc="/assets/person.webp"
+              />
+            </div>
+          </div>
+        </motion.div>
+        <motion.div variants={childVar} className="dropdown dropdown-end">
+          <label tabIndex="0" className="btn btn-circle btn-ghost">
+            {session?.user ? (
+              <div className="avatar relative">
+                <div className="w-9 rounded-full">
+                  <ImageLoader
+                    src={session.user.image}
+                    fallbackSrc="/assets/person.webp"
+                  />
+                </div>
+              </div>
+            ) : (
+              <button
+                className="btn btn-ghost btn-circle"
+                onClick={handleClick}
+              >
+                <FaRegUserCircle size="2em" />
+              </button>
+            )}
+          </label>
+
+          <ul
+            tabIndex="0"
+            className="dropdown-content menu p-2 shadow text-white font-semibold bg-sky-600 rounded-box w-52"
+            onClick={signOut}
+          >
+            <li>
+              <a>Sign Out</a>
+            </li>
+          </ul>
+        </motion.div>
       </motion.nav>
     );
   } else if (router.pathname.indexOf("/chats/") === 0) {
@@ -131,7 +190,7 @@ export default function Navbar() {
         </motion.div>
       </motion.nav>
     );
-  } else if (router.pathname.indexOf("/attendance/") === 0) {
+  } else if (router.pathname.indexOf("/child/") === 0) {
     return (
       <motion.nav
         variants={contVar}
@@ -148,7 +207,59 @@ export default function Navbar() {
         </motion.button>
         <motion.div variants={childVar} className="flex items-center">
           <motion.span variants={childVar} className="uppercase font-medium">
-            <Title title={router.pathname.slice(12)} light />
+            <Title title={router.pathname.slice(7)} light />
+          </motion.span>
+        </motion.div>
+        <motion.div variants={childVar} className="dropdown dropdown-end">
+          <label tabIndex="0" className="btn btn-circle btn-ghost">
+            {session?.user ? (
+              <div className="avatar relative">
+                <div className="w-9 rounded-full">
+                  <ImageLoader
+                    src={session.user.image}
+                    fallbackSrc="/assets/person.webp"
+                  />
+                </div>
+              </div>
+            ) : (
+              <button
+                className="btn btn-ghost btn-circle"
+                onClick={handleClick}
+              >
+                <FaRegUserCircle size="2em" />
+              </button>
+            )}
+          </label>
+          <ul
+            tabIndex="0"
+            className="dropdown-content menu p-2 shadow text-white font-semibold bg-sky-600 rounded-box w-52"
+            onClick={signOut}
+          >
+            <li>
+              <a>Sign Out</a>
+            </li>
+          </ul>
+        </motion.div>
+      </motion.nav>
+    );
+  } else if (router.pathname.indexOf("/_error") === 0) {
+    return (
+      <motion.nav
+        variants={contVar}
+        initial="closed"
+        animate="open"
+        className="flex justify-around items-center text-gray-900 min-w-full h-20 pt-6"
+      >
+        <motion.button
+          variants={childVar}
+          className="btn btn-ghost btn-circle"
+          onClick={handleClick}
+        >
+          <BiLeftArrow size="1.5em" />
+        </motion.button>
+        <motion.div variants={childVar} className="flex items-center">
+          <motion.span variants={childVar} className="uppercase font-medium">
+            <Title title="Oops" />
           </motion.span>
         </motion.div>
         <motion.div variants={childVar} className="dropdown dropdown-end">

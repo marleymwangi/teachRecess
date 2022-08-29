@@ -16,8 +16,7 @@ const contVar = {
 export default function Classes() {
   return (
     <motion.section variants={contVar} initial="hide" animate="show" className="container px-8">
-        <Title title="classes" />
-      <div className="flex items-center justify-center mt-4">
+      <div className="flex items-center justify-center my-4">
         <ClassComponent />
       </div>
     </motion.section>

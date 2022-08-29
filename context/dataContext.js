@@ -18,6 +18,9 @@ import {
   serverTimestamp,
   limit,
 } from "@firebase/firestore";
+import localforage from "localforage";
+import OneSignal from "react-onesignal";
+import { isEmpty } from "./vars";
 
 const dataContext = createContext();
 
@@ -36,6 +39,7 @@ function useProvideData() {
   const [teacher, setTeacher] = useState({});
   const [schoolData, setSchoolData] = useState({});
   const [classData, setClassData] = useState({});
+  const [students, setStudents] = useState([]);
 
   const [selChatPart, setSelChatPart] = useState(null);
 
@@ -44,6 +48,43 @@ function useProvideData() {
 
   const [selDiaryMode, setSelDiaryMode] = useState("add");
   const [selRemindersMode, setSelRemindersMode] = useState("add");
+
+  //Enable Push Notifications
+  const [initialized, setInitialized] = useState(false);
+
+  useEffect(() => {
+    var initConfig = {
+      appId: "9f2a49c9-748d-4aed-82d2-f00b4fe40305",
+      safari_web_id: "web.onesignal.auto.5605e6f7-59fb-4441-98e8-3424d278ba78",
+      notifyButton: {
+        enable: false,
+        theme: "inverse",
+        position: "bottom-right" /* Either 'bottom-left' or 'bottom-right' */,
+        offset: {
+          bottom: "0px",
+          left: "0px" /* Only applied if bottom-left */,
+          right: "0px" /* Only applied if bottom-right */,
+        },
+      },
+      allowLocalhostAsSecureOrigin: true,
+      serviceWorkerParam: { scope: "/onesignal/" },
+      serviceWorkerPath: "onesignal/OneSignalSDKWorker.js",
+      serviceWorkerUpdaterPath: "onesignal/OneSignalSDKUpdaterWorker.js",
+    };
+
+    OneSignal.init(initConfig).then(() => {
+      setInitialized(true);
+      OneSignal.showSlidedownPrompt().then(() => {
+        // do other stuff
+      });
+    });
+  }, []);
+
+  useEffect(() => {
+    if (initialized && session?.user?.id) {
+      GetNotificationId();
+    }
+  }, [initialized, session]);
 
   useEffect(() => {
     createUser();
@@ -54,8 +95,43 @@ function useProvideData() {
     if(teacher){
       getSchoolInfo(teacher);
       getClassInfo(teacher);
+
+      if (teacher?.schoolId && teacher?.classId) {
+        getStudents(teacher)
+          .then((res) => {
+            let tmp = [];
+  
+            res.forEach((stud) => {
+              tmp.push(stud);
+            });
+            setStudents(tmp);
+          })
+          .catch((error) => console.log(error));
+      }
     }
   }, [teacher]);
+
+  async function GetNotificationId() {
+    OneSignal.getUserId().then(function (userId) {
+      if (!isEmpty(userId) && session?.user?.id) {
+        let docRef = doc(db, "users", session.user.id);
+
+        return onSnapshot(docRef, (docSnap) => {
+          if (docSnap.exists()) {
+            let user = docSnap.data();
+            let nots = user?.notIds || [];
+
+            nots.push(userId);
+            let uniq = [...new Set(nots)];
+
+            updateDoc(docRef, {
+              notIds: uniq,
+            });
+          }
+        });
+      }
+    });
+  }
 
   async function createUser() {
     if (status !== "loading" && session?.user) {
@@ -100,6 +176,30 @@ function useProvideData() {
         setClassData(doc.data());
       });
     }
+  }
+
+  async function getStudents(teacher) {
+    return new Promise((resolve, reject) => {
+      try {
+        const q = query(
+          collection(db, `students`),
+          where("schoolId", "==", `${teacher.schoolId || ""}`),
+          where("classId", "==", `${teacher.classId || ""}`),
+          orderBy("name", "desc")
+        );
+        return onSnapshot(q, (snapshot) => {
+          const tmp = [];
+          snapshot.forEach((doc) => {
+            tmp.push({ ...doc.data(), id: doc.id });
+          });
+
+          resolve(tmp);
+        });
+      } catch (error) {
+        console.warn(error);
+        reject(error);
+      }
+    });
   }
 
   async function createRoom(resolve, reject, participant) {
@@ -362,6 +462,7 @@ function useProvideData() {
 
   return {
     teacher,
+    students,
     classData,
     schoolData,
 

@@ -7,7 +7,7 @@
 }
 
 .contacts__modal >  .contacts__list{
-  @apply h-96 overflow-y-auto pr-2 mt-6 mb-10;
+  @apply h-96 overflow-y-auto pr-2 mt-6 mb-4;
 }
 
 .contacts__modal >  .contacts__list .teacher{
@@ -15,20 +15,12 @@
   cursor-pointer border-gray-200;
 }
 
-.contacts__modal >  .contacts__list .teacher.purple{
-  @apply hover:bg-purple-50
-}
-
-.contacts__modal >  .contacts__list .teacher.red{
-  @apply hover:bg-red-50;
-}
-
 .contacts__modal >  .contacts__list .teacher .avatar{
   @apply mx-5;
 }
 
 .contacts__modal >  .contacts__list .teacher .avatar div{
-  @apply min-w-[50px] rounded-full ring ring-offset-base-100 ring-offset-2;
+  @apply min-w-[50px] min-h-[50px] rounded-full ring ring-offset-base-100 ring-offset-2;
 }
 
 .contacts__modal >  .contacts__list .teacher .content h2{

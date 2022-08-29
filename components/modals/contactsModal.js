@@ -17,78 +17,45 @@ import { db } from "../../firebase";
 import ContactElement from "../elements/contactElement";
 //context
 import { useData } from "../../context/dataContext";
+import { fi } from "date-fns/locale";
 
 export default function ContactsModal() {
   const [guardians, setGuardians] = useState([]);
-  const { teacher } = useData();
+  const [selected, setSelected] = useState([]);
+  const { teacher, students } = useData();
   const { data: session } = useSession();
 
-  async function getStudents(teacher) {
-    return new Promise((resolve, reject) => {
-      try {
-        const q = query(
-          collection(db, `students`),
-          where("schoolId", "==", `${teacher.schoolId || ""}`),
-          where("classId", "==", `${teacher.classId || ""}`),
-          orderBy("name", "desc")
-        );
-        return onSnapshot(q, (snapshot) => {
-          const tmp = [];
-          snapshot.forEach((doc) => {
-            tmp.push({ ...doc.data(), id: doc.id });
-          });
-
-          resolve(tmp);
-        });
-      } catch (error) {
-        console.warn(error);
-        reject(error);
-      }
-    });
-  }
-
   useEffect(() => {
-    if (teacher?.schoolId && teacher?.classId) {
-      getStudents(teacher)
-        .then((res) => {
-          let tmp = [];
+    if (students?.length > 0) {
+      let tmp = [];
 
-          res.forEach((stud) => {
-            let guardians = stud.guardians;
-            delete stud.guardians;
-            guardians.forEach((guard) => {
-              let obj = { id: guard, student: stud };
-              tmp.push(obj);
-            });
+      students.forEach((stud) => {
+        let guardians = stud.guardians;
+        delete stud.guardians;
+        guardians &&
+          guardians.forEach((guard) => {
+            let obj = { id: guard, student: stud };
+            tmp.push(obj);
           });
+      });
 
-          let gs = mergeGuardiansStudents(tmp);
+      let gs = mergeGuardiansStudents(tmp);
 
-          let promises = [];
-          gs.forEach(async (g) => {
-            let p = getGuardian(g);
-            promises.push(p);
-          });
+      let promises = [];
+      gs.forEach(async (g) => {
+        let p = getGuardian(g);
+        promises.push(p);
+      });
 
-          Promise.all(promises).then((results) => {
-            setGuardians(results);
-          });
-        })
-        .catch((error) => console.log(error));
+      Promise.all(promises).then((results) => {
+        setGuardians(results);
+      });
     }
-  }, [teacher]);
+  }, [students]);
 
   useEffect(() => {
-    //console.log(guardians)
-  }, [guardians]);
-
-  const studentProcessGuardians = (array) => {
-    let flatArray = array.reduce((acc, curVal) => {
-      return acc.concat(curVal);
-    }, []);
-    let withoutDuplicates = [...new Set(flatArray)];
-    return withoutDuplicates;
-  };
+    console.log(selected);
+  }, [selected]);
 
   const mergeGuardiansStudents = (teachs) => {
     const result = teachs.reduce((acc, curr) => {
@@ -116,6 +83,10 @@ export default function ContactsModal() {
     });
   };
 
+  const sendToMany = () =>{
+
+  }
+
   return (
     <div>
       <input type="checkbox" id="contacts_modal" className="modal-toggle" />
@@ -134,8 +105,16 @@ export default function ContactsModal() {
             <h1>Click on Contacts to start the Chat</h1>
             <section className="contacts__list custom-scroll">
               {guardians?.length &&
-                guardians.map((g, i) => <ContactElement key={i} data={g} />)}
+                guardians.map((g, i) => <ContactElement key={i} data={g} array={selected} setFunc={setSelected}/>)}
             </section>
+            <div className="flex justify-end">
+          <label
+            htmlFor="message_modal"
+            className="btn btn-sm btn-primary"
+          >
+            Send to Many
+          </label>
+        </div>
           </div>
         </label>
       </label>

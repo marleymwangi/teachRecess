@@ -41,7 +41,7 @@ export default function ClassComponent() {
           </div>
           <h4>{schoolData?.name}</h4>
         </div>
-        <div className="info mt-3">
+        <div className="info">
           <div className="label">
             <div className="icon">
               <MdClass size="1rem" />

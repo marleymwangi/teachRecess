@@ -76,8 +76,8 @@ export default function Profile() {
           </div>
         </motion.div>
         <Classes/>
-        <Reminders />
         <Diaries  />
+        <Reminders />
       </motion.div>
     </AuthGuard>
   );

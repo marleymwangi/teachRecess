@@ -8,11 +8,12 @@ import { useSession } from "next-auth/react";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import ImageLoader from "./imageLoader";
+import { useData } from "../../context/dataContext";
 
 const riseVar = {
   hide: {
     opacity: 0,
-    y: -  10,
+    y: 10,
     scale: 0.9,
   },
   show: {
@@ -27,8 +28,10 @@ const riseVar = {
 
 export default function ChatElement({ data }) {
   const router = useRouter();
-  const [part, setPart] = useState(null);
   const { data: session, status } = useSession();
+
+  const { setSelChatPart } = useData();
+  const [part, setPart] = useState(null);
 
   useEffect(() => {
     if (data?.participants && status !== "loading") {
@@ -48,6 +51,9 @@ export default function ChatElement({ data }) {
   }, [data, session, status]);
 
   const handleClick = () => {
+    if(part){
+      setSelChatPart(part);
+    };  
     router.push(`chats/chat?id=${data.id}`);
   };
 
@@ -59,13 +65,15 @@ export default function ChatElement({ data }) {
         </div>
       </div>
       <div className="content">
-        <span className="capitalize font-medium">{part?.name}</span>
+        <div className="flex items-center justify-between whitespace-nowrap">
+          <span className="capitalize font-medium">{part?.name}</span>
+          <span className="text-gray-400 text-xs">
+            {data?.timestamp &&
+              formatDistance(new Date(), new Date(data?.timestamp))}
+          </span>
+        </div>
         <p className="text-gray-400 text-sm  ">{data?.lastMessage}</p>
       </div>
-      <span>
-        {data?.timestamp &&
-          formatDistance(new Date(), new Date(data?.timestamp))}
-      </span>
     </motion.div>
   );
 }

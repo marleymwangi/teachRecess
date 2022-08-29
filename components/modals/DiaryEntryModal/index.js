@@ -9,10 +9,7 @@ import DropDown from "../../elements/dropDown";
 import ExerForm from "./exerForm";
 import CraftForm from "./craftForm";
 import TimeSpanPickerInput from "../../elements/calendar/timeSpanPickerInput";
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
+import { classNames } from "../../../context/vars";
 
 const FormContVar = {
   hide: {

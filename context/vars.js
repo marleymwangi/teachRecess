@@ -2,6 +2,18 @@ export const classNames = (...classes) => {
   return classes.filter(Boolean).join(" ");
 }
 
+export const isEmpty = (e) => {
+  switch (e) {
+    case "":
+    case null:
+    case false:
+    case undefined:
+      return true;
+    default:
+      return false;
+  }
+};
+
 export const routes = [
   { name: "Profile", route: "/profile" },
   { name: "FAQ", route: "/faq" },

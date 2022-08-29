@@ -1,87 +1,61 @@
-.diaries {
-  @apply container mx-auto;
+.diaries__sec {
+  @apply container mx-auto px-4;
 }
 
-.diaries .diary__entry {
+.diaries__sec > p {
+  @apply font-semibold;
+}
+
+.diaries__sec > p > span {
+  @apply text-gray-600;
+}
+
+.diary__entry {
   @apply relative flex flex-1 rounded-2xl overflow-hidden my-5 bg-white transition-all duration-300 ease-in-out;
 }
 
-.diaries .diary__entry *{
+.diary__entry * {
   @apply transition-all duration-300 ease-in-out;
 }
 
-
-.diaries .diary__entry > section {
-  @apply flex flex-col md:flex-row justify-between w-full h-full p-5 sm:pt-10 sm:px-10 bg-white bg-opacity-90 z-10;
+.diary__entry {
+  @apply flex flex-col md:flex-row justify-between w-full h-full p-5 sm:pt-10 sm:px-10 z-10;
 }
 
-.diaries .diary__entry > section > .info {
-  @apply mb-4 flex justify-start;
+.diary__entry > .info {
+  @apply mb-4 flex justify-center items-center;
 }
 
-.diaries .diary__entry > section > .info > div {
-  @apply flex items-center gap-4;
+.diary__entry > .info > div {
+  @apply flex items-center mr-3 bg-gray-200 p-3 rounded-2xl;
 }
 
-.diaries .diary__entry > section > .info > div > :first-child {
-  @apply bg-gray-300 p-3 rounded-2xl;
+.diary__entry > .info h4 {
+  @apply font-bold text-lg uppercase text-white font-bold uppercase;
 }
 
-.diaries .diary__entry > section > .info > div h4 {
-  @apply font-bold text-lg uppercase text-gray-400;
-}
-
-.diaries .diary__entry > section > .info > div h4 span{
-  @apply font-bold uppercase;
-}
-
-.diaries .diary__entry > section > .info > .class {
-  @apply text-slate-600;
-}
-
-.diaries .diary__entry > section > .info > div {
-  @apply flex items-center gap-4 my-2 mx-4;
-}
-
-.diaries .diary__entry > section > .content {
+.diary__entry > .content {
   @apply flex-auto text-slate-800 text-left px-6 xs:px-0 xs:text-center;
 }
 
-.diaries .diary__entry > section > .content > h2 {
-  @apply text-xl mb-1 font-semibold z-10;
+.diary__entry > .content > h3 {
+  @apply text-sm mb-6 font-semibold text-gray-200;
 }
 
-.diaries .diary__entry > section > .content > h3 {
-  @apply text-sm mb-6 font-semibold text-gray-500;
+.diary__entry .content label {
+  @apply btn btn-sm border-0 bg-white hover:bg-gray-100 ;
 }
 
-.diaries .diary__entry > section > .content > h1 {
-  @apply text-xl mt-2 ml-3 mb-2;
-}
-
-.diaries .diary__entry > section > .content > label {
-  @apply btn btn-info border-0 text-white;
-}
-
-.diaries .diary__entry > section.item {
+.diary__entry .item {
   @apply flex items-center justify-center text-amber-700 mt-3;
 }
 
-.diaries .diary__entry > section.item > span:nth-of-type(1) {
+.diary__entry .item > span:nth-of-type(1) {
   @apply ml-1 text-sm;
 }
 
-.diaries .diary__entry > section.item > span:nth-of-type(2) {
+.diary__entry .item > span:nth-of-type(2) {
   @apply ml-3 text-amber-900;
-}
-
-.diaries .diary__entry > section > .content > .complete {
-  @apply bg-neutral border-t border-amber-900 h-16 text-center 
-  flex items-center justify-center;
-}
-
-.diaries .diary__entry > section > .content > .complete span {
-  @apply mr-2;
 }
 
 /*
@@ -120,15 +94,15 @@
   @apply font-semibold;
 }
 
-.diaries__page > .diaries {
+.diaries__page > .diaries__sec {
   @apply px-0;
 }
 
-.diaries__page .diaries span {
+.diaries__page .diaries__sec span {
   @apply font-medium text-gray-400 capitalize text-xs;
 }
 
-.diaries__page .diaries h5 {
+.diaries__page .diaries__sec h5 {
   @apply font-semibold text-xl;
 }
 

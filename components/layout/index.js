@@ -2,6 +2,7 @@ import Head from "next/head";
 import dynamic from "next/dynamic";
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect } from "react";
+import MessageModal from "../modals/messageModal";
 //custom
 const Navbar = dynamic(() => import("./navbar"));
 const Banner = dynamic(() => import("./banner"));
@@ -36,8 +37,9 @@ export default function Layout({ children, path }) {
       </Head>
       <Banner />
       <Navbar />
-      <ContactsModal />
       <WorkModal />
+      <ContactsModal />
+      <MessageModal/>
       <DiaryEntryModal />
       <ReminderEntryModal />
       <AnimatePresence

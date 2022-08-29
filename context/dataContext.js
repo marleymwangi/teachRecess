@@ -54,8 +54,8 @@ function useProvideData() {
 
   useEffect(() => {
     var initConfig = {
-      appId: "9f2a49c9-748d-4aed-82d2-f00b4fe40305",
-      safari_web_id: "web.onesignal.auto.5605e6f7-59fb-4441-98e8-3424d278ba78",
+      appId: "136b91e7-1654-46d6-ab05-0d2b2e034e8d",
+      safari_web_id: "web.onesignal.auto.110555e6-7aae-4d44-9896-bfe7a2b1c987",
       notifyButton: {
         enable: false,
         theme: "inverse",

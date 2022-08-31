@@ -112,7 +112,7 @@ export default function Banner() {
           >
             <div className="mobile">
               <span>
-                {!state && "Add the Taka application to your HomeScreen"}
+                {!state && "Add the Recess application to your HomeScreen"}
                 {state && state == "installed" && "Thank you 😀"}
                 {state && state == "dismissed" && "Maybe another time"}
               </span>

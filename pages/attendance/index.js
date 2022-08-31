@@ -134,7 +134,7 @@ export default function Diaries({ attendanceInit }) {
             <div className="grid grid-cols-1 xs:gap-6 xs:grid-cols-2">
               <div className="flex justify-between">
                 <h5 className="text-gray-400">Present Students</h5>
-                <h5 className="text-success">30</h5>
+                <h5 className="text-success">29</h5>
               </div>
               <div className="flex justify-between">
                 <h5 className="text-gray-400">Absent Students</h5>

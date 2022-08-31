@@ -57,7 +57,7 @@ function useProvideData() {
       appId: "136b91e7-1654-46d6-ab05-0d2b2e034e8d",
       safari_web_id: "web.onesignal.auto.110555e6-7aae-4d44-9896-bfe7a2b1c987",
       notifyButton: {
-        enable: false,
+        enable: true,
         theme: "inverse",
         position: "bottom-right" /* Either 'bottom-left' or 'bottom-right' */,
         offset: {

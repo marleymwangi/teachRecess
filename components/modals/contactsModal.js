@@ -83,9 +83,11 @@ export default function ContactsModal() {
     });
   };
 
-  const sendToMany = () =>{
+  const sendToMany = () => {};
 
-  }
+  const handleClearSelected = () => {
+    setSelected([]);
+  };
 
   return (
     <div>
@@ -105,16 +107,31 @@ export default function ContactsModal() {
             <h1>Click on Contacts to start the Chat</h1>
             <section className="contacts__list custom-scroll">
               {guardians?.length &&
-                guardians.map((g, i) => <ContactElement key={i} data={g} array={selected} setFunc={setSelected}/>)}
+                guardians.map((g, i) => (
+                  <ContactElement
+                    key={i}
+                    data={g}
+                    array={selected}
+                    setFunc={setSelected}
+                  />
+                ))}
             </section>
-            <div className="flex justify-end">
-          <label
-            htmlFor="message_modal"
-            className="btn btn-sm btn-primary"
-          >
-            Send to Many
-          </label>
-        </div>
+            {selected?.length > 0 && (
+              <div className="flex justify-between">
+                <button
+                  onClick={handleClearSelected}
+                  className="btn btn-sm btn-error"
+                >
+                  Cancel
+                </button>
+                <label
+                  htmlFor="message_modal"
+                  className="btn btn-sm btn-primary"
+                >
+                  Send to Many
+                </label>
+              </div>
+            )}
           </div>
         </label>
       </label>

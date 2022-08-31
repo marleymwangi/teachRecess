@@ -2,6 +2,14 @@
   @apply mt-6 container mx-auto px-8;
 }
 
+.reminder__sec > p {
+  @apply font-semibold;
+}
+
+.reminder__sec > p > span {
+  @apply text-gray-600;
+}
+
 .reminders {
   @apply grid gap-6 my-5;
 }

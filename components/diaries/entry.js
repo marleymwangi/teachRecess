@@ -15,6 +15,12 @@ const MdScience = dynamic(
 const TbMathSymbols = dynamic(
   async () => (await import("react-icons/tb")).TbMathSymbols
 );
+const FaLanguage = dynamic(
+  async () => (await import("react-icons/fa")).FaLanguage
+);
+const FaCross = dynamic(
+  async () => (await import("react-icons/fa")).FaCross
+);
 
 const riseVar = {
   hide: {
@@ -79,7 +85,7 @@ export default function Entry({ data, refData }) {
         return "bg-gradient-to-r from-green-500 to-green-700";
       case "Science":
         return "bg-gradient-to-r from-blue-700 via-blue-800 to-gray-900";
-      case "Religous Education":
+      case "Religious Education":
         return "bg-gradient-to-r from-orange-600 to-orange-500";
       default:
         return "bg-conic-to-l from-sky-400 to-blue-800";
@@ -96,7 +102,7 @@ export default function Entry({ data, refData }) {
         return "!text-green-500 hover:!text-green-600";
       case "Science":
         return "!text-sky-500 hover:!text-sky-600";
-      case "Religous Education":
+      case "Religious Education":
         return "!text-amber-500 hover:!text-amber-600";
       default:
         return "!text-primary";
@@ -115,6 +121,9 @@ export default function Entry({ data, refData }) {
         <div className={textClr(diary?.subject)}>
           {diary?.subject === "Science" && <MdScience size="2rem" />}
           {diary?.subject === "Mathematics" && <TbMathSymbols size="2rem" />}
+          {diary?.subject === "English" && <FaLanguage size="2rem" />}
+          {diary?.subject === "Kiswahili" && <FaLanguage size="2rem" />}
+          {diary?.subject === "Religious Education" && <FaCross size="2rem" />}
         </div>
         <h4>{diary?.subject} Diary Entry</h4>
       </div>

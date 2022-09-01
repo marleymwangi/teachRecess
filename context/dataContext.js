@@ -268,9 +268,10 @@ function useProvideData() {
           const docRef = await addDoc(
             collection(db, `chatrooms/${chatId}/messages`),
             {
-              sender: session.user?.id,
               message: text,
+              senderId: session.user?.id,
               timestamp: serverTimestamp(),
+              senderName: session.user?.name,
             }
           );
 

@@ -11,7 +11,7 @@
 @tailwind utilities;
 
 body {
-  @apply font-roboto bg-orange-50 text-slate-800;
+  @apply font-roboto bg-amber-50 text-slate-800;
 }
 
 .abs-center{

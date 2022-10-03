@@ -33,7 +33,7 @@ export default function StudentProfile() {
 
   return (
     <AuthGuard>
-      <main className="py-20">
+      <main className="min-h-[95vh] py-20">
         <section className="flex flex-col items-center">
           <div className="avatar">
             <div className="w-24 mask mask-squircle">

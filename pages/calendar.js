@@ -6,7 +6,7 @@ import { AuthGuard } from "../components/elements/authGuard";
 export default function CalendarPage() {
   return (
     <AuthGuard>
-      <main className="py-16">
+      <main className="min-h-[95vh] py-16">
         <Calendar />
         <section className="pt-5 px-4">
           <p className="font-bold text-2xl mb-2 font-nexa">{"Homework"}</p>

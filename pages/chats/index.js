@@ -13,7 +13,7 @@ export default function Chats() {
 
   return (
     <AuthGuard>
-      <main className="py-20">
+      <main className="min-h-[95vh] py-20">
         <section className="grid gap-4 px-4">
           {!pending &&
             error === null &&

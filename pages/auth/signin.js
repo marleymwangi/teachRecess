@@ -1,81 +1,56 @@
-import { useEffect } from "react";
+import dynamic from "next/dynamic";
 import Image from "next/image";
-import Router from "next/router";
-//custom packages
 import {
   getProviders,
   signIn as SignInProvider,
   useSession,
 } from "next-auth/react";
 import { motion } from "framer-motion";
-
-const contVar = {
-  open: {
-    opacity: 1,
-    transition: {
-      delay: 1,
-      staggerChildren: 0.35,
-      when: "beforeChildren",
-    },
-  },
-};
-
-const childVar = {
-  closed: {
-    y: -10,
-    scale: 0.95,
-    opacity: 0,
-  },
-  open: {
-    y: 0,
-    scale: 1,
-    opacity: 1,
-    transition: {
-      duration: 0.45,
-    },
-  },
-};
-
+//dynamic
+const FcGoogle = dynamic(async () => (await import("react-icons/fc")).FcGoogle);
+const BsApple = dynamic(async () => (await import("react-icons/bs")).BsApple);
 
 export default function SignIn({ providers }) {
-  const { data: session, status } = useSession();
-
-  useEffect(() => {
-    if (status !== "loading") {
-      //auth is initialized and there is no user
-      if (session) {
-        // redirect
-        Router.replace("/");
-      }
-    }
-  }, [status, session]);
-
   return (
-    <div className="signIn-page">
-      <motion.div variants={contVar} initial="closed" animate="open" className="flex flex-col w-full h-full justify-start items-center">
-        <motion.div variants={childVar} className="h-52 w-52 ring-4 ring-sky-600 rounded-full mt-10 overflow-hidden relative">
+    <main className="relative h-screen w-screen bg-cyan-100 py-20 px-6 grid place-content-end grid-cols-1">
+      <section className="mb-5">
+        <div className="relative h-40 w-4/5 mx-auto">
           <Image
-            alt="logo"
+            src="/images/recess.png"
             layout="fill"
-            placeholder="blur"
-            src="/assets/logo.webp"
-            blurDataURL="/assets/logosm.webp"
+            objectFit="contain"
+            objectPosition="center"
           />
-        </motion.div>
+        </div>
+      </section>
+      <p className="font-poppins font-semibold text-4xl text-center">
+        Welcome to
+      </p>
+      <p className="font-poppins font-semibold text-6xl text-center mb-20">
+        Recess
+      </p>
+      <p className="font-poppins font-semibold text-lg"></p>
+      <section className="w-full max-w-xs mx-auto grid gap-6">
         {providers &&
           Object.values(providers).map((provider) => (
-            <motion.div variants={childVar} key={provider.name}>
-              <button
-                onClick={() =>
-                  SignInProvider(provider.id, { callbackUrl: "/" })
-                }
-              >
+            <button
+              key={provider.name}
+              onClick={() => SignInProvider(provider.id, { callbackUrl: "/" })}
+              className="btn btn-lg gap-3 rounded-full bg-white border-white active:bg-gray-100 active:border-gray-50 hover:bg-gray-50 hover:border-gray-50"
+            >
+              <FcGoogle size="2em" />{" "}
+              <span className="text-gray-400">
                 Sign in with {provider.name}
-              </button>
-            </motion.div>
+              </span>
+            </button>
           ))}
-      </motion.div>
-    </div>
+
+        <button className="btn btn-lg gap-3 rounded-full bg-white border-white active:bg-gray-100 active:border-gray-50 hover:bg-gray-50 hover:border-gray-50">
+          <BsApple className="text-gray-500" size="2em" />{" "}
+          <span className="text-gray-400">Sign in with Apple</span>
+        </button>
+      </section>
+    </main>
   );
 }
 

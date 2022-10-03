@@ -1,110 +1,52 @@
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-//custom packs
-import {
-  doc,
-  getDoc,
-  collection,
-  onSnapshot,
-  orderBy,
-  query,
-  getDocs,
-} from "firebase/firestore";
-import localforage from "localforage";
-import { getSession, useSession } from "next-auth/react";
+import { motion } from "framer-motion";
+import { useSession } from "next-auth/react";
+//hooks
+import useChatroomFetch from "../../helpers/hooks/chatroom/chatroom";
 //custom
+import { isEmpty } from "../../helpers/utility";
 import { useData } from "../../context/dataContext";
-import { formatDistanceToNow } from "date-fns";
-import { db } from "../../firebase";
-import { classNames } from "../../context/vars";
+import Message from "../../components/chats/message";
+import { AuthGuard } from "../../components/elements/authGuard";
+import useChatroomsFetch from "../../helpers/hooks/chatroom/chatrooms";
+
 //dynamic
-const AiOutlineSend = dynamic(
-  async () => (await import("react-icons/ai")).AiOutlineSend
-);
+const IoSend = dynamic(async () => (await import("react-icons/io5")).IoSend);
 
 export default function Chat() {
   const router = useRouter();
   const { id } = router.query;
-  const { sendMessage, setSelChatPart } = useData();
-  const { data: session, status } = useSession();
 
-  const [messages, setMessages] = useState([]);
+  const { chatrooms, getChatroomById } = useChatroomsFetch();
+  const { messages, participant, sendMessagetoParticipant } =
+    useChatroomFetch(id);
+  const { selChatroom, setSelChatroom, selChatPart, setSelChatPart } =
+    useData();
+
   const [text, setText] = useState("");
 
   useEffect(() => {
-    if (status !== "loading" && id) {
-      const q = query(
-        collection(db, "chatrooms", id, "messages"),
-        orderBy("timestamp", "asc")
-      );
-
-      return onSnapshot(q, (snapshot) => {
-        let tmp = [];
-        snapshot.forEach((doc) => {
-          tmp.push({
-            ...doc.data(),
-            timestamp: doc.data()?.timestamp?.toDate(),
-          });
-        });
-        let convKey = "chatLocal-" + id;
-        localforage.setItem(convKey, JSON.stringify(tmp), function (err) {
-          // if err is non-null, we got an error
-        });
-        setMessages(tmp);
-      });
+    if (id?.length > 0 && isEmpty(selChatroom)) {
+      let room = getChatroomById(id);
+      room && setSelChatroom(room);
     }
-  }, [status, session, id]);
+  }, [id, chatrooms, selChatroom, setSelChatroom]);
 
   useEffect(() => {
-    if (session?.user?.id) {
-      const chatDoc = doc(db, `chatrooms/${id}`);
-
-      return onSnapshot(chatDoc, (doc) => {
-        let parts = doc.data().participants;
-        const part = parts.find((p) => p !== `${session?.user?.id}`);
-
-        if (part) {
-          getParticipant(part);
-        }
-      });
+    if (!isEmpty(participant)) {
+      setSelChatPart(participant);
     }
-  }, [session]);
-
-  useEffect(() => {
-    let convKey = "chatLocal-" + id;
-    localforage.getItem(convKey, function (err, value) {
-      // if err is non-null, we got an error. otherwise, value is the value
-      if (value) {
-        let tmp = JSON.parse(value);
-        tmp.forEach((t) => {
-          t.timestamp = new Date(t.timestamp);
-        });
-        console.log("local");
-        setMessages(tmp || []);
-      }
-    });
-  }, []);
-
-  const getParticipant = async (part) => {
-    if (part) {
-      const docRef = doc(db, "users", `${part}`);
-
-      getDoc(docRef).then((docSnap) => {
-        if (docSnap.exists()) {
-          setSelChatPart(docSnap.data());
-        }
-      });
-    }
-  };
+  }, [participant, selChatPart, setSelChatPart]);
 
   const handleChange = (e) => {
     setText(e.target.value);
   };
 
   const handleClick = () => {
-    if (text.length > 0 && id) {
-      sendMessage(id, text)
+    if (text?.length > 0 && id?.length > 0) {
+      sendMessagetoParticipant(text)
         .then((res) => {
           setText("");
         })
@@ -113,63 +55,50 @@ export default function Chat() {
   };
 
   return (
-    <div className="chat__page">
-      <div className="background">
-        <section className="messages custom-scroll">
-          {messages?.length > 0 &&
-            messages.map((m, i) => (
-              <MessageBox
-                key={i}
-                m={m}
-                id={session?.user?.id}
-              />
-            ))}
+    <AuthGuard>
+      <main className="relative bg-gray-100 w-full h-full pt-20 pb-10">
+        <section className="w-full px-4 my-2 chat-height  overflow-y-scroll custom-scroll">
+          {messages?.length > 0 && (
+            <motion.section
+              variants={contAnim}
+              initial="hide"
+              animate="rest"
+              className="flex flex-col justify-end gap-2 pb-4"
+            >
+              {messages.map((mess) => (
+                <Message key={mess.id} data={mess} />
+              ))}
+            </motion.section>
+          )}
         </section>
-        <section className="w-full flex items-center custom-scroll">
-          <textarea
-            type="text"
-            value={text}
-            placeholder="Type here"
-            onChange={handleChange}
-            className="textarea input-bordered textarea-primary focus:bg-white w-full caret-primary no-scroll"
-          />
-          <button
-            onClick={handleClick}
-            className="btn btn-primary btn-circle ml-2"
-          >
-            <AiOutlineSend size="2em" />
-          </button>
+        <section className="w-full px-4 pb-4">
+          <div className="rounded-full bg-white p-2 flex justify-between shadow-lg">
+            <textarea
+              onChange={handleChange}
+              value={text}
+              type="text"
+              placeholder="Type here"
+              className="input pt-2 resize-none rounded-full input-outline w-full flex-1"
+            />
+            <button
+              onClick={handleClick}
+              className="btn btn-secondary text-white btn-circle ml-2"
+            >
+              <IoSend size="1.5em" />
+            </button>
+          </div>
         </section>
-      </div>
-    </div>
+      </main>
+    </AuthGuard>
   );
 }
 
-function MessageBox({ i, m, id }) {
-  const [time, setTime] = useState("");
-
-  useEffect(() => {
-    if (m.timestamp) {
-      setTime(
-        formatDistanceToNow(m.timestamp, {
-          addSuffix: false,
-        })
-      );
-    }
-  }, [m.timestamp]);
-
-  return (
-    <div
-      key={i}
-      className={classNames(
-        "content",
-        m.senderId === id ? "right" : "left"
-      )}
-    >
-      <div className="message">
-        <p>{m.message}</p>
-        <span>{time}</span>
-      </div>
-    </div>
-  );
-}
+const contAnim = {
+  rest: {
+    opacity: 1,
+    transition: {
+      when: "beforeChildren",
+      staggerChildren: 0.15,
+    },
+  },
+};

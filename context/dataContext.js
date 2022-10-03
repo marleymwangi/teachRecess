@@ -1,13 +1,13 @@
 import { useState, useEffect, createContext, useContext } from "react";
 //custom packs
 import { useSession } from "next-auth/react";
-import { db } from "../firebase";
+import { db, storage } from "../firebase";
 import {
   doc,
+  limit,
   addDoc,
   setDoc,
   getDoc,
-  deleteDoc,
   getDocs,
   updateDoc,
   query,
@@ -16,11 +16,11 @@ import {
   orderBy,
   onSnapshot,
   serverTimestamp,
-  limit,
 } from "@firebase/firestore";
 import localforage from "localforage";
 import OneSignal from "react-onesignal";
-import { isEmpty } from "./vars";
+import { ref, getDownloadURL, uploadString } from "@firebase/storage";
+import { isEmpty, makeid } from "../helpers/utility";
 
 const dataContext = createContext();
 
@@ -36,26 +36,25 @@ export const useData = () => {
 function useProvideData() {
   const { data: session, status } = useSession();
   //shared app data
-  const [teacher, setTeacher] = useState({});
-  const [schoolData, setSchoolData] = useState({});
-  const [classData, setClassData] = useState({});
-  const [students, setStudents] = useState([]);
+  const [alerts, setAlerts] = useState([]);
 
+  const [selStudent, setSelStudent] = useState(null);
+  const [selChatroom, setSelChatroom] = useState(null);
+  const [selDiary, setSelDiary] = useState(null);
+  const [selReminder, setSelReminder] = useState(null);
   const [selChatPart, setSelChatPart] = useState(null);
 
-  const [selDiary, setSelDiary] = useState(null);
-  const [selReminder, setSelReminder] = useState(true);
-
+  //data creation mode
   const [selDiaryMode, setSelDiaryMode] = useState("add");
-  const [selRemindersMode, setSelRemindersMode] = useState("add");
+  const [selReminderMode, setSelReminderMode] = useState("add");
 
   //Enable Push Notifications
   const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
     var initConfig = {
-      appId: "136b91e7-1654-46d6-ab05-0d2b2e034e8d",
-      safari_web_id: "web.onesignal.auto.110555e6-7aae-4d44-9896-bfe7a2b1c987",
+      appId: "9f2a49c9-748d-4aed-82d2-f00b4fe40305",
+      //safari_web_id: "web.onesignal.auto.5605e6f7-59fb-4441-98e8-3424d278ba78",
       notifyButton: {
         enable: true,
         theme: "inverse",
@@ -66,22 +65,46 @@ function useProvideData() {
           right: "0px" /* Only applied if bottom-right */,
         },
       },
+      promptOptions: {
+        slidedown: {
+          promptOptions: {
+            slidedown: {
+              prompts: [
+                {
+                  type: "push", // current types are "push" & "category"
+                  autoPrompt: true,
+                  text: {
+                    /* limited to 90 characters */
+                    actionMessage:
+                      "Permission to send notifications for Reminders, Homework and Chat.",
+                    /* acceptButton limited to 15 characters */
+                    acceptButton: "Allow",
+                    /* cancelButton limited to 15 characters */
+                    cancelButton: "Cancel",
+                  },
+                  delay: {
+                    pageViews: 1,
+                    timeDelay: 20,
+                  },
+                },
+              ],
+            },
+          },
+        },
+      },
       allowLocalhostAsSecureOrigin: true,
       serviceWorkerParam: { scope: "/onesignal/" },
       serviceWorkerPath: "onesignal/OneSignalSDKWorker.js",
       serviceWorkerUpdaterPath: "onesignal/OneSignalSDKUpdaterWorker.js",
     };
 
-    try {
-      OneSignal.init(initConfig).then(() => {
-        setInitialized(true);
-        OneSignal.showSlidedownPrompt().then(() => {
-          // do other stuff
-        });
+    OneSignal.init(initConfig).then(() => {
+      console.log("initialized");
+      setInitialized(true);
+      OneSignal.showSlidedownPrompt().then(() => {
+        // do other stuff
       });
-    } catch (error) {
-      console.log(error);
-    }
+    });
   }, []);
 
   useEffect(() => {
@@ -90,30 +113,17 @@ function useProvideData() {
     }
   }, [initialized, session]);
 
-  useEffect(() => {
-    createUser();
-    getTeacherInfo();
-  }, [db, session, status]);
+  const SetAlert = (alrt) => {
+    console.log("add", alrt);
+    alrt.id = makeid(10);
+    let tmp = alerts.length > 0 ? [...alerts, alrt] : [alrt];
+    setAlerts(tmp);
+  };
 
-  useEffect(() => {
-    if (teacher) {
-      getSchoolInfo(teacher);
-      getClassInfo(teacher);
-
-      if (teacher?.schoolId && teacher?.classId) {
-        getStudents(teacher)
-          .then((res) => {
-            let tmp = [];
-
-            res.forEach((stud) => {
-              tmp.push(stud);
-            });
-            setStudents(tmp);
-          })
-          .catch((error) => console.log(error));
-      }
-    }
-  }, [teacher]);
+  const RemoveAlerts = () => {
+    console.log("cleared");
+    setAlerts([]);
+  };
 
   async function GetNotificationId() {
     OneSignal.getUserId().then(function (userId) {
@@ -137,156 +147,6 @@ function useProvideData() {
     });
   }
 
-  async function createUser() {
-    if (status !== "loading" && session?.user) {
-      const docRef = doc(db, "users", session.user.id);
-      const docSnap = await getDoc(docRef);
-
-      if (!docSnap.exists()) {
-        // Add a new document in collection "cities"
-        await setDoc(doc(db, "users", session.user.id), {
-          name: session.user.name,
-          email: session.user.email,
-        });
-      }
-    }
-  }
-
-  async function getTeacherInfo() {
-    if (status !== "loading" && session?.user?.id) {
-      const docRef = doc(db, "teachers", session.user.id);
-
-      return onSnapshot(docRef, (doc) => {
-        setTeacher(doc.data());
-      });
-    }
-  }
-
-  async function getSchoolInfo(teacher) {
-    if (teacher?.schoolId) {
-      const docRef = doc(db, "schools", teacher.schoolId);
-
-      return onSnapshot(docRef, (doc) => {
-        setSchoolData(doc.data());
-      });
-    }
-  }
-
-  async function getClassInfo(teacher) {
-    if (teacher?.schoolId && teacher?.classId) {
-      const docRef = doc(
-        db,
-        "schools",
-        teacher.schoolId,
-        "classes",
-        teacher.classId
-      );
-
-      return onSnapshot(docRef, (doc) => {
-        setClassData(doc.data());
-      });
-    }
-  }
-
-  async function getStudents(teacher) {
-    return new Promise((resolve, reject) => {
-      try {
-        const q = query(
-          collection(db, `students`),
-          where("schoolId", "==", `${teacher.schoolId || ""}`),
-          where("classId", "==", `${teacher.classId || ""}`),
-          orderBy("name", "desc")
-        );
-        return onSnapshot(q, (snapshot) => {
-          const tmp = [];
-          snapshot.forEach((doc) => {
-            tmp.push({ ...doc.data(), id: doc.id });
-          });
-
-          resolve(tmp);
-        });
-      } catch (error) {
-        console.warn(error);
-        reject(error);
-      }
-    });
-  }
-
-  async function createRoom(resolve, reject, participant) {
-    try {
-      if (session?.user?.id && participant) {
-        const docRef = await addDoc(collection(db, `chatrooms`), {
-          participants: [session.user.id, participant],
-          searchIndex: [
-            session.user.id + participant,
-            participant + session.user.id,
-          ],
-          timestamp: serverTimestamp(),
-        });
-
-        if (docRef) {
-          resolve(docRef.id);
-        }
-      } else {
-        reject("Permission denied");
-      }
-    } catch (error) {
-      reject(error);
-    }
-  }
-
-  async function createChatRoom(participant) {
-    return new Promise(async (resolve, reject) => {
-      if (session?.user?.id) {
-        const q = query(
-          collection(db, "chatrooms"),
-          where("searchIndex", "array-contains", session.user.id + participant),
-          orderBy("timestamp", "asc"),
-          limit(1)
-        );
-
-        return onSnapshot(q, (querySnapshot) => {
-          if (querySnapshot.empty) {
-            createRoom(resolve, reject, participant);
-          } else {
-            querySnapshot.forEach((doc) => {
-              // doc.data() is never undefined for query doc snapshots
-              if (doc.exists) {
-                resolve(doc.id);
-              }
-            });
-          }
-        });
-      }
-    });
-  }
-
-  async function sendMessage(chatId, text) {
-    return new Promise(async (resolve, reject) => {
-      try {
-        if (session?.user) {
-          const docRef = await addDoc(
-            collection(db, `chatrooms/${chatId}/messages`),
-            {
-              message: text,
-              senderId: session.user?.id,
-              timestamp: serverTimestamp(),
-              senderName: session.user?.name,
-            }
-          );
-
-          if (docRef) {
-            resolve(docRef.id);
-          }
-        } else {
-          reject("Permission denied");
-        }
-      } catch (error) {
-        reject(error);
-      }
-    });
-  }
-
   async function updateChildInfo(id, info) {
     return new Promise(async (resolve, reject) => {
       try {
@@ -300,170 +160,31 @@ function useProvideData() {
     });
   }
 
-  async function updateDiaryInfo(info) {
+  async function uploadChildPicture(selectedFile) {
     return new Promise(async (resolve, reject) => {
       try {
-        if (selDiaryMode === "edit" && selDiary && teacher) {
-          let docRef = doc(
-            db,
-            "schools",
-            teacher?.schoolId,
-            "classes",
-            teacher?.classId,
-            "diaries",
-            selDiary?.id
+        if (status !== "unauthenticated") {
+          // 1) Create a post and add to firestore 'user id' collection
+          // 2) get the post ID for the newly created post
+          // 3) upload the image to firebase storage with the user id
+          // 4) get a down load URL from fb storage and update th
+
+          const imageRef = ref(
+            storage,
+            "students" + "/" + selStudent?.id + "/image"
           );
 
-          setDoc(docRef, info, { merge: true }).then((res) => {
-            resolve("success");
-          });
-          setSelDiaryMode("add");
-        } else {
-          let docRef = collection(
-            db,
-            "schools",
-            teacher?.schoolId,
-            "classes",
-            teacher?.classId,
-            "diaries"
-          );
+          await uploadString(imageRef, selectedFile, "data_url").then(
+            async (snapshot) => {
+              const downloadURL = await getDownloadURL(imageRef);
 
-          addDoc(docRef, info).then((res) => {
-            resolve("success");
-          });
-        }
-      } catch (error) {
-        reject(error);
-      }
-    });
-  }
-
-  async function removeDiaryInfo(data) {
-    return new Promise(async (resolve, reject) => {
-      try {
-        if (teacher) {
-          let docRef = doc(
-            db,
-            "schools",
-            teacher?.schoolId,
-            "classes",
-            teacher?.classId,
-            "diaries",
-            data?.id
-          );
-
-          deleteDoc(docRef).then((res) => {
-            resolve("success");
-          });
-        }
-      } catch (error) {
-        reject(error);
-      }
-    });
-  }
-
-  async function updateReminderInfo(info) {
-    return new Promise(async (resolve, reject) => {
-      try {
-        if (teacher) {
-          if (selRemindersMode === "edit" && selReminder && teacher) {
-            let docRef;
-            if (info?.scope === "School" || selReminder?.scope === "School") {
-              docRef = doc(
-                db,
-                "schools",
-                teacher?.schoolId,
-                "reminders",
-                selReminder?.id
-              );
-            } else if (
-              info?.scope === "Class" ||
-              selReminder?.scope === "Class"
-            ) {
-              docRef = doc(
-                db,
-                "schools",
-                teacher?.schoolId,
-                "classes",
-                teacher?.classId,
-                "reminders",
-                selReminder?.id
-              );
-            } else {
-              throw "Scope required.";
+              await updateDoc(doc(db, `students/${selStudent?.id}`), {
+                image: downloadURL,
+              });
             }
+          );
 
-            setDoc(docRef, info, { merge: true }).then((res) => {
-              resolve("success");
-            });
-            setSelRemindersMode("add");
-          } else if (selRemindersMode === "add" && selReminder && teacher) {
-            let docRef;
-            if (info.scope === "School") {
-              docRef = collection(
-                db,
-                "schools",
-                teacher?.schoolId,
-                "reminders"
-              );
-            } else if (info.scope === "Class") {
-              docRef = collection(
-                db,
-                "schools",
-                teacher?.schoolId,
-                "classes",
-                teacher?.classId,
-                "reminders"
-              );
-            } else {
-              throw "Scope required.";
-            }
-
-            addDoc(docRef, info).then((res) => {
-              resolve("success");
-            });
-          } else {
-            throw "Selected reminder/ teacher error";
-          }
-        } else {
-          throw "Permision denied.Check teacher account.";
-        }
-      } catch (error) {
-        reject(error);
-      }
-    });
-  }
-
-  async function removeReminderInfo(data) {
-    return new Promise(async (resolve, reject) => {
-      try {
-        if (teacher && data) {
-          let docRef;
-          if (data?.scope === "School") {
-            docRef = doc(
-              db,
-              "schools",
-              teacher?.schoolId,
-              "reminders",
-              data?.id
-            );
-          } else if (data?.scope === "Class") {
-            docRef = doc(
-              db,
-              "schools",
-              teacher?.schoolId,
-              "classes",
-              teacher?.classId,
-              "reminders",
-              data?.id
-            );
-          } else {
-            throw "Scope required.";
-          }
-
-          deleteDoc(docRef).then((res) => {
-            resolve("success");
-          });
+          resolve({ status: 200 });
         }
       } catch (error) {
         reject(error);
@@ -472,35 +193,27 @@ function useProvideData() {
   }
 
   return {
-    teacher,
-    students,
-    classData,
-    schoolData,
+    alerts,
+    SetAlert,
+    RemoveAlerts,
 
-    selDiaryMode,
-    setSelDiaryMode,
-
-    selRemindersMode,
-    setSelRemindersMode,
-
-    selDiary,
-    setSelDiary,
-
-    selReminder,
-    setSelReminder,
+    selChatroom,
+    setSelChatroom,
 
     selChatPart,
     setSelChatPart,
 
-    sendMessage,
-    createChatRoom,
+    selStudent,
+    setSelStudent,
 
-    updateDiaryInfo,
-    updateReminderInfo,
+    selDiary,
+    setSelDiary,
+    selDiaryMode,
+    setSelDiaryMode,
 
-    removeDiaryInfo,
-    removeReminderInfo,
-
-    updateChildInfo,
+    selReminder,
+    setSelReminder,
+    selReminderMode,
+    setSelReminderMode,
   };
 }

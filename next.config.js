@@ -1,20 +1,23 @@
-const withPWA = require("next-pwa");
-
-module.exports = withPWA({
-  reactStrictMode: true,
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: false,
+  swcMinify: true,
+  compiler: {
+    removeConsole: process.env.NODE_ENV !== 'development',
+  },
   images: {
     domains: [
       "i.imgur.com",
-      "api.lorem.space",
       "lh3.googleusercontent.com",
       "firebasestorage.googleapis.com",
     ],
   },
-  pwa: {
-    dest: "public",
-    register: true,
-    skipWaiting: true,
-    swSrc: "service-worker.js",
-    disable: process.env.NODE_ENV === "development",
-  },
+};
+
+const withPWA = require('next-pwa')({
+  dest: 'public',
+  disable: process.env.NODE_ENV === 'development',
+  register: true,
 });
+
+module.exports = withPWA(nextConfig);

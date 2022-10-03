@@ -1,5 +1,5 @@
 {
-  "name": "new",
+  "name": "design",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -10,29 +10,25 @@
   },
   "dependencies": {
     "@amir04lm26/react-modern-calendar-date-picker": "^1.0.1",
-    "@headlessui/react": "^1.6.5",
-    "daisyui": "^2.15.4",
-    "date-fns": "^2.28.0",
-    "firebase": "^9.8.3",
-    "framer-motion": "^6.3.13",
+    "date-fns": "^2.29.2",
+    "firebase": "^9.9.4",
+    "framer-motion": "^7.3.0",
     "localforage": "^1.10.0",
-    "next": "12.1.6",
-    "next-auth": "^4.5.0",
-    "next-pwa": "^5.5.4",
-    "nprogress": "^0.2.0",
+    "next": "12.2.5",
+    "next-auth": "^4.10.3",
+    "next-pwa": "^5.6.0",
     "react": "18.2.0",
-    "react-apexcharts": "^1.4.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.4.0",
-    "react-intersection-observer": "^9.3.3",
-    "react-onesignal": "^2.0.4",
-    "sweetalert": "^2.1.2"
+    "react-intersection-observer": "^9.4.0",
+    "react-onesignal": "^2.0.4"
   },
   "devDependencies": {
-    "autoprefixer": "^10.4.7",
-    "eslint": "8.18.0",
-    "eslint-config-next": "12.1.6",
-    "postcss": "^8.4.14",
-    "tailwindcss": "^3.1.4"
+    "autoprefixer": "^10.4.8",
+    "daisyui": "^2.24.0",
+    "eslint": "8.23.0",
+    "eslint-config-next": "12.2.5",
+    "postcss": "^8.4.16",
+    "tailwindcss": "^3.1.8"
   }
 }

@@ -1,90 +1,60 @@
 import dynamic from "next/dynamic";
-import { useState, useEffect } from "react";
-import { getSession, useSession } from "next-auth/react";
-//custom packages
-import {
-  collection,
-  onSnapshot,
-  orderBy,
-  where,
-  query,
-  getDocs,
-} from "firebase/firestore";
 import { motion } from "framer-motion";
+//hooks
+import useChatroomsFetch from "../../helpers/hooks/chatroom/chatrooms";
 //custom
-import { db } from "../../firebase";
+import ChatRoom from "../../components/chats/chatroom";
 import { AuthGuard } from "../../components/elements/authGuard";
-import ChatElement from "../../components/elements/chatElement";
+//icons
+import { SiGooglemessages } from "react-icons/si";
 
-const contVar = {
-  show: {
-    opacity: 1,
-    transition: {
-      delay: 0.75,
-      when: "beforeChildren",
-      staggerChildren: 0.15,
-    },
-  },
-};
-
-const BiMessageAltAdd = dynamic(
-  async () => (await import("react-icons/bi")).BiMessageAltAdd
-);
-
-export default function Chat({ chatsInit }) {
-  const { data: session, status } = useSession();
-  const [chats, setChats] = useState(chatsInit ? JSON.parse(chatsInit) : []);
-
-  useEffect(() => {
-    if (status !== "loading") {
-      const q = query(
-        collection(db, "chatrooms"),
-        where("participants", "array-contains", `${session?.user?.id}`),
-        orderBy("timestamp", "asc")
-      );
-
-      return onSnapshot(q, (snapshot) => {
-        let tmp = [];
-        snapshot.forEach((doc) => {
-          tmp.push({
-            ...doc.data(),
-            id: doc.id,
-            timestamp: doc.data()?.timestamp?.toDate(),
-          });
-        });
-        setChats(tmp);
-      });
-    }
-  }, [session, status]);
+export default function Chats() {
+  const { chatrooms, pending, error } = useChatroomsFetch();
 
   return (
     <AuthGuard>
-      <div className="chats__page">
-        <section className="chats__sec">
-          <motion.div
-            initial="hide"
-            animate="show"
-            variants={contVar}
-            className="chats__list"
-          >
-            {chats?.length > 0 ? (
-              chats.map((c, i) => <ChatElement key={i} data={c} />)
-            ) : (
-              <div className="mt-10 backdrop-blur text-center">
-                <p className="text-gray-400 font-bold">
-                  Click on the plus sign below to add begin chatting
-                </p>
-              </div>
-            )}
-          </motion.div>
+      <main className="py-20">
+        <section className="grid gap-4 px-4">
+          {!pending &&
+            error === null &&
+            chatrooms.length > 0 &&
+            chatrooms.map((room) => <ChatRoom room={room} key={room.id} />)}
+          {pending && <ChatRoom room={{}} />}
         </section>
-        <label
-          htmlFor="contacts_modal"
-          className=" modal-button btn btn-circle btn-primary btn-md fixed right-5 bottom-28"
+        <motion.label
+          initial="hide"
+          animate="rest"
+          whileTap="tap"
+          variants={buttonAnim}
+          htmlFor="contact_modal"
+          className="absolute w-16 h-16 rounded-full bg-primary bottom-20 right-3 grid place-content-center text-primary-content z-50"
         >
-          <BiMessageAltAdd size="2rem" />
-        </label>
-      </div>
+          <SiGooglemessages size="1.5em" />
+        </motion.label>
+      </main>
     </AuthGuard>
   );
 }
+
+const spring = {
+  type: "spring",
+  stiffness: 500,
+  damping: 30,
+};
+
+const buttonAnim = {
+  hide: {
+    scale: 0,
+    opacity: 0,
+    transition: spring,
+  },
+  rest: {
+    scale: 1,
+    opacity: 1,
+    transition: spring,
+  },
+  tap: {
+    scale: 0.9,
+    transition: spring,
+  },
+};

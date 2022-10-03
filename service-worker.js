@@ -17,7 +17,8 @@ import {
   cleanupOutdatedCaches,
 } from "workbox-precaching";
 
-skipWaiting();
+//skipWaiting(); removed in Workbox v7
+self.skipWaiting()
 clientsClaim();
 
 // must include following lines when using inject manifest module from workbox

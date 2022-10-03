@@ -33,7 +33,7 @@ export default function TopNavbar() {
             <BiLeftArrow size={size} />
           </button>
         </div>
-        <div className="grid place-content-center text-gray-700 font-poppins font-medium capitalize">
+        <div className="grid place-content-center text-secondary font-poppins font-medium capitalize">
           <span>
             {router.pathname === "/" ? (
               "home"

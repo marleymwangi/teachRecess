@@ -4,39 +4,39 @@ export default function CirclesCard({ color, content }) {
   const getColorNorm = () => {
     switch (color) {
       case "fuchsia":
-        return "bg-fuchsia-500";
+        return "bg-fuchsia-200";
       case "orange":
-        return "bg-orange-500";
+        return "bg-orange-200";
       case "pink":
-        return "bg-pink-500";
+        return "bg-pink-200";
       default:
-        return "bg-fuchsia-500";
+        return "bg-yellow-200";
     }
   };
 
   const getColorLight = () => {
     switch (color) {
       case "fuchsia":
-        return "bg-fuchsia-400";
+        return "bg-fuchsia-300";
       case "orange":
-        return "bg-orange-400";
+        return "bg-orange-300";
         case "pink":
-          return "bg-pink-400";
+          return "bg-pink-300";
       default:
-        return "bg-fuchsia-400";
+        return "bg-yellow-300";
     }
   };
 
   const getColorDark = () => {
     switch (color) {
       case "fuchsia":
-        return "bg-fuchsia-700";
+        return "bg-fuchsia-500";
       case "orange":
-        return "bg-orange-700";
+        return "bg-orange-500";
         case "pink":
-          return "bg-pink-700";
+          return "bg-pink-500";
       default:
-        return "bg-fuchsia-700";
+        return "bg-yellow-500";
     }
   };
 

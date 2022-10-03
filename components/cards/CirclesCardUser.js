@@ -6,7 +6,7 @@ import CirclesCard from "./CirclesCard";
 import ImageLoader from "../elements/imageLoader";
 
 export default function CirclesCardUser() {
-  return <CirclesCard color={"pink"} content={<Homework />} />;
+  return <CirclesCard content={<Homework />} />;
 }
 
 const Homework = () => {
@@ -22,10 +22,10 @@ const Homework = () => {
               <ImageLoader src={session?.user?.image} objectPosition={"top"} />
             </div>
           </div>
-          <p className="text-xl text-white font-bold">{session?.user?.name}</p>
+          <p className="text-xl text-yellow-900 font-bold">{session?.user?.name}</p>
           <div className="flex flex-wrap gap-2 font-medium">
-            <span className="text-base text-gray-200">{school?.name}</span>
-            <span className="text-base text-gray-200">Class: {classroom?.name}</span>
+            <span className="text-base text-yellow-800">{school?.name}</span>
+            <span className="text-base text-yellow-800">Class: {classroom?.name}</span>
           </div>
         </div>
       </div>

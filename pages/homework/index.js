@@ -1,18 +1,14 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 //hooks
-import useStudentFetch from "../../helpers/hooks/students/student";
-import useStudentsFetch from "../../helpers/hooks/students/students";
-//custom
-import { formatSubjectNames, isEmpty } from "../../helpers/utility";
-import { useData } from "../../context/dataContext";
-import { AuthGuard } from "../../components/elements/authGuard";
-import ImageLoader from "../../components/elements/imageLoader";
-import CirclesCardHomework from "../../components/cards/CirclesCardHomework";
-import CarouselHomework from "../../components/carousel/homework";
-import RadialProgress from "../../components/elements/radialProgress";
 import useTeacherFetch from "../../helpers/hooks/teacher";
 import useHomeworkFetch from "../../helpers/hooks/homework/homework";
+import useStudentFetch from "../../helpers/hooks/students/student";
+//custom
+import { isEmpty } from "../../helpers/utility";
+import { useData } from "../../context/dataContext";
+import { AuthGuard } from "../../components/elements/authGuard";
+import CirclesCardHomework from "../../components/cards/CirclesCardHomework";
 import SectionHomeStudents from "../../components/sections/SectionHomeStudents";
 
 export default function Homework() {

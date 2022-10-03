@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { motion } from "framer-motion";
-  //hooks
-  import useStudentFetch from "../../helpers/hooks/students/student";
+//hooks
+import useStudentFetch from "../../helpers/hooks/students/student";
 //custom
 import { isEmpty } from "../../helpers/utility";
 import { useData } from "../../context/dataContext";
@@ -49,8 +49,7 @@ export default function CardHomeWorkSummary() {
             Assignments
           </p>
           <p>
-            <span className="text-gray-700 font-medium">{over}</span>{" "}
-            Overdue
+            <span className="text-gray-700 font-medium">{over}</span> Overdue
           </p>
         </div>
         <div className="flex justify-end mt-2">

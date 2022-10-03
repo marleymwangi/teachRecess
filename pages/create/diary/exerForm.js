@@ -22,10 +22,10 @@ export default function ExerForm({
           onChange={(event) => change(event, setBook)}
           className={classNames(
             "input input-primary w-full input-bordered focus:bg-white focus:border-2",
-            book.state === "error" && "input-error"
+            book?.state === "error" && "input-error"
           )}
         />
-        {book.state === "error" && (
+        {book?.state === "error" && (
           <p className="text-error text-xs italic text-center mt-1">
             Please fill out the field with a valid input
           </p>
@@ -41,10 +41,10 @@ export default function ExerForm({
           onChange={(event) => change(event, setPages)}
           className={classNames(
             "input input-primary w-full input-bordered focus:bg-white focus:border-2",
-            pages.state === "error" && "input-error"
+            pages?.state === "error" && "input-error"
           )}
         />
-        {pages.state === "error" && (
+        {pages?.state === "error" && (
           <p className="text-error text-xs italic text-center mt-1">
             Please fill out the field with a valid input
           </p>

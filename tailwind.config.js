@@ -26,12 +26,12 @@ module.exports = {
     themes: [
       {
         mytheme: {
-          primary: "#fb923c",
-          "primary-content": "#f97316",
-          secondary: "#4c1d95",
+          primary: "#FFC92B",
+          "primary-content": "#854d0e",
+          secondary: "#4C99D4",
           "secondary-focus": "#2577be",
           "secondary-content": "#fff",
-          accent: "#db2777",
+          accent: "#1FB2A6",
           neutral: "#191D24",
           "base-100": "#f9fafb",
           info: "#3ABFF8",

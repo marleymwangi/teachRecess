@@ -5,13 +5,18 @@ import useHomeworkFetch from "../../helpers/hooks/homework/homework";
 //custom
 import CirclesCard from "./CirclesCard";
 import ImageLoader from "../elements/imageLoader";
-import { formatSubjectNames, isEmpty } from "../../helpers/utility";
+import { formatSubjectNames, isEmpty, classNames } from "../../helpers/utility";
 
-export default function CirclesCardHomework({ data }) {
-  return <CirclesCard color="pink" content={<Homework data={data} />} />;
+export default function CirclesCardHomework({ data, index }) {
+  return (
+    <CirclesCard
+      color={index % 2 && "sky"}
+      content={<Homework data={data} index={index} />}
+    />
+  );
 }
 
-const Homework = ({ data }) => {
+const Homework = ({ data, index }) => {
   const router = useRouter();
   const [time, setTime] = useState();
   const { getTimeFormatted } = useHomeworkFetch();
@@ -72,55 +77,144 @@ const Homework = ({ data }) => {
   };
 
   return (
-    <div onClick={handleHomeWorkClick} className="relative z-10 p-6 font-medium">
+    <div
+      onClick={handleHomeWorkClick}
+      className="relative z-10 p-6 font-medium"
+    >
       <div className="flex justify-center">
         <div className="flex text-white items-center gap-4">
-          <div className="h-8 w-8 rounded-full bg-white p-1 shadow-lg">
+          <div
+            className={classNames(
+              "h-10 w-10 rounded-full p-1 shadow-lg",
+              index % 2 ? "bg-sky-50" : "bg-yellow-50"
+            )}
+          >
             <ImageLoader src={getImage(data?.subject)} />
           </div>
-          <p className="text-xl font-poppins font-medium">
+          <p
+            className={classNames(
+              "text-xl font-inter font-medium",
+              index % 2 ? "text-sky-900" : "text-yellow-900"
+            )}
+          >
             {formatSubjectNames(data?.subject)} Class
           </p>
         </div>
       </div>
       <div className="text-center grid grid-cols-2 mt-4">
         <div className="grid">
-          <p className="text-gray-300 text-xs">
+          <p
+            className={classNames(
+              "text-xs",
+              index % 2 ? "text-sky-700" : "text-yellow-700"
+            )}
+          >
             {data?.type === "exer" && "Book"}
             {data?.type === "craft" && "Project"}
           </p>
-          <p className="text-white text-sm">
+          <p
+            className={classNames(
+              "text-sm",
+              index % 2 ? "text-sky-900" : "text-yellow-900"
+            )}
+          >
             {data?.type === "exer" && data?.book}
             {data?.type === "craft" && data?.project}
           </p>
         </div>
         <div className="grid">
-          <p className="text-gray-300 text-xs">
+          <p
+            className={classNames(
+              "text-xs",
+              index % 2 ? "text-sky-700" : "text-yellow-700"
+            )}
+          >
             {data?.type === "exer" && "Page(s)"}
             {data?.type === "craft" && "Materials"}
           </p>
-          <p className="text-white text-sm">
+          <p
+            className={classNames(
+              "text-sm",
+              index % 2 ? "text-sky-900" : "text-yellow-900"
+            )}
+          >
             {data?.type === "exer" && data?.pages}
             {data?.type === "craft" && data?.materials}
           </p>
         </div>
       </div>
       <div className="mt-2 text-center">
-        <p className="text-gray-300 text-xs">Instructions</p>
-        <p className="text-white text-sm">{data?.instructions}</p>
+        <p
+          className={classNames(
+            "text-xs",
+            index % 2 ? "text-sky-700" : "text-yellow-700"
+          )}
+        >
+          Instructions
+        </p>
+        <p
+          className={classNames(
+            "text-sm",
+            index % 2 ? "text-sky-900" : "text-yellow-900"
+          )}
+        >
+          {data?.instructions}
+        </p>
       </div>
       <div className="mt-4 text-center grid place-content-center gap-2 xxs:grid-cols-3">
         <div>
-          <p className="text-gray-300 text-xs">Issued On</p>
-          <p className="text-white text-sm">{time?.issued}</p>
+          <p
+            className={classNames(
+              "text-xs",
+              index % 2 ? "text-sky-700" : "text-yellow-700"
+            )}
+          >
+            Issued On
+          </p>
+          <p
+            className={classNames(
+              "text-sm",
+              index % 2 ? "text-sky-900" : "text-yellow-900"
+            )}
+          >
+            {time?.issued}
+          </p>
         </div>
         <div>
-          <p className="text-gray-300 text-xs">Time Left</p>
-          <p className="text-white text-sm">{time?.left}</p>
+          <p
+            className={classNames(
+              "text-xs",
+              index % 2 ? "text-sky-700" : "text-yellow-700"
+            )}
+          >
+            Time Left
+          </p>
+          <p
+            className={classNames(
+              "text-sm",
+              index % 2 ? "text-sky-900" : "text-yellow-900"
+            )}
+          >
+            {time?.left}
+          </p>
         </div>
         <div>
-          <p className="text-gray-300 text-xs">Due On</p>
-          <p className="text-white text-sm">{time?.due}</p>
+          <p
+            className={classNames(
+              "text-xs",
+              index % 2 ? "text-sky-700" : "text-yellow-700"
+            )}
+          >
+            Due On
+          </p>
+          <p
+            className={classNames(
+              "text-sm",
+              index % 2 ? "text-sky-900" : "text-yellow-900"
+            )}
+          >
+            {time?.due}
+          </p>
         </div>
       </div>
     </div>

@@ -59,7 +59,7 @@ export default function Homework() {
 
   return (
     <AuthGuard>
-      <main className="py-20">
+      <main className="min-h-[95vh] py-20">
         <section className="top_section px-4">
           <div className="flex items-center">
             {!classroom?.name && (

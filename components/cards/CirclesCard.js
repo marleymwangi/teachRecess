@@ -3,8 +3,8 @@ import { classNames } from "../../helpers/utility";
 export default function CirclesCard({ color, content }) {
   const getColorNorm = () => {
     switch (color) {
-      case "fuchsia":
-        return "bg-fuchsia-200";
+      case "sky":
+        return "bg-sky-200";
       case "orange":
         return "bg-orange-200";
       case "pink":
@@ -16,8 +16,8 @@ export default function CirclesCard({ color, content }) {
 
   const getColorLight = () => {
     switch (color) {
-      case "fuchsia":
-        return "bg-fuchsia-300";
+      case "sky":
+        return "bg-sky-300";
       case "orange":
         return "bg-orange-300";
         case "pink":
@@ -29,8 +29,8 @@ export default function CirclesCard({ color, content }) {
 
   const getColorDark = () => {
     switch (color) {
-      case "fuchsia":
-        return "bg-fuchsia-500";
+      case "sky":
+        return "bg-sky-500";
       case "orange":
         return "bg-orange-500";
         case "pink":

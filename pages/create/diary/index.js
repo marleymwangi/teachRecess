@@ -193,11 +193,11 @@ export default function CreateDiary() {
 
   return (
     <main className="py-16 px-4">
-      <motion.div variants={FormContVar} className="grid text-secondary">
+      <motion.div variants={FormContVar} className="grid text-emma-700">
         <motion.div variants={FormContVar} className="grid gap-6 grid-cols-1">
           <motion.div variants={riseVar} className="form-control w-full">
             <label className="label">
-              <span className="label-text text-secondary">Subject</span>
+              <span className="label-text text-emma-500">Subject</span>
             </label>
             <select
               defaultValue={"default"}
@@ -226,7 +226,7 @@ export default function CreateDiary() {
           </motion.div>
           <motion.div variants={riseVar} className="form-control w-full">
             <label className="label">
-              <span className="label-text text-secondary">Homework Type</span>
+              <span className="label-text text-emma-500">Homework Type</span>
             </label>
             <select
               defaultValue={"default"}
@@ -312,7 +312,7 @@ export default function CreateDiary() {
           )}
           <motion.div variants={riseVar} className="form-control w-full">
             <label className="label">
-              <span className="label-text text-secondary">Instructions</span>
+              <span className="label-text text-emma-500">Instructions</span>
             </label>
             <textarea
               type="text"
@@ -334,7 +334,7 @@ export default function CreateDiary() {
             )}
           </motion.div>
           <motion.div variants={riseVar} className="form-control w-full">
-            <p className="text-center mb-2 text-secondary">
+            <p className="text-center mb-2 text-emma-500">
               Assignment Timespan
             </p>
             <div className="mx-auto">
@@ -348,7 +348,7 @@ export default function CreateDiary() {
               <button
                 onClick={handleData}
                 className={classNames(
-                  "btn btn-primary text-yellow-700 border-0 btn-lg rounded-xl w-full md:w-1/3 ",
+                  "btn btn-primary border-0 btn-lg rounded-xl w-full md:w-1/3 ",
                   loading && "loading"
                 )}
               >

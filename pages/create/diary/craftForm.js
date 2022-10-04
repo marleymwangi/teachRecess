@@ -14,7 +14,7 @@ export default function CraftForm({
     <>
       <motion.div variants={riseVar} className="form-control w-full">
         <label className="label">
-          <span className="label-text text-secondary">Project Name</span>
+          <span className="label-text text-emma-500">Project Name</span>
         </label>
         <input
           type="text"
@@ -33,7 +33,7 @@ export default function CraftForm({
       </motion.div>
       <motion.div variants={riseVar} className="form-control w-full">
         <label className="label">
-          <span className="label-text text-secondary">Materials</span>
+          <span className="label-text text-emma-500">Materials</span>
         </label>
         <textarea
           type="text"

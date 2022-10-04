@@ -22,18 +22,18 @@ export default function HomeworkStudent({ data, id }) {
   }, []);
 
   return (
-    <div className="relative flex gap-2 items-center py-4 px-2 rounded-l-xl bg-gradient-to-r from-fuchsia-300 via-white to-transparent">
+    <div className="relative flex gap-2 items-center py-4 px-4 rounded-l-full shadow-lg bg-gradient-to-r from-yellow-200 via-white to-white">
       <div className="avatar">
         <div className="w-14 rounded-full shadow-lg">
           <ImageLoader src={data?.image} objectPosition={"top"} />
         </div>
       </div>
-      <p className="text-fuchsia-500 flex-1 font-semibold">{data?.name}</p>
+      <p className="text-yellow-500 flex-1 font-semibold">{data?.name}</p>
       <div className="flex items-center">
         <p
           className={classNames(
             "capitalize text-sm font-semibold",
-            diary?.complete ? "text-fuchsia-600" : "text-gray-400"
+            diary?.complete ? "text-yellow-600" : "text-gray-400"
           )}
         >
           {diary?.complete ? "complete" : "incomplete"}
@@ -41,14 +41,14 @@ export default function HomeworkStudent({ data, id }) {
         <div
           className={classNames(
             "swap min-w-[20px]",
-            diary?.complete ? "text-fuchsia-600" : "text-gray-400"
+            diary?.complete ? "text-yellow-600" : "text-gray-400"
           )}
         >
           <IoCheckmarkDoneCircle className="swap-on" size="2em" />
           <IoCheckmarkDoneCircleOutline className="swap-off" size="2em" />
         </div>
       </div>
-      <div className="absolute h-full w-1 right-0 bg-fuchsia-500"/>
+      <div className="absolute h-full w-1 right-0 bg-yellow-500"/>
     </div>
   );
 }

@@ -76,10 +76,10 @@ function Day({ data, selected, entries }) {
         {entries?.length > 0 &&
           entries.length <= 5 &&
           entries.map((e, i) => (
-            <div key={i} className="w-2 h-2 rounded-full bg-secondary" />
+            <div key={i} className="w-2 h-2 rounded-full bg-emma-100" />
           ))}
         {entries?.length > 0 && entries.length > 5 && (
-          <div className="w-4 h-4 rounded-full -mt-1 bg-secondary text-white text-xs grid place-content-center">
+          <div className="w-4 h-4 rounded-full -mt-1 bg-emma-100 text-emma-800 text-xs grid place-content-center">
             <span className="">{entries?.length}</span>
           </div>
         )}

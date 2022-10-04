@@ -14,7 +14,7 @@ export default function ExerForm({
     <>
       <motion.div variants={riseVar} className="form-control w-full">
         <label className="label">
-          <span className="label-text text-secondary">Book Name</span>
+          <span className="label-text text-emma-500">Book Name</span>
         </label>
         <input
           type="text"
@@ -33,7 +33,7 @@ export default function ExerForm({
       </motion.div>
       <motion.div variants={riseVar} className="form-control w-full">
         <label className="label">
-          <span className="label-text text-secondary">Pages</span>
+          <span className="label-text text-emma-500">Pages</span>
         </label>
         <input
           type="text"

@@ -1,5 +1,5 @@
 //custom
-import TeacherComment from "../components/cards/teacherComment";
+import TeacherComment from "../components/cards/TeacherComment";
 import { AuthGuard } from "../components/elements/authGuard";
 import SectionCreate from "../components/sections/SectionCreate";
 import CirclesCardUser from "../components/cards/CirclesCardUser";

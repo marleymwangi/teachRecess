@@ -1,14 +1,10 @@
-//hook
-import useTeacherFetch from "../../helpers/hooks/teacher";
+//custom
 import HomeworkStudent from "../cards/HomeworkStudent";
 
-export default function SectionHomeStudents({id}) {
-  const { students } = useTeacherFetch();
+export default function SectionHomeStudents({ list }) {
   return (
     <section className="grid gap-4">
-      {students.map((s) => (
-        <HomeworkStudent key={s.id} id={id} data={s}/>
-      ))}
+      {list && list?.map((h, i) => <HomeworkStudent key={h + i} data={h} />)}
     </section>
   );
 }

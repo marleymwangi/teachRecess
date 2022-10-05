@@ -26,7 +26,7 @@ export default function SectionLists() {
             <BiRightArrow size="1.5em" />
           </div>
         </Link>
-        <Link href="/homework/homeworks">
+        <Link href="/homework/homework">
           <div className="flex items-center justify-between bg-gradient-to-r from-emma-400 to-emma-500 w-full p-4 shadow-lg text-white rounded-md">
             <div className="flex items-center rounded-md gap-2">
               <BsFillJournalBookmarkFill size="2.5em" />

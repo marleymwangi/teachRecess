@@ -40,12 +40,14 @@ function useProvideData() {
 
   const [selStudent, setSelStudent] = useState(null);
   const [selChatroom, setSelChatroom] = useState(null);
+  const [selHomework, setSelHomework] = useState(null);
   const [selDiary, setSelDiary] = useState(null);
   const [selReminder, setSelReminder] = useState(null);
   const [selChatPart, setSelChatPart] = useState(null);
 
   //data creation mode
   const [selDiaryMode, setSelDiaryMode] = useState("add");
+  const [selHomeworkMode, setSelHomeworkMode] = useState("add");
   const [selReminderMode, setSelReminderMode] = useState("add");
 
   //Enable Push Notifications
@@ -205,6 +207,11 @@ function useProvideData() {
 
     selStudent,
     setSelStudent,
+
+    selHomework,
+    setSelHomework,
+    selHomeworkMode,
+    setSelHomeworkMode,
 
     selDiary,
     setSelDiary,

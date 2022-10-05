@@ -1,6 +1,20 @@
 import { classNames } from "../../helpers/utility";
 
 export default function CirclesCard({ color, content }) {
+
+  const getColorGrad = () => {
+    switch (color) {
+      case "emma":
+        return "bg-emma-100";
+      case "teal":
+        return "bg-teal-100";
+      case "cyan":
+        return "bg-cyan-100";
+      default:
+        return "bg-gradient-to-r from-emma-600 via-emma-500 to-emma-400";
+    }
+  };
+
   const getColorNorm = () => {
     switch (color) {
       case "emma":
@@ -17,26 +31,26 @@ export default function CirclesCard({ color, content }) {
   const getColorLight = () => {
     switch (color) {
       case "emma":
-        return "bg-emma-300";
+        return "bg-emma-200";
       case "teal":
-        return "bg-teal-300";
+        return "bg-teal-200";
         case "cyan":
-          return "bg-cyan-300";
+          return "bg-cyan-200";
       default:
-        return "bg-emma-300";
+        return "bg-emma-200";
     }
   };
 
   const getColorDark = () => {
     switch (color) {
       case "emma":
-        return "bg-emma-500";
+        return "bg-emma-300";
       case "teal":
-        return "bg-teal-500";
+        return "bg-teal-300";
         case "cyan":
-          return "bg-cyan-500";
+          return "bg-cyan-300";
       default:
-        return "bg-emma-500";
+        return "bg-gradient-to-l from-emma-700 to-emma-500";
     }
   };
 
@@ -44,7 +58,7 @@ export default function CirclesCard({ color, content }) {
     <div
       className={classNames(
         "relative rounded-box min-h-[150px] w-full overflow-hidden",
-        getColorNorm(color)
+        getColorGrad(color)
       )}
     >
       <div

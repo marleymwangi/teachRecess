@@ -50,6 +50,8 @@ export default function TopNavbar() {
               router.pathname.slice(9)
             ) : router.pathname.indexOf("/create/") === 0 ? (
               router.pathname.slice(8)
+            ) : router.pathname.indexOf("/homework/") === 0 ? (
+              router.pathname.slice(10)
             ) : (
               router.pathname.slice(1)
             )}

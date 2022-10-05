@@ -10,8 +10,8 @@ import { classNames, isEmpty } from "../../../helpers/utility";
 import TimeSpanPickerInput from "../../../components/elements/timeSpanPickerInput";
 
 export default function CreateHomework() {
-  const { selDiary, SetAlert } = useData();
-  const { updateDiaryInfo } = useTeacherFetch();
+  const { selHomework, SetAlert } = useData();
+  const { updateHomeworkInfo } = useTeacherFetch();
   const [loading, setLoading] = useState(false);
   //form data
   const [subject, setSubject] = useState({ data: "", state: null });
@@ -133,7 +133,7 @@ export default function CreateHomework() {
       !isEmpty(timestamp) && (obj.timestamp = timestamp);
 
       console.log(obj);
-      updateDiaryInfo(obj)
+      updateHomeworkInfo(obj)
         .then((res) => {
           console.log(res);
           clear();
@@ -268,7 +268,7 @@ export default function CreateHomework() {
               ? type.data === "exer" && (
                   <ExerForm
                     key="exe"
-                    selDiary={selDiary}
+                    selHomework={selHomework}
                     change={change}
                     book={book}
                     setBook={setBook}
@@ -276,10 +276,10 @@ export default function CreateHomework() {
                     setPages={setPages}
                   />
                 )
-              : selDiary?.type === "exer" && (
+              : selHomework?.type === "exer" && (
                   <ExerForm
                     key="exe"
-                    selDiary={selDiary}
+                    selHomework={selHomework}
                     change={change}
                     book={book}
                     setBook={setBook}
@@ -297,10 +297,10 @@ export default function CreateHomework() {
                 setMaterials={setMaterials}
               />
             ) : (
-              selDiary?.type === "craft" && (
+              selHomework?.type === "craft" && (
                 <CraftForm
                   key="cra"
-                  selDiary={selDiary}
+                  selHomework={selHomework}
                   change={change}
                   project={project}
                   setProject={setProject}
@@ -322,8 +322,8 @@ export default function CreateHomework() {
             <textarea
               type="text"
               placeholder={
-                selDiary?.instructions
-                  ? selDiary.instructions
+                selHomework?.instructions
+                  ? selHomework.instructions
                   : "Assignment Instructions"
               }
               onChange={(event) => change(event, setInstr)}
@@ -344,7 +344,7 @@ export default function CreateHomework() {
             </p>
             <div className="mx-auto">
               <TimeSpanPickerInput
-                selDiary={selDiary}
+                selHomework={selHomework}
                 setDue={setDue}
                 setTimestamp={setTimestamp}
               />

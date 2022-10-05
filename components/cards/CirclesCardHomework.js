@@ -11,7 +11,7 @@ export default function CirclesCardHomework({ data, index, color, instr }) {
   let colors = ["emma", "teal", "cyan"];
   return (
     <CirclesCard
-      color={colors[index % colors.length]}
+      color={color || colors[index % colors.length]}
       content={<Homework data={data} index={index} instr={instr}/>}
     />
   );

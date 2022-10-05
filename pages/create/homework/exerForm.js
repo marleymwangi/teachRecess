@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { classNames } from "../../../helpers/utility";
 
 export default function ExerForm({
-  selDiary,
+  selHomework,
   change,
   book,
   setBook,
@@ -18,7 +18,7 @@ export default function ExerForm({
         </label>
         <input
           type="text"
-          placeholder={selDiary?.book ? selDiary.book : "Book Name"}
+          placeholder={selHomework?.book ? selHomework.book : "Book Name"}
           onChange={(event) => change(event, setBook)}
           className={classNames(
             "input input-primary w-full input-bordered focus:bg-white focus:border-2",
@@ -37,7 +37,7 @@ export default function ExerForm({
         </label>
         <input
           type="text"
-          placeholder={selDiary?.page ? selDiary.page : "22, 24, 25"}
+          placeholder={selHomework?.page ? selHomework.page : "22, 24, 25"}
           onChange={(event) => change(event, setPages)}
           className={classNames(
             "input input-primary w-full input-bordered focus:bg-white focus:border-2",

@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { classNames } from "../../../helpers/utility";
 
 export default function CraftForm({
-  selDiary,
+  selHomework,
   change,
   project,
   setProject,
@@ -18,7 +18,7 @@ export default function CraftForm({
         </label>
         <input
           type="text"
-          placeholder={selDiary?.project ? selDiary.project : "Project Name"}
+          placeholder={selHomework?.project ? selHomework.project : "Project Name"}
           onChange={(event) => change(event, setProject)}
           className={classNames(
             "input input-primary w-full input-bordered focus:bg-white focus:border-2",
@@ -38,7 +38,7 @@ export default function CraftForm({
         <textarea
           type="text"
           placeholder={
-            selDiary?.materials ? selDiary.materials : "Sticks, Rope, etc."
+            selHomework?.materials ? selHomework.materials : "Sticks, Rope, etc."
           }
           onChange={(event) => change(event, setMaterials)}
           className={classNames(

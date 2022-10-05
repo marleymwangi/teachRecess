@@ -1,3 +1,4 @@
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
@@ -11,10 +12,10 @@ import UserWarn from "../../components/users/warn";
 import { useData } from "../../context/dataContext";
 import { AuthGuard } from "../../components/elements/authGuard";
 import ImageLoader from "../../components/elements/imageLoader";
-//icons
-import { FaBriefcaseMedical } from "react-icons/fa";
-import { MdPhotoAlbum } from "react-icons/md";
-import { GoGraph } from "react-icons/go";
+//dynamic
+const FaBriefcaseMedical = dynamic(async () => (await import("react-icons/fa")).FaBriefcaseMedical);
+const MdPhotoAlbum = dynamic(async () => (await import("react-icons/md")).MdPhotoAlbum);
+const GoGraph = dynamic(async () => (await import("react-icons/go")).GoGraph);
 
 export default function StudentProfile() {
   const router = useRouter();
@@ -70,8 +71,8 @@ export default function StudentProfile() {
                 variants={buttonAnim}
                 className="p-2 bg-pink-500 bg-opacity-90 rounded-box shadow-xl text-white"
               >
-                <div className="">
-                  <FaBriefcaseMedical size="2em" className="mx-auto my-2" />
+                <div className="min-h-[2em] my-2">
+                  <FaBriefcaseMedical size="2em" className="mx-auto" />
                 </div>
                 <p className="text-center">Medical</p>
               </motion.div>
@@ -84,8 +85,8 @@ export default function StudentProfile() {
                 variants={buttonAnim}
                 className="p-2 bg-cyan-500 bg-opacity-90 rounded-box shadow-xl text-white"
               >
-                <div className="">
-                  <MdPhotoAlbum size="2em" className="mx-auto my-2" />
+                <div className="min-h-[2em] my-2">
+                  <MdPhotoAlbum size="2em" className="mx-auto" />
                 </div>
                 <p className="text-center">Portfolio</p>
               </motion.div>
@@ -97,8 +98,8 @@ export default function StudentProfile() {
               variants={buttonAnim}
               className="p-2 bg-lime-500 bg-opacity-90 rounded-box shadow-xl text-white"
             >
-              <div className="">
-                <GoGraph size="2em" className="mx-auto my-2" />
+              <div className="min-h-[2em] my-2">
+                <GoGraph size="2em" className="mx-auto" />
               </div>
               <p className="text-center">Results</p>
             </motion.div>

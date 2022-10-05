@@ -39,7 +39,7 @@ class MyDocument extends Document {
         <body>
           <div
             id="loader"
-            className="h-screen w-full fixed bg-secondary z-50 flex justify-center items-center"
+            className="h-screen w-full fixed bg-emma-500 z-50 flex justify-center items-center"
           >
             <h1 className="text-6xl text-white font-bold">Recess</h1>
           </div>

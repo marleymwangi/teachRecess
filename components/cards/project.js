@@ -2,7 +2,7 @@ import ImageLoader from "../elements/imageLoader";
 
 export default function CardProject({data}) {
   return (
-    <div className="bg-white p-2 rounded-box">
+    <div className="bg-white p-2 rounded-box max-h-fit">
       <div className="relative rounded-lg overflow-hidden w-full h-40">
         <ImageLoader src={data?.image} objectFit="contain"/>
       </div>

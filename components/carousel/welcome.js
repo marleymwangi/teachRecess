@@ -9,7 +9,7 @@ export default function CarouselWelcome() {
   
 
   return (
-    <div className="flex flex-col h-[90vh]  ">
+    <div className="flex flex-col min-h-[92vh]  ">
       <div className="carousel carousel-center w-full pb-20 flex-1">
         <CardWelcome
           id="item1"

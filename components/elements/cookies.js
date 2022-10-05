@@ -83,7 +83,7 @@ export default function CookieAlert() {
               <button onClick={handleCookiesDeny} className="btn btn-sm btn-ghost text-secondary">
                 Deny
               </button>
-              <button onClick={handleCookiesAccept} className="btn btn-sm btn-primary text-orange-900">
+              <button onClick={handleCookiesAccept} className="btn btn-sm btn-primary">
                 Accept
               </button>
             </div>

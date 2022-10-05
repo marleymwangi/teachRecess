@@ -99,7 +99,7 @@ export default function Banner() {
             <div className="grid place-content-center">
               {!state && (
                 <button
-                  className="btn btn-primary mb-8 text-orange-700 max-w-sm"
+                  className="btn btn-primary mb-8 max-w-sm"
                   onClick={pwaInstall}
                 >
                   Install

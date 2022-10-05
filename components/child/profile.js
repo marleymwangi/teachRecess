@@ -16,7 +16,7 @@ export default function Profile({ data }) {
       <div className="flex items-center gap-6 py-8 px-6">
         <div className="avatar">
           <div className="w-20 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-            <ImageLoader src={data?.image} />
+            <ImageLoader src={data?.image} objectPosition="top"/>
           </div>
         </div>
         <div className="grid font-poppins">

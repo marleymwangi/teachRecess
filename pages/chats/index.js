@@ -5,8 +5,8 @@ import useChatroomsFetch from "../../helpers/hooks/chatroom/chatrooms";
 //custom
 import ChatRoom from "../../components/chats/chatroom";
 import { AuthGuard } from "../../components/elements/authGuard";
-//icons
-import { SiGooglemessages } from "react-icons/si";
+//dynamic
+const SiGooglemessages = dynamic(async () => (await import("react-icons/si")).SiGooglemessages);
 
 export default function Chats() {
   const { chatrooms, pending, error } = useChatroomsFetch();

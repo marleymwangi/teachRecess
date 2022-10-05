@@ -105,22 +105,22 @@ export default function StudentProfile() {
             {"Allergies"}
           </p>
           <div className="flex flex-wrap gap-3 font-poppins">
-            <span className="badge badge-primary text-orange-700 p-3">
+            <span className="badge badge-primary p-3">
               Apple
             </span>
-            <span className="badge badge-primary text-orange-700 p-3">
+            <span className="badge badge-primary p-3">
               Watermelon
             </span>
-            <span className="badge badge-primary text-orange-700 p-3">
+            <span className="badge badge-primary p-3">
               Beef
             </span>
-            <span className="badge badge-primary text-orange-700 p-3">
+            <span className="badge badge-primary p-3">
               Eggs
             </span>
-            <span className="badge badge-primary text-orange-700 p-3">
+            <span className="badge badge-primary p-3">
               Chapati
             </span>
-            <span className="badge badge-primary text-orange-700 p-3">
+            <span className="badge badge-primary p-3">
               Bacon
             </span>
           </div>

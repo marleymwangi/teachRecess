@@ -3,31 +3,25 @@ import { AnimatePresence, motion } from "framer-motion";
 //hooks
 import useTeacherFetch from "../../../helpers/hooks/teacher";
 //custom
-import ExerForm from "./exerForm";
-import CraftForm from "./craftForm";
 import { useData } from "../../../context/dataContext";
 import { classNames, isEmpty } from "../../../helpers/utility";
-import TimeSpanPickerInput from "../../../components/elements/timeSpanPickerInput";
+import DatePickerComp from "../../../components/elements/datePickerComp";
 
 export default function CreateDiary() {
-  const { selDiary, SetAlert } = useData();
-  const { updateDiaryInfo } = useTeacherFetch();
+  const { selReminder, SetAlert } = useData();
+  const { updateReminderInfo } = useTeacherFetch();
   const [loading, setLoading] = useState(false);
   //form data
-  const [subject, setSubject] = useState({ data: "", state: null });
+  const [scope, setScope] = useState({ data: "", state: null });
   const [type, setType] = useState({ data: "", state: null });
-  const [book, setBook] = useState({ data: "", state: null });
-  const [pages, setPages] = useState({ data: "", state: null });
-  const [project, setProject] = useState({ data: "", state: null });
-  const [materials, setMaterials] = useState({ data: "", state: null });
-  const [instr, setInstr] = useState({ data: "", state: null });
-  const [due, setDue] = useState(null);
+  const [eventType, setEventType] = useState({ data: "", state: null });
+  const [content, setContent] = useState({ data: "", state: null });
   const [timestamp, setTimestamp] = useState(null);
 
   useEffect(() => {
     //console.log("due", due);
     //console.log("timestamp", timestamp);
-  }, [due, timestamp]);
+  }, [timestamp]);
 
   const change = (event, setFunction, type = "str") => {
     switch (type) {
@@ -67,50 +61,32 @@ export default function CreateDiary() {
   };
 
   const clear = () => {
-    setSubject({ data: "", state: null });
+    setEventType({ data: "", state: null });
     setType({ data: "", state: null });
-    setBook({ data: "", state: null });
-    setPages({ data: "", state: null });
-    setProject({ data: "", state: null });
-    setMaterials({ data: "", state: null });
-    setInstr({ data: "", state: null });
+    setScope({ data: "", state: null });
+    setContent({ data: "", state: null });
   };
 
   const isValidated = () => {
     if (
-      subject.state === "success" &&
-      instr.state === "success" &&
+      scope.state === "success" &&
+      eventType.state === "success" &&
       type.state === "success" &&
-      (type.data === "exer"
-        ? book.state === "success" && pages.state === "success"
-        : project.state === "success" && materials.state === "success")
+      content.state === "success"
     ) {
       return true;
     } else {
-      if (subject.state !== "success") {
-        setSubject({ ...subject, state: "error" });
+      if (scope.state !== "success") {
+        setScope({ ...scope, state: "error" });
+      }
+      if (eventType.state !== "success") {
+        setEventType({ ...eventType, state: "error" });
       }
       if (type.state !== "success") {
         setType({ ...type, state: "error" });
       }
-      if (type.data === "exer") {
-        if (book.state !== "success" || book.data === "") {
-          setBook({ ...book, state: "error" });
-        }
-        if (pages.state !== "success" || pages.data === "") {
-          setPages({ ...pages, state: "error" });
-        }
-      }
-      if (type.data === "craft") {
-        if (project.state !== "success" || project.data === "") {
-          setProject({ ...project, state: "error" });
-        }
-        if (materials.state !== "success" || materials.data === "") {
-          setMaterials({ ...materials, state: "error" });
-        }
-      }
-      if (instr.state !== "success" || instr.data === "") {
-        setInstr({ ...instr, state: "error" });
+      if (content.state !== "success") {
+        setContent({ ...content, state: "error" });
       }
       return false;
     }
@@ -118,24 +94,18 @@ export default function CreateDiary() {
 
   const handleData = async (e) => {
     e.preventDefault();
-    console.log("1");
     if (isValidated()) {
       setLoading(true);
-      console.log("2");
       //validate()
       let obj = {};
-      !isEmpty(subject.data) && (obj.subject = subject.data.trim());
       !isEmpty(type.data) && (obj.type = type.data.trim());
-      !isEmpty(book.data) && (obj.book = book.data.trim());
-      !isEmpty(pages.data) && (obj.pages = pages.data.trim());
-      !isEmpty(project.data) && (obj.project = project.data.trim());
-      !isEmpty(materials.data) && (obj.materials = materials.data.trim());
-      !isEmpty(instr.data) && (obj.instructions = instr.data.trim());
-      !isEmpty(due) && (obj.due = due);
+      !isEmpty(eventType.data) && (obj.eventType = eventType.data.trim());
+      !isEmpty(scope.data) && (obj.scope = scope.data.trim());
+      !isEmpty(content.data) && (obj.content = content.data.trim());
       !isEmpty(timestamp) && (obj.timestamp = timestamp);
 
       console.log(obj);
-      updateDiaryInfo(obj)
+      updateReminderInfo(obj)
         .then((res) => {
           console.log(res);
           clear();
@@ -156,69 +126,31 @@ export default function CreateDiary() {
     }
   };
 
-  let subjects = [
-    {
-      value: "science",
-      text: "Science",
-    },
-    {
-      value: "english",
-      text: "English",
-    },
-    {
-      value: "hygiene",
-      text: "Hygiene",
-    },
-    {
-      value: "career",
-      text: "Career",
-    },
-    {
-      value: "swahili",
-      text: "Kiswahili",
-    },
-    {
-      value: "evironment",
-      text: "Evironment",
-    },
-    {
-      value: "math",
-      text: "Mathematics",
-    },
-    {
-      value: "religious",
-      text: "Religious Education",
-    },
-  ];
-
   return (
     <main className="py-16 px-4">
       <motion.div variants={FormContVar} className="grid text-emma-700">
         <motion.div variants={FormContVar} className="grid gap-6 grid-cols-1">
           <motion.div variants={riseVar} className="form-control w-full">
             <label className="label">
-              <span className="label-text text-emma-500">Subject</span>
+              <span className="label-text text-emma-500">Reminder Scope</span>
             </label>
             <select
               defaultValue={"default"}
-              onChange={(event) => change(event, setSubject, "sel")}
+              onChange={(event) => change(event, setScope, "sel")}
               className={classNames(
                 "select w-full",
-                subject.state === "error"
+                scope.state === "error"
                   ? "text-error select-error"
                   : "select-primary"
               )}
             >
               <option disabled value={"default"}>
-                Select Subject
+                Select Reminder Scope
               </option>
-              {subjects.map((sub, i) => (
-                <option key={i} value={sub.value}>
-                  {sub.text}
-                </option>
-              ))}
+              <option value={"sch"}>School</option>
+              <option value={"cls"}>Class</option>
             </select>
-            {subject.state === "error" && (
+            {scope.state === "error" && (
               <p className="text-error text-xs italic text-center mt-1">
                 Please select an option.
               </p>
@@ -226,7 +158,7 @@ export default function CreateDiary() {
           </motion.div>
           <motion.div variants={riseVar} className="form-control w-full">
             <label className="label">
-              <span className="label-text text-emma-500">Homework Type</span>
+              <span className="label-text text-emma-500">Reminder Type</span>
             </label>
             <select
               defaultValue={"default"}
@@ -239,10 +171,10 @@ export default function CreateDiary() {
               )}
             >
               <option disabled value={"default"}>
-                Select Work Type
+                Select Reminder Type
               </option>
-              <option value={"exer"}>Book Exercise</option>
-              <option value={"craft"}>Craft</option>
+              <option value={"single"}>Single</option>
+              <option value={"recur"}>Recurring</option>
             </select>
             {type.state === "error" && (
               <p className="text-error text-xs italic text-center mt-1">
@@ -250,97 +182,60 @@ export default function CreateDiary() {
               </p>
             )}
           </motion.div>
-          <AnimatePresence>
-            {type.data !== "exer" && type.data !== "craft" && (
-              <div className="grid place-content-center w-full min-h-[190px]">
-                <p
-                  className={classNames(
-                    "text-center",
-                    type.state === "error" && "text-error"
-                  )}
-                >
-                  Select Homework Type
-                </p>
-              </div>
-            )}
-            {type.data
-              ? type.data === "exer" && (
-                  <ExerForm
-                    selDiary={selDiary}
-                    change={change}
-                    book={book}
-                    setBook={setBook}
-                    pages={pages}
-                    setPages={setPages}
-                  />
-                )
-              : selDiary?.type === "exer" && (
-                  <ExerForm
-                    selDiary={selDiary}
-                    change={change}
-                    book={book}
-                    setBook={setBook}
-                    pages={pages}
-                    setPages={setPages}
-                  />
-                )}
-            {type?.data === "craft" ? (
-              <CraftForm
-                change={change}
-                project={project}
-                setProject={setProject}
-                materials={materials}
-                setMaterials={setMaterials}
-              />
-            ) : (
-              selDiary?.type === "craft" && (
-                <CraftForm
-                  selDiary={selDiary}
-                  change={change}
-                  project={project}
-                  setProject={setProject}
-                  materials={materials}
-                  setMaterials={setMaterials}
-                />
-              )
-            )}
-          </AnimatePresence>
-          {type.state === "error" && (
-            <p className="text-error text-xs italic text-center mt-1">
-              Please select an option.
-            </p>
-          )}
           <motion.div variants={riseVar} className="form-control w-full">
             <label className="label">
-              <span className="label-text text-emma-500">Instructions</span>
+              <span className="label-text text-emma-500">Event Type</span>
             </label>
-            <textarea
-              type="text"
-              placeholder={
-                selDiary?.instructions
-                  ? selDiary.instructions
-                  : "Assignment Instructions"
-              }
-              onChange={(event) => change(event, setInstr)}
+            <select
+              defaultValue={"default"}
+              onChange={(event) => change(event, setEventType, "sel")}
               className={classNames(
-                "input input-primary w-full input-bordered",
-                instr.state === "error" && "input-error"
+                "select w-full",
+                eventType.state === "error"
+                  ? "text-error select-error"
+                  : "select-primary"
               )}
-            />
-            {instr.state === "error" && (
+            >
+              <option disabled value={"default"}>
+                Select Event Type
+              </option>
+              <option value={"exam"}>Exam</option>
+              <option value={"open"}>Opening</option>
+              <option value={"swim"}>Swimming</option>
+              <option value={"close"}>Closing</option>
+            </select>
+            {eventType.state === "error" && (
               <p className="text-error text-xs italic text-center mt-1">
                 Please select an option.
               </p>
             )}
           </motion.div>
           <motion.div variants={riseVar} className="form-control w-full">
-            <p className="text-center mb-2 text-emma-500">
-              Assignment Timespan
-            </p>
+            <label className="label">
+              <span className="label-text text-emma-500">Content</span>
+            </label>
+            <textarea
+              type="text"
+              placeholder={
+                selReminder?.content ? selReminder.content : "content"
+              }
+              onChange={(event) => change(event, setContent)}
+              className={classNames(
+                "input input-primary w-full input-bordered focus:bg-white focus:border-2",
+                content.state === "error" && "input-error"
+              )}
+            />
+            {content.state === "error" && (
+              <p className="text-error text-xs italic text-center mt-1">
+                Please fill out the field with a valid input
+              </p>
+            )}
+          </motion.div>
+          <motion.div variants={riseVar} className="form-control w-full">
+            <p className="text-center mb-2 text-emma-500">Reminder Date</p>
             <div className="mx-auto">
-              <TimeSpanPickerInput
-                selDiary={selDiary}
-                setDue={setDue}
+              <DatePickerComp
+                selReminder={selReminder}
                 setTimestamp={setTimestamp}
               />
             </div>

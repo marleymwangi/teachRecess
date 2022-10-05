@@ -17,7 +17,11 @@ export default function Homework() {
 
   const { selDiary, setSelDiary } = useData();
   const { teacher, students, classroom, getDiaryById } = useTeacherFetch();
-  const { homework } = useHomeworkFetch(teacher?.schoolId, teacher?.classId, id)
+  const { homework } = useHomeworkFetch(
+    teacher?.schoolId,
+    teacher?.classId,
+    id
+  );
   const { diaries } = useStudentFetch();
 
   const [percent, setPercent] = useState(0);
@@ -35,7 +39,6 @@ export default function Homework() {
       let d = getDiaryById(id);
       d && setSelDiary(d);
     }
-    
   }, [id, teacher, selDiary, setSelDiary, getDiaryById]);
 
   const getOverDue = () => {
@@ -55,8 +58,6 @@ export default function Homework() {
     setPercent(perc);
   };
 
-  console.log(selDiary)
-
   return (
     <AuthGuard>
       <main className="min-h-[95vh] py-20">
@@ -65,13 +66,13 @@ export default function Homework() {
             {!classroom?.name && (
               <span className="bg-gray-300 animate-pulse rounded w-10 h-5"></span>
             )}
-            <p className="font-bold text-xl font-nexa">
+            <p className="font-bold text-xl font-nexa text-emma-700">
               {classroom?.name}{" "}
-              <span className="text-gray-500 font-medium">Homework</span>
+              <span className="text-emma-500 font-medium">Homework</span>
             </p>
           </div>
           <div className="my-6">
-            <CirclesCardHomework data={selDiary}/>
+            <CirclesCardHomework color="teal" data={selDiary} instr />
           </div>
           <div className="my-6">
             <SectionHomeStudents id={id} />

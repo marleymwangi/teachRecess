@@ -15,11 +15,12 @@ export default function Homework() {
             {!classroom?.name && (
               <span className="bg-gray-300 animate-pulse rounded w-10 h-5"></span>
             )}
-            <p className="font-bold text-xl font-nexa">
+            <p className="font-bold text-xl font-nexa text-emma-700">
               {classroom?.name}{" "}
-              <span className="text-gray-500 font-medium">Homework</span>
+              <span className="text-emma-500 font-medium">Homework</span>
             </p>
           </div>
+          <p>Homework Status</p>
           <div className="my-6 grid gap-4">
             {diaries.map((d, i) => (
               <CirclesCardHomework key={d.id} index={i} data={d} />

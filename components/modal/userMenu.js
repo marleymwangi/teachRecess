@@ -25,12 +25,12 @@ export default function ModalUser() {
             <p className="text-lg text-gray-400">User Options</p>
             <label
               htmlFor="user_modal"
-              className="btn btn-sm btn-secondary btn-outline btn-circle"
+              className="btn btn-sm btn-primary btn-outline btn-circle"
             >
               ✕
             </label>
           </div>
-          <div className="grid gap-4 w-full text-center text-secondary font-poppins">
+          <div className="grid gap-4 w-full text-center text-emma-500 font-poppins">
             <div className="btn btn-lg text-base btn-ghost bg-gray-100 btn-secondary gap-2">
               <HiBell size="1.25em" />
               <p>Notifications</p>

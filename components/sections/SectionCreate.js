@@ -6,7 +6,7 @@ export default function SectionCreate() {
   const router = useRouter();
 
   const handleHomeWorkClick = () => {
-      router.push(`/create/diary`);
+      router.push(`/create/homework`);
   };
 
   const handleRemindersClick = () => {

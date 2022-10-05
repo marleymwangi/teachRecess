@@ -19,13 +19,13 @@ export default function TeacherComment() {
           info
         </span>
         <div className="flex items-center gap-4">
-          <p className=" text-sm font-inter text-emma-500 mt-2 pt-4 p-2 rounded-lg border-2 border-emma-300">
+          <p className=" text-sm font-inter text-emma-700 mt-2 pt-4 p-2 rounded-lg border-2 border-emma-300">
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. A suscipit
             voluptates omnis, qui provident velit.
           </p>
         </div>
         <div className="flex flex-wrap justify-end items-center mt-2">
-          <span className="text-emma-200 capitalize text-xs font-poppins whitespace-nowrap">
+          <span className="text-emma-400 font-light capitalize text-xs font-poppins whitespace-nowrap">
             Today
           </span>
         </div>

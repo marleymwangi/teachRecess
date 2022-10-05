@@ -2,7 +2,6 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { useSession } from "next-auth/react";
 //hooks
 import useChatroomFetch from "../../helpers/hooks/chatroom/chatroom";
 //custom
@@ -11,7 +10,6 @@ import { useData } from "../../context/dataContext";
 import Message from "../../components/chats/message";
 import { AuthGuard } from "../../components/elements/authGuard";
 import useChatroomsFetch from "../../helpers/hooks/chatroom/chatrooms";
-
 //dynamic
 const IoSend = dynamic(async () => (await import("react-icons/io5")).IoSend);
 

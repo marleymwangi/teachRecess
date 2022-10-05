@@ -9,7 +9,7 @@ export default function Welcome() {
   const router = useRouter();
 
   useEffect(()=>{
-    if(session) router.push("/")
+    //if(session) router.push("/")
   },[session])
   
   return (

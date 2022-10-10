@@ -2,30 +2,30 @@ import { motion } from "framer-motion";
 //custom
 import { classNames } from "../../../helpers/utility";
 
-export default function CraftForm({
-  selDiary,
+export default function ExerForm({
+  selHomework,
   change,
-  project,
-  setProject,
-  materials,
-  setMaterials,
+  book,
+  setBook,
+  pages,
+  setPages,
 }) {
   return (
     <>
       <motion.div variants={riseVar} className="form-control w-full">
         <label className="label">
-          <span className="label-text text-emma-500">Project Name</span>
+          <span className="label-text text-emma-500">Book Name</span>
         </label>
         <input
           type="text"
-          placeholder={selDiary?.project ? selDiary.project : "Project Name"}
-          onChange={(event) => change(event, setProject)}
+          placeholder={selHomework?.book ? selHomework.book : "Book Name"}
+          onChange={(event) => change(event, setBook)}
           className={classNames(
             "input input-primary w-full input-bordered focus:bg-white focus:border-2",
-            project?.state === "error" && "input-error"
+            book?.state === "error" && "input-error"
           )}
         />
-        {project?.state === "error" && (
+        {book?.state === "error" && (
           <p className="text-error text-xs italic text-center mt-1">
             Please fill out the field with a valid input
           </p>
@@ -33,20 +33,18 @@ export default function CraftForm({
       </motion.div>
       <motion.div variants={riseVar} className="form-control w-full">
         <label className="label">
-          <span className="label-text text-emma-500">Materials</span>
+          <span className="label-text text-emma-500">Pages</span>
         </label>
-        <textarea
+        <input
           type="text"
-          placeholder={
-            selDiary?.materials ? selDiary.materials : "Sticks, Rope, etc."
-          }
-          onChange={(event) => change(event, setMaterials)}
+          placeholder={selHomework?.page ? selHomework.page : "22, 24, 25"}
+          onChange={(event) => change(event, setPages)}
           className={classNames(
             "input input-primary w-full input-bordered focus:bg-white focus:border-2",
-            materials?.state === "error" && "input-error"
+            pages?.state === "error" && "input-error"
           )}
         />
-        {materials?.state === "error" && (
+        {pages?.state === "error" && (
           <p className="text-error text-xs italic text-center mt-1">
             Please fill out the field with a valid input
           </p>

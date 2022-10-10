@@ -1,16 +1,17 @@
+import Router from "next/router";
 import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 //hooks
+import { useData } from "../../../context/dataContext";
 import useTeacherFetch from "../../../helpers/hooks/teacher";
 //custom
-import ExerForm from "./exerForm";
-import CraftForm from "./craftForm";
-import { useData } from "../../../context/dataContext";
+import ExerForm from "./ExerForm";
+import CraftForm from "./CraftForm";
 import { classNames, isEmpty } from "../../../helpers/utility";
 import TimeSpanPickerInput from "../../../components/elements/timeSpanPickerInput";
 
 export default function CreateHomework() {
-  const { selHomework, SetAlert } = useData();
+  const { selHomeworkMode, selHomework, SetAlert } = useData();
   const { updateHomeworkInfo } = useTeacherFetch();
   const [loading, setLoading] = useState(false);
   //form data
@@ -118,7 +119,7 @@ export default function CreateHomework() {
 
   const handleData = async (e) => {
     e.preventDefault();
-    if (isValidated()) {
+    if (isValidated() || selHomeworkMode === "edit") {
       setLoading(true);
       //validate()
       let obj = {};
@@ -142,6 +143,7 @@ export default function CreateHomework() {
             type: "success",
             message: "Saved Successfully",
           });
+          Router.push("/homework/homework");
         })
         .catch((err) => {
           console.log(err);
@@ -191,14 +193,19 @@ export default function CreateHomework() {
 
   return (
     <main className="py-16 px-4">
-      <motion.div variants={FormContVar} className="grid text-emma-700">
+      <motion.div
+        variants={FormContVar}
+        className="grid max-w-lg mx-auto text-emma-700"
+      >
         <motion.div variants={FormContVar} className="grid gap-6 grid-cols-1">
           <motion.div variants={riseVar} className="form-control w-full">
             <label className="label">
               <span className="label-text text-emma-500">Subject</span>
             </label>
             <select
-              defaultValue={"default"}
+              defaultValue={
+                selHomeworkMode === "edit" ? selHomework?.subject : "default"
+              }
               onChange={(event) => change(event, setSubject, "sel")}
               className={classNames(
                 "select w-full",
@@ -227,7 +234,9 @@ export default function CreateHomework() {
               <span className="label-text text-emma-500">Homework Type</span>
             </label>
             <select
-              defaultValue={"default"}
+              defaultValue={
+                selHomeworkMode === "edit" ? selHomework?.type : "default"
+              }
               onChange={(event) => change(event, setType, "sel")}
               className={classNames(
                 "select w-full",
@@ -248,38 +257,27 @@ export default function CreateHomework() {
               </p>
             )}
           </motion.div>
-          <AnimatePresence>
-            {type.data !== "exer" && type.data !== "craft" && (
-              <div
-                key="_"
-                className="grid place-content-center w-full min-h-[190px]"
-              >
-                <p
-                  className={classNames(
-                    "text-center",
-                    type.state === "error" && "text-error"
-                  )}
-                >
-                  Select Homework Type
-                </p>
-              </div>
-            )}
-            {type.data
-              ? type.data === "exer" && (
+          {selHomeworkMode === "add" && (
+            <>
+              <AnimatePresence>
+                {type.data !== "exer" && type.data !== "craft" && (
+                  <div
+                    key="_"
+                    className="grid place-content-center w-full min-h-[190px]"
+                  >
+                    <p
+                      className={classNames(
+                        "text-center",
+                        type.state === "error" && "text-error"
+                      )}
+                    >
+                      Select Homework Type
+                    </p>
+                  </div>
+                )}
+                {type?.data === "exer" && (
                   <ExerForm
                     key="exe"
-                    selHomework={selHomework}
-                    change={change}
-                    book={book}
-                    setBook={setBook}
-                    pages={pages}
-                    setPages={setPages}
-                  />
-                )
-              : selHomework?.type === "exer" && (
-                  <ExerForm
-                    key="exe"
-                    selHomework={selHomework}
                     change={change}
                     book={book}
                     setBook={setBook}
@@ -287,33 +285,71 @@ export default function CreateHomework() {
                     setPages={setPages}
                   />
                 )}
-            {type?.data === "craft" ? (
-              <CraftForm
-                key="cra"
-                change={change}
-                project={project}
-                setProject={setProject}
-                materials={materials}
-                setMaterials={setMaterials}
-              />
-            ) : (
-              selHomework?.type === "craft" && (
-                <CraftForm
-                  key="cra"
-                  selHomework={selHomework}
-                  change={change}
-                  project={project}
-                  setProject={setProject}
-                  materials={materials}
-                  setMaterials={setMaterials}
-                />
-              )
-            )}
-          </AnimatePresence>
-          {type.state === "error" && (
-            <p className="text-error text-xs italic text-center mt-1">
-              Please select an option.
-            </p>
+                {type?.data === "craft" && (
+                  <CraftForm
+                    key="cra"
+                    change={change}
+                    project={project}
+                    setProject={setProject}
+                    materials={materials}
+                    setMaterials={setMaterials}
+                  />
+                )}
+              </AnimatePresence>
+              {type.state === "error" && (
+                <p className="text-error text-xs italic text-center mt-1">
+                  Please select an option.
+                </p>
+              )}
+            </>
+          )}
+          {selHomeworkMode === "edit" && (
+            <>
+              <AnimatePresence>
+                {selHomework.type !== "exer" && selHomework.type !== "craft" && (
+                  <div
+                    key="_"
+                    className="grid place-content-center w-full min-h-[190px]"
+                  >
+                    <p
+                      className={classNames(
+                        "text-center",
+                        type.state === "error" && "text-error"
+                      )}
+                    >
+                      Select Homework Type
+                    </p>
+                  </div>
+                )}
+                {(selHomework?.type === "exer" || type?.data === "exer") && (
+                  <ExerForm
+                    key="exe"
+                    book={book}
+                    pages={pages}
+                    change={change}
+                    setBook={setBook}
+                    setPages={setPages}
+                    selHomework={selHomework}
+                  />
+                )}
+                {(selHomework?.type === "craft" || type?.data === "craft") && (
+                  <CraftForm
+                    key="cra"
+                    change={change}
+                    project={project}
+                    materials={materials}
+                    setProject={setProject}
+                    setMaterials={setMaterials}
+                    selHomework={selHomework}
+                  />
+                )}
+              </AnimatePresence>
+              {(selHomework?.type?.length < 1 && type.state === "error") && (
+                <p className="text-error text-xs italic text-center mt-1">
+                  Please select an option.
+                </p>
+              )}
+            </>
           )}
           <motion.div variants={riseVar} className="form-control w-full">
             <label className="label">
@@ -353,7 +389,7 @@ export default function CreateHomework() {
               <button
                 onClick={handleData}
                 className={classNames(
-                  "btn btn-primary border-0 btn-lg rounded-xl w-full md:w-1/3 ",
+                  "btn btn-primary border-0 btn-lg rounded-xl w-full md:max-w-md mx-auto ",
                   loading && "loading"
                 )}
               >

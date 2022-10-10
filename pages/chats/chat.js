@@ -7,7 +7,7 @@ import useChatroomFetch from "../../helpers/hooks/chatroom/chatroom";
 //custom
 import { isEmpty } from "../../helpers/utility";
 import { useData } from "../../context/dataContext";
-import Message from "../../components/chats/message";
+import Message from "../../components/chats/Message";
 import { AuthGuard } from "../../components/elements/authGuard";
 import useChatroomsFetch from "../../helpers/hooks/chatroom/chatrooms";
 //dynamic

@@ -5,8 +5,8 @@ import Alerts from "../components/elements/alerts";
 import TopNavbar from "../components/navbar/topNavbar";
 import BottomNavbar from "../components/navbar/bottomNavbar";
 import Modals from "../components/modal";
-import Banner from "../components/elements/banner";
-import CookieAlert from "../components/elements/cookies";
+import Banner from "../components/elements/Banner";
+import CookieAlert from "../components/elements/Cookies";
 //dynamic
 const HiOutlineInformationCircle = dynamic(
   async () => (await import("react-icons/hi")).HiOutlineInformationCircle

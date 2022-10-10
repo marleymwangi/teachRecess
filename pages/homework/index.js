@@ -7,35 +7,42 @@ import { isEmpty } from "../../helpers/utility";
 import { useData } from "../../context/dataContext";
 import { AuthGuard } from "../../components/elements/authGuard";
 import RadialProgress from "../../components/elements/RadialProgress";
-import CirclesCardHomework from "../../components/cards/CirclesCardHomework";
 import SectionHomeStudents from "../../components/sections/SectionHomeStudents";
+import TriaCardHomeWork from "../../components/cards/SquareCardHomeWork";
+import useHomeworkFetch from "../../helpers/hooks/homework/homework";
 
 export default function Homework() {
   const router = useRouter();
   const { id } = router.query;
 
   const { selHomework, setSelHomework } = useData();
-  const { teacher, students, classroom, getHomeworkById, getStudentsHomeworks } =
-    useTeacherFetch();
+  const {
+    teacher,
+    students,
+    classroom,
+    getHomeworkById,
+    getStudentsHomeworks,
+  } = useTeacherFetch();
+  const { homework } = useHomeworkFetch(teacher?.schoolId, teacher?.classId, id);
 
-  const [hmwrk, setHmwrk] = useState([]);
+  const [hmwrks, setHmwrks] = useState([]);
   const [percent, setPercent] = useState(0);
   const [over, setOver] = useState(0);
 
   useEffect(() => {
     if (students?.length > 0) {
       getStudentsHomeworks(id).then((res) => {
-        setHmwrk(res);
+        setHmwrks(res);
       });
     }
   }, [id, students]);
 
   useEffect(() => {
-    if (hmwrk?.length > 0) {
-      getOverDue(hmwrk);
+    if (hmwrks?.length > 0) {
+      getOverDue();
       getCompletePercentage();
     }
-  }, [hmwrk]);
+  }, [hmwrks]);
 
   useEffect(() => {
     if (id?.length > 0 && isEmpty(selHomework)) {
@@ -45,7 +52,7 @@ export default function Homework() {
   }, [id, teacher, selHomework, setSelHomework, getHomeworkById]);
 
   const getOverDue = () => {
-    let tmp = hmwrk.filter((diary) => diary.overdue === true);
+    let tmp = hmwrks.filter((diary) => diary.overdue === true);
     setOver(tmp.length);
   };
 
@@ -56,8 +63,8 @@ export default function Homework() {
   };
 
   const getCompletePercentage = () => {
-    let comp = hmwrk.filter((diary) => diary.complete === true);
-    let perc = getPercentage(comp.length, hmwrk.length);
+    let comp = hmwrks.filter((diary) => diary.complete === true);
+    let perc = getPercentage(comp.length, hmwrks.length);
     setPercent(perc);
   };
 
@@ -91,10 +98,10 @@ export default function Homework() {
             </div>
           </div>
           <div className="my-6">
-            <CirclesCardHomework color="emma" data={selHomework} instr />
+            <TriaCardHomeWork data={homework} instr />
           </div>
           <div className="my-6">
-            <SectionHomeStudents list={hmwrk}/>
+            <SectionHomeStudents list={hmwrks} />
           </div>
         </section>
       </main>

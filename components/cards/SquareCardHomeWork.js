@@ -2,10 +2,9 @@ import Router from "next/router";
 import dynamic from "next/dynamic";
 import { useState, useEffect } from "react";
 //hooks
-import { useData } from "../../context/dataContext";
 import useHomeworkFetch from "../../helpers/hooks/homework/homework";
 //custom
-import CirclesCard from "./CirclesCard";
+import SquareCard from "./SquareCard";
 import ImageLoader from "../elements/imageLoader";
 import { formatSubjectNames, isEmpty, classNames } from "../../helpers/utility";
 //dynamic
@@ -13,18 +12,15 @@ const HiDotsVertical = dynamic(
   async () => (await import("react-icons/hi")).HiDotsVertical
 );
 
-export default function CirclesCardHomework({ data, index, color, instr }) {
-  let colors = ["emma", "teal", "cyan"];
+export default function TriaCardHomeWork({ data, index, instr }) {
   return (
-    <CirclesCard
-      color={color || colors[index % colors.length]}
+    <SquareCard
       content={<Homework data={data} index={index} instr={instr} />}
     />
   );
 }
 
 const Homework = ({ data, index, instr }) => {
-  const { setSelHomework } = useData();
   const [time, setTime] = useState();
   const { getTimeFormatted } = useHomeworkFetch();
 
@@ -124,12 +120,11 @@ const Homework = ({ data, index, instr }) => {
     return sub?.image || "";
   };
 
-  const handleSelect = () => {
-    setSelHomework(data);
-  }
-
   return (
-    <div className="relative z-10 p-6 font-medium">
+    <div
+      onClick={handleHomeWorkClick}
+      className="relative z-10 p-6 font-medium flex flex-col justify-around"
+    >
       <div className="flex justify-around">
         <div className="flex text-white items-center gap-4">
           <div
@@ -150,61 +145,54 @@ const Homework = ({ data, index, instr }) => {
           </p>
         </div>
         <label
-          onClick={handleSelect}
           htmlFor="homework_modal"
           className="btn btn-circle btn-ghost modal-button"
         >
           <HiDotsVertical size="1.5em" />
         </label>
       </div>
-      <div onClick={handleHomeWorkClick}>
-        <div className="text-center grid grid-cols-2 mt-4">
-          <div className="grid">
-            <p className={classNames("text-xs", getTextLight())}>
-              {data?.type === "exer" && "Book"}
-              {data?.type === "craft" && "Project"}
-            </p>
-            <p className={classNames("text-sm", getTextDark())}>
-              {data?.type === "exer" && data?.book}
-              {data?.type === "craft" && data?.project}
-            </p>
-          </div>
-          <div className="grid">
-            <p className={classNames("text-xs", getTextLight())}>
-              {data?.type === "exer" && "Page(s)"}
-              {data?.type === "craft" && "Materials"}
-            </p>
-            <p className={classNames("text-sm", getTextDark())}>
-              {data?.type === "exer" && data?.pages}
-              {data?.type === "craft" && data?.materials}
-            </p>
-          </div>
+      <div className="text-center grid grid-cols-2 mt-4">
+        <div className="grid">
+          <p className={classNames("text-xs", getTextLight())}>
+            {data?.type === "exer" && "Book"}
+            {data?.type === "craft" && "Project"}
+          </p>
+          <p className={classNames("text-sm", getTextDark())}>
+            {data?.type === "exer" && data?.book}
+            {data?.type === "craft" && data?.project}
+          </p>
         </div>
-        {instr && (
-          <div className="mt-2 text-center">
-            <p className={classNames("text-xs", getTextLight())}>
-              Instructions
-            </p>
-            <p className={classNames("text-sm", getTextDark())}>
-              {data?.instructions}
-            </p>
-          </div>
-        )}
-        <div className="mt-4 text-center grid place-content-center gap-2 xxs:grid-cols-3">
-          <div>
-            <p className={classNames("text-xs", getTextLight())}>Issued On</p>
-            <p className={classNames("text-sm", getTextDark())}>
-              {time?.issued}
-            </p>
-          </div>
-          <div>
-            <p className={classNames("text-xs", getTextLight())}>Time Left</p>
-            <p className={classNames("text-sm", getTextDark())}>{time?.left}</p>
-          </div>
-          <div>
-            <p className={classNames("text-xs", getTextLight())}>Due On</p>
-            <p className={classNames("text-sm", getTextDark())}>{time?.due}</p>
-          </div>
+        <div className="grid">
+          <p className={classNames("text-xs", getTextLight())}>
+            {data?.type === "exer" && "Page(s)"}
+            {data?.type === "craft" && "Materials"}
+          </p>
+          <p className={classNames("text-sm", getTextDark())}>
+            {data?.type === "exer" && data?.pages}
+            {data?.type === "craft" && data?.materials}
+          </p>
+        </div>
+      </div>
+      {instr && (
+        <div className="mt-2 text-center">
+          <p className={classNames("text-xs", getTextLight())}>Instructions</p>
+          <p className={classNames("text-sm", getTextDark())}>
+            {data?.instructions}
+          </p>
+        </div>
+      )}
+      <div className="mt-4 text-center grid place-content-center gap-2 xxs:grid-cols-3">
+        <div>
+          <p className={classNames("text-xs", getTextLight())}>Issued On</p>
+          <p className={classNames("text-sm", getTextDark())}>{time?.issued}</p>
+        </div>
+        <div>
+          <p className={classNames("text-xs", getTextLight())}>Time Left</p>
+          <p className={classNames("text-sm", getTextDark())}>{time?.left}</p>
+        </div>
+        <div>
+          <p className={classNames("text-xs", getTextLight())}>Due On</p>
+          <p className={classNames("text-sm", getTextDark())}>{time?.due}</p>
         </div>
       </div>
     </div>

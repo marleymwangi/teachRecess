@@ -8,6 +8,7 @@ import {
   addDoc,
   setDoc,
   getDoc,
+  deleteDoc,
   collection,
   onSnapshot,
 } from "@firebase/firestore";
@@ -335,7 +336,7 @@ const useTeacherFetch = () => {
     });
   }
 
-  async function removeHomeworkInfo(data) {
+  async function removeHomework(data) {
     return new Promise(async (resolve, reject) => {
       try {
         if (teacher?.schoolId?.length < 1 || teacher?.classId?.length < 1) {
@@ -604,7 +605,7 @@ const useTeacherFetch = () => {
     updateHomeworkInfo,
     updateDiaryInfo,
     updateReminderInfo,
-    removeHomeworkInfo,
+    removeHomework,
     removeReminderInfo,
     getStudentsHomeworks,
   };

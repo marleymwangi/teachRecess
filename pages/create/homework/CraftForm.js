@@ -2,30 +2,30 @@ import { motion } from "framer-motion";
 //custom
 import { classNames } from "../../../helpers/utility";
 
-export default function ExerForm({
-  selDiary,
+export default function CraftForm({
+  selHomework,
   change,
-  book,
-  setBook,
-  pages,
-  setPages,
+  project,
+  setProject,
+  materials,
+  setMaterials,
 }) {
   return (
     <>
       <motion.div variants={riseVar} className="form-control w-full">
         <label className="label">
-          <span className="label-text text-emma-500">Book Name</span>
+          <span className="label-text text-emma-500">Project Name</span>
         </label>
         <input
           type="text"
-          placeholder={selDiary?.book ? selDiary.book : "Book Name"}
-          onChange={(event) => change(event, setBook)}
+          placeholder={selHomework?.project || "Project Name"}
+          onChange={(event) => change(event, setProject)}
           className={classNames(
             "input input-primary w-full input-bordered focus:bg-white focus:border-2",
-            book?.state === "error" && "input-error"
+            project?.state === "error" && "input-error"
           )}
         />
-        {book?.state === "error" && (
+        {project?.state === "error" && (
           <p className="text-error text-xs italic text-center mt-1">
             Please fill out the field with a valid input
           </p>
@@ -33,18 +33,18 @@ export default function ExerForm({
       </motion.div>
       <motion.div variants={riseVar} className="form-control w-full">
         <label className="label">
-          <span className="label-text text-emma-500">Pages</span>
+          <span className="label-text text-emma-500">Materials</span>
         </label>
-        <input
+        <textarea
           type="text"
-          placeholder={selDiary?.page ? selDiary.page : "22, 24, 25"}
-          onChange={(event) => change(event, setPages)}
+          placeholder={selHomework?.materials || "Sticks, Rope, etc."}
+          onChange={(event) => change(event, setMaterials)}
           className={classNames(
             "input input-primary w-full input-bordered focus:bg-white focus:border-2",
-            pages?.state === "error" && "input-error"
+            materials?.state === "error" && "input-error"
           )}
         />
-        {pages?.state === "error" && (
+        {materials?.state === "error" && (
           <p className="text-error text-xs italic text-center mt-1">
             Please fill out the field with a valid input
           </p>

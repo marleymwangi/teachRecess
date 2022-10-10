@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 //hooks
 import useChatroomsFetch from "../../helpers/hooks/chatroom/chatrooms";
 //custom
-import ChatRoom from "../../components/chats/chatroom";
+import ChatRoom from "../../components/chats/Chatroom";
 import { AuthGuard } from "../../components/elements/authGuard";
 //dynamic
 const SiGooglemessages = dynamic(async () => (await import("react-icons/si")).SiGooglemessages);

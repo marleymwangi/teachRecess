@@ -149,19 +149,6 @@ function useProvideData() {
     });
   }
 
-  async function updateChildInfo(id, info) {
-    return new Promise(async (resolve, reject) => {
-      try {
-        let docRef = doc(db, `students/${id}`);
-        updateDoc(docRef, info).then((res) => {
-          resolve("success");
-        });
-      } catch (error) {
-        reject(error);
-      }
-    });
-  }
-
   async function uploadChildPicture(selectedFile) {
     return new Promise(async (resolve, reject) => {
       try {

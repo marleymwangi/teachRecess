@@ -1,5 +1,5 @@
 //custom
-import HomeworkStudent from "../cards/HomeworkStudent";
+import HomeworkStudent from "../child/HomeworkStudent";
 
 export default function SectionHomeStudents({ list }) {
   return (

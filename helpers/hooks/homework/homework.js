@@ -26,21 +26,31 @@ import {
 } from "date-fns";
 import { db } from "../../../firebase";
 //custom
-import { isEmpty } from "../../utility";
 import { useData } from "../../../context/dataContext";
 
 const useHomeworkFetch = (schId, clsId, id) => {
-  const { selDiary } = useData();
+  const { selHomework } = useData();
 
-  const [homework, setHomework] = useState([]);
+  const [homework, setHomework] = useState(selHomework);
   const [homepending, setHomePending] = useState(true);
   const [homeError, setHomeError] = useState(null);
-  const [time, setTime] = useState(null);
 
   useEffect(() => {
     try {
-      if (schId?.length > 0 && clsId?.length > 0) {
-        let docRef = doc(db, "schools", schId, "classes", clsId, "diaries", id);
+      if (
+        schId?.length > 0 &&
+        clsId?.length > 0 &&
+        id?.length > 0
+      ) {
+        let docRef = doc(
+          db,
+          "schools",
+          schId,
+          "classes",
+          clsId,
+          "homeworks",
+          id
+        );
 
         return onSnapshot(docRef, (doc) => {
           if (doc.exists()) {
@@ -67,6 +77,8 @@ const useHomeworkFetch = (schId, clsId, id) => {
           throw "Invalid selected school id";
         } else if (clsId?.length < 1) {
           throw "Invalid selected class id";
+        } else if (id?.length < 1) {
+          throw "Missing homework id";
         }
       }
     } catch (error) {
@@ -74,43 +86,7 @@ const useHomeworkFetch = (schId, clsId, id) => {
       setHomeError(error);
       setHomePending(false);
     }
-  }, [schId, clsId]);
-
-  async function getStudentDiary(student, id) {
-    return new Promise(async (resolve, reject) => {
-      try {
-        if (student < 1) {
-          throw "Invalid student id";
-        } else if (id < 1) {
-          throw "Invalid diary id";
-        } else {
-          let docRef = doc(db, "students", student, "diaries", id);
-
-          getDoc(docRef).then((docSnap) => {
-            if (docSnap.exists()) {
-              let timestm = docSnap.data().timestamp.toDate();
-              let timedue = docSnap.data().due.toDate();
-              let complete = docSnap.data().complete || false;
-              let overdue = !complete && isAfter(new Date(), timedue);
-              let data = {
-                id: docSnap.id,
-                ...docSnap.data(),
-                timestamp: timestm,
-                due: timedue,
-                overdue,
-                complete,
-              };
-              resolve(data);
-            } else {
-              reject("Not found");
-            }
-          });
-        }
-      } catch (error) {
-        reject(error);
-      }
-    });
-  }
+  }, [schId, clsId, id]);
 
   const getTimeFormatted = (stmp, due) => {
     if (!(stmp instanceof Date)) {
@@ -131,6 +107,7 @@ const useHomeworkFetch = (schId, clsId, id) => {
         left: "",
         due: "",
       };
+      console.log(stmp)
 
       if (isAfter(new Date(), due)) {
         tmp.left = "Past Due";
@@ -148,6 +125,7 @@ const useHomeworkFetch = (schId, clsId, id) => {
         } else {
           if (issuedtoday) tmp.issued = "Today";
           if (issuedYesterDay) tmp.issued = "Yesterday";
+          console.log(stmp.toLocaleDateString())
           tmp.issued = format(stmp, "io iii");
         }
       }
@@ -172,8 +150,6 @@ const useHomeworkFetch = (schId, clsId, id) => {
     homework,
     homepending,
     homeError,
-    time,
-    getStudentDiary,
     getTimeFormatted,
   };
 };

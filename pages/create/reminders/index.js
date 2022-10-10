@@ -128,7 +128,10 @@ export default function CreateReminder() {
 
   return (
     <main className="py-16 px-4">
-      <motion.div variants={FormContVar} className="grid text-emma-700">
+      <motion.div
+        variants={FormContVar}
+        className="grid max-w-lg mx-auto text-emma-700"
+      >
         <motion.div variants={FormContVar} className="grid gap-6 grid-cols-1">
           <motion.div variants={riseVar} className="form-control w-full">
             <label className="label">
@@ -243,7 +246,7 @@ export default function CreateReminder() {
               <button
                 onClick={handleData}
                 className={classNames(
-                  "btn btn-primary border-0 btn-lg rounded-xl w-full md:w-1/3 ",
+                  "btn btn-primary border-0 btn-lg rounded-xl w-full md:max-w-md mx-auto ",
                   loading && "loading"
                 )}
               >

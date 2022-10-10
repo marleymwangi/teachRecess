@@ -29,16 +29,21 @@ import {
 import { db } from "../../../firebase";
 //custom
 
-const useCalendarFetch = (schId, clsId, currentWeek) => {
+const useCalendarFetch = (schId, clsId, currentWeek, selectedDay) => {
   const [homeworks, setHomeworks] = useState([]);
   const [schReminders, setSchReminders] = useState([]);
   const [clsReminders, setClsReminders] = useState([]);
+  const [diaries, setDiaries] = useState([]);
+
   const [homeworksPending, setHomeworksPending] = useState(true);
   const [schRemindersPending, setSchRemindersPending] = useState(true);
   const [clsRemindersPending, setClsRemindersPending] = useState(true);
+  const [diariesPending, setDiariesPending] = useState(true);
+
   const [homeworksError, setHomeworksError] = useState(null);
   const [schRemindersError, setSchRemindersError] = useState(null);
   const [clsRemindersError, setClsRemindersError] = useState(null);
+  const [diariesError, setDiariesError] = useState(null);
 
   let start = startOfWeek(currentWeek, { weekStartsOn: 1 });
   let end = endOfWeek(currentWeek, {
@@ -47,7 +52,12 @@ const useCalendarFetch = (schId, clsId, currentWeek) => {
 
   useEffect(() => {
     try {
-      if (schId?.length > 0 && clsId?.length > 0) {
+      if (
+        schId?.length > 0 &&
+        clsId?.length > 0 &&
+        start instanceof Date &&
+        end instanceof Date
+      ) {
         let homeRef = collection(
           db,
           "schools",
@@ -98,7 +108,7 @@ const useCalendarFetch = (schId, clsId, currentWeek) => {
 
   useEffect(() => {
     try {
-      if (schId?.length > 0) {
+      if (schId?.length > 0 && start instanceof Date && end instanceof Date) {
         let homeRef = collection(db, "schools", schId, "reminders");
 
         let queryRef = query(
@@ -121,8 +131,6 @@ const useCalendarFetch = (schId, clsId, currentWeek) => {
             tmp.push(rem);
           });
 
-          console.log(start);
-          console.log(end);
           setSchReminders(tmp);
           setSchRemindersPending(false);
         });
@@ -140,7 +148,12 @@ const useCalendarFetch = (schId, clsId, currentWeek) => {
 
   useEffect(() => {
     try {
-      if (schId?.length > 0 && clsId?.length > 0) {
+      if (
+        schId?.length > 0 &&
+        clsId?.length > 0 &&
+        start instanceof Date &&
+        end instanceof Date
+      ) {
         let homeRef = collection(
           db,
           "schools",
@@ -186,6 +199,60 @@ const useCalendarFetch = (schId, clsId, currentWeek) => {
       setClsRemindersPending(false);
     }
   }, [schId, clsId, currentWeek]);
+
+  useEffect(() => {
+    try {
+      if (
+        schId?.length > 0 &&
+        clsId?.length > 0 &&
+        start instanceof Date &&
+        end instanceof Date
+      ) {
+        let diaryRef = collection(
+          db,
+          "schools",
+          schId,
+          "classes",
+          clsId,
+          "diaries"
+        );
+
+        let queryRef = query(
+          diaryRef,
+          where("timestamp", ">=", start),
+          where("timestamp", "<=", end),
+          orderBy("timestamp", "desc")
+        );
+
+        return onSnapshot(queryRef, (snapshot) => {
+          let tmp = [];
+          snapshot.forEach((doc) => {
+            let timestm = doc.data().timestamp.toDate();
+            let dia = {
+              id: doc.id,
+              ...doc.data(),
+              timestamp: timestm,
+            };
+
+            tmp.push(dia);
+          });
+
+          setDiaries(tmp);
+          setDiariesPending(false);
+        });
+      } else {
+        if (schId?.length < 1) {
+          throw "Missing school Id";
+        } else if (clsId?.length < 1) {
+          throw "missing class Id";
+        }
+      }
+    } catch (error) {
+      console.log("Calendar Hook: getDiaryFromDb useEffect: ", error);
+      setDiariesError(error);
+      setDiariesPending(false);
+    }
+  }, [schId, currentWeek]);
 
   const getTimeFormatted = (stmp, due) => {
     if (!(stmp instanceof Date)) {
@@ -244,14 +311,17 @@ const useCalendarFetch = (schId, clsId, currentWeek) => {
   };
 
   return {
+    diaries,
     homeworks,
     schReminders,
     clsReminders,
 
+    diariesPending,
     homeworksPending,
     schRemindersPending,
     clsRemindersPending,
 
+    diariesError,
     homeworksError,
     schRemindersError,
     clsRemindersError,

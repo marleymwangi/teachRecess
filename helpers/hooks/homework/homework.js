@@ -107,7 +107,6 @@ const useHomeworkFetch = (schId, clsId, id) => {
         left: "",
         due: "",
       };
-      console.log(stmp)
 
       if (isAfter(new Date(), due)) {
         tmp.left = "Past Due";
@@ -125,7 +124,6 @@ const useHomeworkFetch = (schId, clsId, id) => {
         } else {
           if (issuedtoday) tmp.issued = "Today";
           if (issuedYesterDay) tmp.issued = "Yesterday";
-          console.log(stmp.toLocaleDateString())
           tmp.issued = format(stmp, "io iii");
         }
       }

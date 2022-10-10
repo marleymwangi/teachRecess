@@ -11,7 +11,10 @@ const CgArrowRightR = dynamic(
 );
 
 export default function Calendar({
+  diaries,
   homeworks,
+  schReminders,
+  clsReminders,
   nextWeek,
   previousWeek,
   selectedDay,
@@ -55,11 +58,14 @@ export default function Calendar({
       <div className="grid grid-cols-7">
         {mappedDays.map((day) => (
           <Day
-            homeworks={homeworks}
             key={day?.date}
             data={day}
             selectedDay={selectedDay}
             setSelectedDay={setSelectedDay}
+            diaries={diaries}
+            homeworks={homeworks}
+            clsReminders={clsReminders}
+            schReminders={schReminders}
           />
         ))}
       </div>
@@ -67,13 +73,41 @@ export default function Calendar({
   );
 }
 
-function Day({ homeworks, data, selectedDay, setSelectedDay }) {
-  let selectedDayDiaries = homeworks?.filter((hmwrk) => {
-    return (
-      isSameDay(hmwrk.timestamp, data?.date) || isSameDay(hmwrk.due, data?.date)
-    );
-  });
+function Day({
+  diaries,
+  homeworks,
+  schReminders,
+  clsReminders,
+  data,
+  selectedDay,
+  setSelectedDay,
+}) {
+  let selectedDayHomeworks = homeworks?.filter(
+    (hmwrk) =>
+      isSameDay(hmwrk.timestamp, data?.date) ||
+      isSameDay(hmwrk.due, data?.date)
+  );
+
+  let selectedDaySchReminders = schReminders?.filter((rem) =>
+    isSameDay(rem.timestamp, data?.date)
+  );
+
+  let selectedDayClsReminders = clsReminders?.filter((rem) =>
+    isSameDay(rem.timestamp, data?.date)
+  );
+
+  let selectedDayDiary = diaries?.filter((dia) =>
+    isSameDay(dia.timestamp, data?.date)
+  );
+
   let selected = isEqual(data?.date, selectedDay);
+
+  let array = [
+    ...selectedDayHomeworks,
+    ...selectedDaySchReminders,
+    ...selectedDayClsReminders,
+    ...selectedDayDiary,
+  ];
 
   return (
     <div
@@ -86,9 +120,9 @@ function Day({ homeworks, data, selectedDay, setSelectedDay }) {
       <p className="text-3xl font-bold">{format(data.date, "d")}</p>
       <p className="text-xs uppercase">{data.day}</p>
       <div className="flex gap-0.5 justify-center mt-1">
-        {selectedDayDiaries?.length > 0 &&
-          selectedDayDiaries.length <= 5 &&
-          selectedDayDiaries.map((e, i) => (
+        {array?.length > 0 &&
+          array.length <= 5 &&
+          array.map((e, i) => (
             <div
               key={i}
               className={classNames(
@@ -97,7 +131,7 @@ function Day({ homeworks, data, selectedDay, setSelectedDay }) {
               )}
             />
           ))}
-        {selectedDayDiaries?.length > 0 && selectedDayDiaries.length > 5 && (
+        {array?.length > 0 && array.length > 5 && (
           <div
             className={classNames(
               "w-4 h-4 rounded-full -mt-1 bg-emma-200 text-emma-800 text-xs grid place-content-center font-medium",
@@ -106,7 +140,7 @@ function Day({ homeworks, data, selectedDay, setSelectedDay }) {
                 : "bg-emma-500 text-emma-800"
             )}
           >
-            <span className="">{selectedDayDiaries?.length}</span>
+            <span className="">{array?.length}</span>
           </div>
         )}
       </div>

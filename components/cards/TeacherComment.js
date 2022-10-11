@@ -5,7 +5,7 @@ import useTeacherFetch from "../../helpers/hooks/teacher";
 //custom
 import { classNames } from "../../helpers/utility";
 
-export default function TeacherComment() {
+export default function TeacherComment({data}) {
   const { diaries } = useTeacherFetch();
 
   const handleClick = () => {
@@ -13,7 +13,7 @@ export default function TeacherComment() {
       Router.push("/create/diary");
     }
   };
-
+  
   return (
     <div>
       <p className="font-semibold text-emma-800 text-2xl mb-2 font-inter">
@@ -29,21 +29,45 @@ export default function TeacherComment() {
         <span className="absolute shadow-md top-0 left-0 bg-emma-400 py-2 rounded-br-xl font-semibold min-w-[7em] text-center text-xs text-emma-800 uppercase">
           info
         </span>
-        <p
-          className={classNames(
-            "w-full font-medium text-sm font-inter text-center mt-2 py-4 px-2 rounded-lg border-2 border-emma-500",
-            diaries[0]?.content?.length < 1 ? "text-gray-400" : "text-emma-700" 
-          )}
-        >
-          {diaries[0]?.content?.length > 0
-            ? diaries[0].content
-            : "Select to add Today's Comment"}
-        </p>
-        <div className="flex flex-wrap justify-end items-center mt-2">
-          <span className="text-emma-500 font-light capitalize text-xs font-poppins whitespace-nowrap">
-            Today
-          </span>
-        </div>
+        {data ? (
+          <>
+            <p
+              className={classNames(
+                "w-full font-medium text-sm font-inter text-center mt-2 py-4 px-2 rounded-lg border-2 border-emma-500",
+                data?.content?.length > 0 ? "text-emma-700" : "text-gray-400"
+              )}
+            >
+              {data?.content?.length > 0
+                ? data.content
+                : "Select to add Today's Comment"}
+            </p>
+            <div className="flex flex-wrap justify-end items-center mt-2">
+              <span className="text-emma-500 font-light capitalize text-xs font-poppins whitespace-nowrap">
+                Today
+              </span>
+            </div>
+          </>
+        ) : (
+          <>
+            <p
+              className={classNames(
+                "w-full font-medium text-sm font-inter text-center mt-2 py-4 px-2 rounded-lg border-2 border-emma-500",
+                diaries[0]?.content?.length > 0
+                  ? "text-emma-700"
+                  : "text-gray-400"
+              )}
+            >
+              {diaries[0]?.content?.length > 0
+                ? diaries[0].content
+                : "Select to add Today's Comment"}
+            </p>
+            <div className="flex flex-wrap justify-end items-center mt-2">
+              <span className="text-emma-500 font-light capitalize text-xs font-poppins whitespace-nowrap">
+                Today
+              </span>
+            </div>
+          </>
+        )}
       </motion.div>
     </div>
   );

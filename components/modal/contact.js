@@ -17,21 +17,6 @@ export default function ModalContact() {
     }
   }, [students]);
 
-  const getGuardians = (studs) => {
-    let tmp = [];
-    studs.forEach((s) => {
-      let guards = s.guardians;
-      guards.forEach((g) => {
-        if (g !== session?.user?.id)
-          tmp.push({
-            guardian: g,
-            student: s.name,
-          });
-      });
-    });
-    return tmp;
-  };
-
   const mergeGuardiansStudents = (studs) => {
     const result = studs.reduce((acc, curr) => {
       const { name, guardians } = curr;

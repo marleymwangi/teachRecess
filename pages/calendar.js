@@ -107,7 +107,8 @@ export default function CalendarPage() {
           )}
         </section>
         <section className="pt-5 px-4">
-          {selectedDayHomeworks.length > 0 && (
+          {(selectedDaySchReminders.length > 0 ||
+            selectedDayClsReminders.length > 0) && (
             <>
               <p className="font-semibold text-emma-800 text-2xl mb-2 font-inter">
                 {"Reminders"}

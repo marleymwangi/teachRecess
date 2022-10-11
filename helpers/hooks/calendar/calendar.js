@@ -30,6 +30,8 @@ import { db } from "../../../firebase";
 //custom
 
 const useCalendarFetch = (schId, clsId, currentWeek, selectedDay) => {
+  const [homeworksT, setHomeworksT] = useState([]);
+  const [homeworksD, setHomeworksD] = useState([]);
   const [homeworks, setHomeworks] = useState([]);
   const [schReminders, setSchReminders] = useState([]);
   const [clsReminders, setClsReminders] = useState([]);
@@ -49,6 +51,22 @@ const useCalendarFetch = (schId, clsId, currentWeek, selectedDay) => {
   let end = endOfWeek(currentWeek, {
     weekStartsOn: 1,
   });
+
+  useEffect(() => {
+    //merge homeworks
+    const result = homeworksT.reduce((acc, curr) => {
+      const { id } = curr;
+
+      const findObj = acc.find((h) => h.id === id);
+      if (!findObj) {
+        acc.push(curr);
+      }
+
+      return acc;
+    }, []);
+
+    setHomeworks(result);
+  }, [homeworksD, homeworksT]);
 
   useEffect(() => {
     try {
@@ -89,8 +107,7 @@ const useCalendarFetch = (schId, clsId, currentWeek, selectedDay) => {
             tmp.push(hmework);
           });
 
-          setHomeworks(tmp);
-          setHomeworksPending(false);
+          setHomeworksT(tmp);
         });
       } else {
         if (schId?.length < 1) {
@@ -100,9 +117,62 @@ const useCalendarFetch = (schId, clsId, currentWeek, selectedDay) => {
         }
       }
     } catch (error) {
-      console.log("Calendar Hook: getHomeworksFromDb useEffect: ", error);
+      console.log("Calendar Hook: getHomeworksTimestampFromDb useEffect: ", error);
       setHomeworksError(error);
-      setHomeworksPending(false);
+    }
+  }, [schId, clsId, currentWeek]);
+
+  useEffect(() => {
+    try {
+      if (
+        schId?.length > 0 &&
+        clsId?.length > 0 &&
+        start instanceof Date &&
+        end instanceof Date
+      ) {
+        let homeRef = collection(
+          db,
+          "schools",
+          schId,
+          "classes",
+          clsId,
+          "homeworks"
+        );
+
+        let queryRef = query(
+          homeRef,
+          where("due", ">=", start),
+          where("due", "<=", end),
+          orderBy("due", "desc")
+        );
+
+        return onSnapshot(queryRef, (snapshot) => {
+          let tmp = [];
+          snapshot.forEach((doc) => {
+            let timestm = doc.data().timestamp.toDate();
+            let timedue = doc.data().due.toDate();
+            let hmework = {
+              id: doc.id,
+              ...doc.data(),
+              timestamp: timestm,
+              due: timedue,
+            };
+
+            tmp.push(hmework);
+          });
+
+          setHomeworksD(tmp);
+        });
+      } else {
+        if (schId?.length < 1) {
+          throw "Missing school Id";
+        } else if (clsId?.length < 1) {
+          throw "missing class Id";
+        }
+      }
+    } catch (error) {
+      console.log("Calendar Hook: getHomeworksDueFromDb useEffect: ", error);
+      setHomeworksError(error);
     }
   }, [schId, clsId, currentWeek]);
 

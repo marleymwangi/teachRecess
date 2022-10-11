@@ -2,7 +2,7 @@ import { useState } from "react";
 import Link from "next/link";
 //custom
 import { classNames } from "../../helpers/utility";
-import CardWelcome from "../cards/welcome";
+import CardWelcome from "../cards/Welcome";
 
 export default function CarouselWelcome() {
   const [selected, setSelected] = useState(0);

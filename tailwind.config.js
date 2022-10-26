@@ -40,8 +40,8 @@ module.exports = {
     themes: [
       {
         mytheme: {
-          primary: "#46aa9a",
-          "primary-focus": "#409c8d",
+          primary: "#06b6d4",
+          "primary-focus": "#0891b2",
           "primary-content": "#fff",
         },
       },

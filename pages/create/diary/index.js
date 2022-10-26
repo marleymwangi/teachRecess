@@ -105,12 +105,12 @@ export default function CreateDiary() {
     <main className="min-h-[95vh] pt-32 px-4">
       <motion.div
         variants={FormContVar}
-        className="grid max-w-lg mx-auto text-emma-700"
+        className="grid max-w-lg mx-auto text-cyan-700"
       >
         <motion.div variants={FormContVar} className="grid gap-6 grid-cols-1">
           <motion.div variants={riseVar} className="form-control w-full">
             <label className="label mb-5">
-              <span className="label-text text-center w-full font-medium text-lg text-emma-500">
+              <span className="label-text text-center w-full font-medium text-lg text-cyan-500">
                 Diary for the Day
               </span>
             </label>

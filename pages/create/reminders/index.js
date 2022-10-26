@@ -130,12 +130,12 @@ export default function CreateReminder() {
     <main className="py-16 px-4">
       <motion.div
         variants={FormContVar}
-        className="grid max-w-lg mx-auto text-emma-700"
+        className="grid max-w-lg mx-auto text-cyan-700"
       >
         <motion.div variants={FormContVar} className="grid gap-6 grid-cols-1">
           <motion.div variants={riseVar} className="form-control w-full">
             <label className="label">
-              <span className="label-text text-emma-500">Reminder Scope</span>
+              <span className="label-text text-cyan-500">Reminder Scope</span>
             </label>
             <select
               defaultValue={"default"}
@@ -161,7 +161,7 @@ export default function CreateReminder() {
           </motion.div>
           <motion.div variants={riseVar} className="form-control w-full">
             <label className="label">
-              <span className="label-text text-emma-500">Reminder Type</span>
+              <span className="label-text text-cyan-500">Reminder Type</span>
             </label>
             <select
               defaultValue={"default"}
@@ -187,7 +187,7 @@ export default function CreateReminder() {
           </motion.div>
           <motion.div variants={riseVar} className="form-control w-full">
             <label className="label">
-              <span className="label-text text-emma-500">Event Type</span>
+              <span className="label-text text-cyan-500">Event Type</span>
             </label>
             <select
               defaultValue={"default"}
@@ -215,7 +215,7 @@ export default function CreateReminder() {
           </motion.div>
           <motion.div variants={riseVar} className="form-control w-full">
             <label className="label">
-              <span className="label-text text-emma-500">Content</span>
+              <span className="label-text text-cyan-500">Content</span>
             </label>
             <textarea
               type="text"
@@ -235,7 +235,7 @@ export default function CreateReminder() {
             )}
           </motion.div>
           <motion.div variants={riseVar} className="form-control w-full">
-            <p className="text-center mb-2 text-emma-500">Reminder Date</p>
+            <p className="text-center mb-2 text-cyan-500">Reminder Date</p>
             <div className="mx-auto">
               <DatePickerComp
                 selReminder={selReminder}

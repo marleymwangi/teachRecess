@@ -27,13 +27,13 @@ export default function TopNavbar() {
     return null;
   } else {
     return (
-      <nav className="fixed top-0 z-40 border-b border-accent border-opacity-50 bg-base-100 shadow max-w-screen w-full p-1 flex justify-between text-primary">
+      <nav className="fixed top-0 z-40 border-b border-yellow-500 bg-base-100 shadow max-w-screen w-full p-1 flex justify-between text-primary">
         <div onClick={handleBack} className="grid place-content-center">
           <button className="btn btn-circle btn-ghost">
             <BiLeftArrow size={size} />
           </button>
         </div>
-        <div className="grid place-content-center text-emerald-900 font-poppins font-medium capitalize">
+        <div className="grid place-content-center text-primary font-poppins font-medium capitalize">
           <span>
             {router.pathname === "/" ? (
               "home"

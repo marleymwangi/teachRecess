@@ -77,7 +77,7 @@ export default function StudentProfile() {
         <section className="p-6">
           <div className="grid text-center font-poppins">
             <div>
-              <p className="flex gap-2 items-center justify-center text-gray-400 text-sm bg-gray-100 p-2 border border-dashed">
+              <p className="flex gap-2 items-center justify-center text-gray-400 text-sm bg-white p-2 border border-dashed">
                 <FaHandHoldingMedical size="1em" /> <span>Insurance</span>
               </p>
               <p className="text-secondary font-medium text-lg py-2 border border-dashed">
@@ -85,10 +85,10 @@ export default function StudentProfile() {
               </p>
             </div>
             <div className="grid grid-cols-2">
-              <p className="flex gap-2 items-center justify-center text-gray-400 text-sm bg-gray-100 p-2 border border-dashed">
+              <p className="flex gap-2 items-center justify-center text-gray-400 text-sm bg-white p-2 border border-dashed">
                 <FaRegHospital size="1em" /> <span>Prefered Hospital</span>
               </p>
-              <p className="flex gap-2 items-center justify-center text-gray-400 text-sm bg-gray-100 p-2 border border-dashed">
+              <p className="flex gap-2 items-center justify-center text-gray-400 text-sm bg-white p-2 border border-dashed">
                 <FaUserNurse size="1em" /> <span>Prefered Hospital</span>
               </p>
               <p className="text-secondary font-medium text-lg py-2 border border-dashed">
@@ -131,10 +131,10 @@ export default function StudentProfile() {
           </p>
           <div className="grid text-center font-poppins">
             <div className="grid grid-cols-2">
-              <p className="flex gap-2 justify-center items-center text-gray-400 text-sm bg-gray-100 p-2 border border-dashed">
+              <p className="flex gap-2 justify-center items-center text-gray-400 text-sm bg-white p-2 border border-dashed">
                 <GiMedicinePills size="1em" /> <span>Name</span>
               </p>
-              <p className="flex gap-2 items-center justify-center text-gray-400 text-sm bg-gray-100 p-2 border border-dashed">
+              <p className="flex gap-2 items-center justify-center text-gray-400 text-sm bg-white p-2 border border-dashed">
                 <IoMdTimer size="1em" /> <span>Times</span>
               </p>
 
@@ -145,10 +145,10 @@ export default function StudentProfile() {
                 12:00pm
               </p>
 
-              <p className="flex gap-2 items-center justify-center text-gray-400 text-sm bg-gray-100 p-2 border border-dashed">
+              <p className="flex gap-2 items-center justify-center text-gray-400 text-sm bg-white p-2 border border-dashed">
                 <FaTablets size="1em" /> <span>Dosage</span>
               </p>
-              <p className="flex gap-2 items-center justify-center text-gray-400 text-sm bg-gray-100 p-2 border border-dashed">
+              <p className="flex gap-2 items-center justify-center text-gray-400 text-sm bg-white p-2 border border-dashed">
                 <GiMeal size="1em" /> <span>When</span>
               </p>
 

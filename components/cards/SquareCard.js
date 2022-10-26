@@ -10,18 +10,18 @@ export default function SquareCard({ color, content }) {
       case "error":
         return "bg-gradient-to-tr from-red-400 via-red-300 to-red-200";
       default:
-        return "bg-gradient-to-tr from-emma-400 via-emma-300 to-emma-200";
+        return "bg-gradient-to-tr from-cyan-300 via-cyan-200 to-cyan-100";
     }
   };
 
   const getColorDark = () => {
     switch (color) {
       case "complete":
-        return "bg-emerald-400";
+        return "bg-emerald-300";
       case "error":
-        return "bg-red-400";
+        return "bg-red-300";
       default:
-        return "bg-emma-400";
+        return "bg-cyan-300";
     }
   };
 
@@ -32,7 +32,7 @@ export default function SquareCard({ color, content }) {
       case "error":
         return "bg-gradient-to-tl from-red-200 to-red-300";
       default:
-        return "bg-gradient-to-tl from-emma-200 to-emma-300";
+        return "bg-gradient-to-tl from-cyan-200 to-cyan-300";
     }
   };
 
@@ -43,7 +43,7 @@ export default function SquareCard({ color, content }) {
       animate="rest"
       //whileTap="tap"
       className={classNames(
-        "relative min-h-[150px] w-full overflow-hidden transition-all duration-500 ease-in-out",
+        "relative overflow-hidden transition-all duration-500 ease-in-out",
         getColorGradR(color)
       )}
     >

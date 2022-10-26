@@ -43,13 +43,13 @@ export default function Portfolio() {
                   <ImageLoader src={student?.image} />
                 </div>
               </div>
-              {!student?.name && (
+              {!selStudent?.name && (
                 <span className="bg-gray-300 animate-pulse rounded w-10 h-5"></span>
               )}
-              <p className="font-bold text-xl font-nexa">
-                {student?.name || ""}
+              <p className="font-bold text-xl text-cyan-700 font-nexa">
+                {selStudent?.name || ""}
                 {"'s"}{" "}
-                <span className="text-gray-500 font-medium">Homework</span>
+                <span className="text-cyan-500 font-medium">Portfolio</span>
               </p>
             </div>
             <label
@@ -64,7 +64,7 @@ export default function Portfolio() {
           <div className="bg-white w-4/5 mx-auto rounded-full mb-4 flex items-center p-2">
             <RiSearch2Line size="1.5em" />
           </div>
-          <div className="grid grid-cols-2 gap-4 pt-4 port-height overflow-y-scroll">
+          <div className="flex flex-col gap-4 pt-4 port-height overflow-y-scroll">
             {portfolio?.length > 0 &&
               portfolio.map((p) => <CardProject key={p.id} data={p} />)}
           </div>

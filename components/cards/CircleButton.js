@@ -15,7 +15,7 @@ export default function CircleButton({ index, func, data }) {
     >
       <motion.div
         variants={imageAnim}
-        className="rounded-full bg-white relative max-w-fit mx-auto shadow-xl p-2 border-4 border-emma-400"
+        className="rounded-full bg-white relative max-w-fit mx-auto shadow-xl p-2 border-4 border-primary"
       >
         <div className="relative rounded-full h-10 w-10 overflow-hidden">
           {data?.image && (
@@ -30,7 +30,7 @@ export default function CircleButton({ index, func, data }) {
       </motion.div>
       <motion.p
         variants={buttonAnim}
-        className="relative text-sm text-center font-poppins font-semibold bg-emma-400 text-white capitalize py-2 px-4 rounded-full shadow-xl -top-5"
+        className="relative text-sm text-center font-poppins font-semibold bg-primary text-white capitalize py-2 px-4 rounded-full shadow-xl -top-5"
       >
         {data?.text}
       </motion.p>

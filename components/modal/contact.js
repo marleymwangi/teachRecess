@@ -52,7 +52,7 @@ export default function ModalContact() {
       <div className="modal modal-bottom sm:modal-middle">
         <div className="modal-box bg-gray-100 pb-20">
           <div className="flex items-center justify-between pb-6">
-            <p className="text-lg text-emma-400">Select Contact</p>
+            <p className="text-lg text-cyan-600">Select Contact</p>
             <label
               htmlFor="contact_modal"
               className="btn btn-sm btn-primary btn-outline btn-circle"

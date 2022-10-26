@@ -32,10 +32,10 @@ export default function Contact({ data, handleClose }) {
         </div>
       </div>
       <div className="grid place-content-center">
-        <p className="font-poppins text-emma-700 capitalize font-semibold">
+        <p className="font-poppins text-cyan-700 capitalize font-semibold">
           {person?.name}
         </p>
-        <p className="text-sm text-emma-500 font-medium">
+        <p className="text-sm text-cyan-500 font-medium">
           <span className="text-gray-400 font-normal">Teacher to </span>
           {data?.students.length > 0 && data.students.map((s) => `${s} `)}
         </p>

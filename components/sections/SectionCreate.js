@@ -14,7 +14,7 @@ export default function SectionCreate() {
   };
   return (
     <section className="mt-6">
-      <p className="font-semibold text-emma-800 text-2xl mb-2 font-inter">
+      <p className="font-semibold text-cyan-800 text-2xl mb-2 font-inter">
         Create
       </p>
       <div className="grid grid-cols-2">

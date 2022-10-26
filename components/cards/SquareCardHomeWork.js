@@ -79,39 +79,39 @@ const Homework = ({ data, index, instr }) => {
   const getTextDark = () => {
     switch (colors[index % colors.length]) {
       case "emma":
-        return "text-emma-900";
+        return "text-sky-900";
       case "teal":
         return "text-teal-900";
       case "cyan":
         return "text-cyan-900";
       default:
-        return "text-emma-900";
+        return "text-sky-900";
     }
   };
 
   const getTextLight = () => {
     switch (colors[index % colors.length]) {
       case "emma":
-        return "text-emma-700";
+        return "text-sky-700";
       case "teal":
         return "text-teal-700";
       case "cyan":
         return "text-cyan-700";
       default:
-        return "text-emma-700";
+        return "text-sky-700";
     }
   };
 
   const getBackGround = () => {
     switch (colors[index % colors.length]) {
       case "emma":
-        return "bg-emma-50";
+        return "bg-sky-50";
       case "teal":
         return "bg-teal-50";
       case "cyan":
         return "bg-cyan-50";
       default:
-        return "bg-emma-50";
+        return "bg-sky-50";
     }
   };
 

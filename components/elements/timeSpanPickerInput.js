@@ -63,8 +63,8 @@ export default function TimeSpanPickerInput({ selDiary, setDue, setTimestamp }) 
     <Calendar
       value={selectedDayRange}
       onChange={setSelectedDayRange}
-      colorPrimary="#5bbcac"
-      colorPrimaryLight="#bce4dd"
+      colorPrimary="#06b6d4" // added this
+      colorPrimaryLight="#a5f3fc"
       shouldHighlightWeekends
     />
   );

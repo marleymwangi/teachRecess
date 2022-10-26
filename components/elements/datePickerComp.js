@@ -51,8 +51,8 @@ export default function TimeSpanPickerInput({
     <Calendar
       value={selectedDayRange}
       onChange={setSelectedDayRange}
-      colorPrimary="#5bbcac" // added this
-      colorPrimaryLight="#bce4dd"
+      colorPrimary="#06b6d4" // added this
+      colorPrimaryLight="#a5f3fc"
       shouldHighlightWeekends
     />
   );

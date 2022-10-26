@@ -37,20 +37,20 @@ export default function Calendar({
   });
 
   return (
-    <section className="border-b border-emma-100">
+    <section className="border-b border-yellow-500">
       <div className="flex my-4 items-center justify-around">
-        <button type="button" onClick={previousWeek} className="text-emma-400">
+        <button type="button" onClick={previousWeek} className="text-cyan-600">
           <span className="sr-only">Previous Week</span>
           <CgArrowLeftR size="1.75em" />
         </button>
-        <h2 className="font-semibold text-lg text-emma-400">
+        <h2 className="font-semibold text-lg text-cyan-600">
           {firstDayCurrentWeek &&
             `${format(firstDayCurrentWeek, "MMMM")} ${format(
               firstDayCurrentWeek,
               "yyyy"
             )}`}
         </h2>
-        <button type="button" onClick={nextWeek} className="text-emma-400">
+        <button type="button" onClick={nextWeek} className="text-cyan-600">
           <span className="sr-only">Next Week</span>
           <CgArrowRightR size="1.75em" />
         </button>
@@ -113,7 +113,7 @@ function Day({
     <div
       onClick={() => setSelectedDay(data.date)}
       className={classNames(
-        "text-center py-2 px-1 text-emma-800",
+        "text-center py-2 px-1 text-cyan-800",
         selected && "bg-primary !text-white"
       )}
     >
@@ -127,17 +127,17 @@ function Day({
               key={i}
               className={classNames(
                 "w-2 h-2 rounded-full",
-                selected ? " bg-emma-50" : " bg-emma-500"
+                selected ? " bg-cyan-50" : " bg-cyan-500"
               )}
             />
           ))}
         {array?.length > 0 && array.length > 5 && (
           <div
             className={classNames(
-              "w-4 h-4 rounded-full -mt-1 bg-emma-200 text-emma-800 text-xs grid place-content-center font-medium",
+              "w-4 h-4 rounded-full -mt-1 bg-cyan-200 text-cyan-800 text-xs grid place-content-center font-medium",
               selected
-                ? "bg-emma-50 text-emma-800"
-                : "bg-emma-500 text-emma-800"
+                ? "bg-cyan-50 text-cyan-800"
+                : "bg-cyan-500 text-cyan-800"
             )}
           >
             <span className="">{array?.length}</span>

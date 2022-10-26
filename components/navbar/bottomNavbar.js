@@ -43,7 +43,7 @@ export default function BottomNavbar() {
     return null;
   } else {
     return (
-      <div className="fixed bottom-0 z-40 w-screen border-t border-accent border-opacity-50 bg-base-100 text-primary grid grid-cols-4">
+      <div className="fixed bottom-0 z-40 w-screen border-t border-yellow-500 bg-base-100 text-primary grid grid-cols-4">
         <NavItem
           id="home"
           href="/"

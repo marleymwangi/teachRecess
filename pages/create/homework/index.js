@@ -195,12 +195,12 @@ export default function CreateHomework() {
     <main className="py-16 px-4">
       <motion.div
         variants={FormContVar}
-        className="grid max-w-lg mx-auto text-emma-700"
+        className="grid max-w-lg mx-auto text-cyan-700"
       >
         <motion.div variants={FormContVar} className="grid gap-6 grid-cols-1">
           <motion.div variants={riseVar} className="form-control w-full">
             <label className="label">
-              <span className="label-text text-emma-500">Subject</span>
+              <span className="label-text text-cyan-500">Subject</span>
             </label>
             <select
               defaultValue={
@@ -231,7 +231,7 @@ export default function CreateHomework() {
           </motion.div>
           <motion.div variants={riseVar} className="form-control w-full">
             <label className="label">
-              <span className="label-text text-emma-500">Homework Type</span>
+              <span className="label-text text-cyan-500">Homework Type</span>
             </label>
             <select
               defaultValue={
@@ -353,7 +353,7 @@ export default function CreateHomework() {
           )}
           <motion.div variants={riseVar} className="form-control w-full">
             <label className="label">
-              <span className="label-text text-emma-500">Instructions</span>
+              <span className="label-text text-cyan-500">Instructions</span>
             </label>
             <textarea
               type="text"
@@ -375,7 +375,7 @@ export default function CreateHomework() {
             )}
           </motion.div>
           <motion.div variants={riseVar} className="form-control w-full">
-            <p className="text-center mb-2 text-emma-500">
+            <p className="text-center mb-2 text-cyan-500">
               Assignment Timespan
             </p>
             <div className="mx-auto">

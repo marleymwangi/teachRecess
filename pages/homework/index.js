@@ -76,13 +76,13 @@ export default function Homework() {
             {!classroom?.name && (
               <span className="bg-gray-300 animate-pulse rounded w-10 h-5"></span>
             )}
-            <p className="font-bold text-xl font-nexa text-emma-700">
+            <p className="font-bold text-xl font-nexa text-cyan-700">
               {classroom?.name}{" "}
-              <span className="text-emma-500 font-medium">Homework</span>
+              <span className="text-cyan-500 font-medium">Homework</span>
             </p>
           </div>
           <div className="flex justify-around ">
-            <div className="text-emma-600">
+            <div className="text-cyan-600">
               <div className="h-20 w-20 grid place-content-center rounded-full bg-gray-200 my-2 shadow-md">
                 <div className="my-2">
                   <RadialProgress number={percent} />

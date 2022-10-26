@@ -75,7 +75,7 @@ export default function Banner() {
 
   return (
     <div
-      className={`fixed z-50 bg-white bottom-0 w-full max-h-fit border border-emerald-500 text-emma-600 font-poppins`}
+      className={`fixed z-50 bg-white bottom-0 w-full max-h-fit border border-yellow-500 text-cyan-600 font-poppins`}
     >
       <AnimatePresence>
         {show && (

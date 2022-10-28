@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import dynamic from "next/dynamic";
 //custom
-import Alerts from "../components/elements/alerts";
 import TopNavbar from "../components/navbar/topNavbar";
 import BottomNavbar from "../components/navbar/bottomNavbar";
 import Modals from "../components/modal";
@@ -27,7 +26,6 @@ export default function Layout({ children }) {
   return (
     <div className="">
       <CookieAlert/>
-      <Alerts />
       <TopNavbar />
       <div className="max-w-screen overflow-y-scroll overflow-x-hidden custom-scroll">
         <Modals />

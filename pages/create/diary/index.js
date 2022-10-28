@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useRouter } from "next/router";
+import Router from "next/router";
 import { useState, useEffect } from "react";
 //hooks
 import useTeacherFetch from "../../../helpers/hooks/teacher";
@@ -8,7 +8,6 @@ import { useData } from "../../../context/dataContext";
 import { classNames, isEmpty } from "../../../helpers/utility";
 
 export default function CreateDiary() {
-  const router = useRouter();
   const { selReminder, SetAlert } = useData();
   const { updateDiaryInfo } = useTeacherFetch();
   const [loading, setLoading] = useState(false);
@@ -84,18 +83,28 @@ export default function CreateDiary() {
           console.log(res);
           clear();
           setLoading(false);
-          SetAlert({
-            type: "success",
-            message: "Saved Successfully",
-          });
-          router.push("/");
+          toast.success(
+            <div>
+              <h5 className="font-medium text-gray-900">Success</h5>
+              <h6>Diary created successfully</h6>
+            </div>,
+            {
+              closeOnClick: true,
+            }
+          );
+          Router.push("/");
         })
         .catch((err) => {
           console.log(err);
-          SetAlert({
-            type: "error",
-            message: "Error occurred when trying to save the homework",
-          });
+          toast.error(
+            <div>
+              <h5 className="font-medium text-gray-900">Success</h5>
+              <h6>Error occurred when trying to save the diary</h6>
+            </div>,
+            {
+              closeOnClick: true,
+            }
+          );
           setLoading(false);
         });
     }

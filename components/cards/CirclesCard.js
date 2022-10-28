@@ -6,10 +6,8 @@ export default function CirclesCard({ color, content }) {
     switch (color) {
       case "cyan":
         return "bg-cyan-100";
-      case "teal":
-        return "bg-teal-100";
-      case "cyan":
-        return "bg-cyan-100";
+      case "sky":
+        return "bg-sky-100";
       default:
         return "bg-gradient-to-r from-cyan-600 via-cyan-500 to-cyan-400";
     }
@@ -19,10 +17,8 @@ export default function CirclesCard({ color, content }) {
     switch (color) {
       case "cyan":
         return "bg-cyan-200";
-      case "teal":
-        return "bg-teal-200";
-      case "cyan":
-        return "bg-cyan-200";
+      case "sky":
+        return "bg-sky-200";
       default:
         return "bg-cyan-200";
     }
@@ -32,10 +28,8 @@ export default function CirclesCard({ color, content }) {
     switch (color) {
       case "cyan":
         return "bg-cyan-200";
-      case "teal":
-        return "bg-teal-200";
-        case "cyan":
-          return "bg-cyan-200";
+      case "sky":
+        return "bg-sky-200";
       default:
         return "bg-cyan-200";
     }
@@ -45,10 +39,8 @@ export default function CirclesCard({ color, content }) {
     switch (color) {
       case "cyan":
         return "bg-cyan-300";
-      case "teal":
-        return "bg-teal-300";
-        case "cyan":
-          return "bg-cyan-300";
+      case "sky":
+        return "bg-sky-300";
       default:
         return "bg-gradient-to-l from-cyan-700 to-cyan-500";
     }

@@ -80,7 +80,7 @@ export default function Chat() {
             />
             <button
               onClick={handleClick}
-              className="btn btn-secondary text-white btn-circle ml-2"
+              className="btn btn-primary text-white btn-circle ml-2"
             >
               <IoSend size="1.5em" />
             </button>

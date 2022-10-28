@@ -65,7 +65,7 @@ export default function ModalHomework() {
               ✕
             </label>
           </div>
-          <div className="grid gap-4 w-full text-center text-emma-500 font-poppins">
+          <div className="grid gap-4 w-full text-center text-cyan-500 font-poppins">
             <button
               onClick={handleEdit}
               className="btn btn-lg text-base btn-ghost bg-gray-100 btn-secondary gap-2"

@@ -8,7 +8,7 @@ import { useData } from "../../context/dataContext";
 import { AuthGuard } from "../../components/elements/authGuard";
 import RadialProgress from "../../components/elements/RadialProgress";
 import SectionHomeStudents from "../../components/sections/SectionHomeStudents";
-import TriaCardHomeWork from "../../components/cards/SquareCardHomeWork";
+import SquareCardHomeWork from "../../components/cards/SquareCardHomeWork";
 import useHomeworkFetch from "../../helpers/hooks/homework/homework";
 
 export default function Homework() {
@@ -98,7 +98,7 @@ export default function Homework() {
             </div>
           </div>
           <div className="my-6">
-            <TriaCardHomeWork data={homework} instr />
+            <SquareCardHomeWork data={homework} instr />
           </div>
           <div className="my-6">
             <SectionHomeStudents list={hmwrks} />

@@ -272,6 +272,28 @@ const useChatroomFetch = (id) => {
     });
   }
 
+  function markMessageRead(id, mesId) {
+    return new Promise((resolve, reject) => {
+      try {
+        if (id?.length < 1) {
+          throw "Invalid charoom Id";
+        } else if (mesId?.length < 1) {
+          throw "Invalid message Id";
+        } else if (session?.user?.id?.length < 1) {
+          throw "Missing user";
+        } else {
+          let docRef = doc(db, "chatrooms", id, "messages", mesId);
+          setDoc(docRef, { read: true }, { merge: true }).then((res) =>
+            resolve("done")
+          );
+        }
+      } catch (error) {
+        console.log("Chatroom Class: sendDiaryMessagetoParticipant: ", error);
+        reject({ message: error });
+      }
+    });
+  }
+
   return {
     chatroom,
     participant,
@@ -287,6 +309,7 @@ const useChatroomFetch = (id) => {
     time,
 
     createChatroom,
+    markMessageRead,
     sendMessagetoParticipant,
     sendDiaryMessagetoParticipant,
   };

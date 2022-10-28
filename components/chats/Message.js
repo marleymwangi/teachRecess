@@ -4,23 +4,31 @@ import { motion } from "framer-motion";
 import {
   format,
   isSameYear,
-  isSameMonth,
   differenceInDays,
   formatDistanceToNow,
 } from "date-fns";
+import { useInView } from "react-intersection-observer";
 //hooks
-import useStudentFetch from "../../helpers/hooks/students/student";
+import useChatroomFetch from "../../helpers/hooks/chatroom/chatroom";
 //custom
 import { classNames, isEmpty } from "../../helpers/utility";
+import CirclesCardHomework from "../cards/CirclesCardHomework";
 //dynamic
-const TbMathSymbols = dynamic(
-  async () => (await import("react-icons/tb")).TbMathSymbols
+const BiCheck = dynamic(async () => (await import("react-icons/bi")).BiCheck);
+const BiCheckDouble = dynamic(
+  async () => (await import("react-icons/bi")).BiCheckDouble
 );
 
-export default function Message({ data }) {
+export default function Message({ chatId, data }) {
+  const [ref, inView] = useInView();
   const [time, setTime] = useState();
-  const [diaryTime, setDiaryTime] = useState();
-  const { getTimeFormatted: getDiaryTimeFormatted } = useStudentFetch();
+  const { markMessageRead } = useChatroomFetch();
+
+  useEffect(() => {
+    if (inView && chatId && data?.id && !data?.read && data?.type !== "mine") {
+      markMessageRead(chatId, data.id);
+    }
+  }, [inView, markMessageRead, chatId]);
 
   function getTimeFormatted(time) {
     if (!(time instanceof Date)) {
@@ -28,20 +36,15 @@ export default function Message({ data }) {
     } else {
       let diff = differenceInDays(new Date(), time);
       let year = isSameYear(new Date(), time);
-      let month = isSameMonth(new Date(), time);
       let tmp;
 
       if (!year) {
         tmp = format(time, "do MMM yyyy");
       } else {
-        if (!month) {
+        if (diff > 3) {
           tmp = format(time, "do MMM");
         } else {
-          if (diff > 3) {
-            tmp = format(time, "io iii");
-          } else {
-            tmp = formatDistanceToNow(time);
-          }
+          tmp = formatDistanceToNow(time);
         }
       }
 
@@ -56,171 +59,53 @@ export default function Message({ data }) {
     }
   }, [data?.timestamp, data]);
 
-  useEffect(() => {
-    let tmstp = data?.attachment?.diary?.timestamp.toDate();
-    let tmdue = data?.attachment?.diary?.due.toDate();
-    if (
-      data?.attachment?.type === "diary" &&
-      tmstp instanceof Date &&
-      tmdue instanceof Date
-    ) {
-      let t = getDiaryTimeFormatted(tmstp, tmdue);
-      setDiaryTime(t);
-    }
-  }, [data?.timestamp, data]);
-
   if (isEmpty(data?.attachment)) {
     return (
       <motion.div
+        ref={ref}
         variants={messageAnim}
         custom={data?.type}
         className={classNames(
           "text-sm max-h-fit max-w-fit p-4 rounded-xl shadow-md font-medium",
           data?.type === "mine" && "ml-auto",
-          data?.type === "other" ? "bg-white" : "bg-emma-600"
+          data?.type === "other" ? "bg-white" : "bg-cyan-600"
         )}
       >
         <p
           className={classNames(
-            data?.type === "mine" ? "text-white" : "text-emma-600"
+            data?.type === "mine" ? "text-white" : "text-cyan-600"
           )}
         >
           {data?.message}
         </p>
-        <p></p>
-        <p
-          className={classNames(
-            "text-xs float-right",
-            data?.type === "mine" ? "text-gray-100" : "text-emma-400"
-          )}
-        >
-          {time}
-        </p>
+        <div className="flex gap-4 items-center justify-between">
+          <div
+            className={classNames(
+              "swap min-w-[20px] ",
+              data?.type === "mine" ? "text-gray-100" : "text-cyan-400",
+              data?.read && "swap-active"
+            )}
+          >
+            <BiCheckDouble className="swap-on" size="1.25em" />
+            <BiCheck className="swap-off" size="1.25em" />
+          </div>
+          <p
+            className={classNames(
+              "text-xs float-right",
+              data?.type === "mine" ? "text-gray-100" : "text-cyan-400"
+            )}
+          >
+            {time}
+          </p>
+        </div>
       </motion.div>
     );
   } else {
     let diary = data.attachment.diary;
     return (
-      <motion.div
-        variants={messageAnim}
-        custom={"mine"}
-        className={classNames(
-          "text-sm max-h-fit max-w-fit p-4 rounded-xl shadow-md ml-auto bg-primary",
-          diary.complete ? "bg-green-400" : "bg-primary"
-        )}
-      >
-        <div className="flex-1 flex flex-col justify-around py-2 px-6 text-sm z-10">
-          <div className="flex text-gray-800 items-center gap-6">
-            <TbMathSymbols size="3em" />
-            <p className="text-xl font-poppins font-medium">
-              {diary?.subject} Class
-            </p>
-          </div>
-          <div className="grid grid-cols-2 mt-4">
-            <div className="grid">
-              <p
-                className={classNames(
-                  "font-semibold text-xs",
-                  !diary?.complete && !diary?.overdue && "text-orange-700",
-                  diary?.overdue && "text-red-700",
-                  diary?.complete && "text-green-700"
-                )}
-              >
-                {diary?.type === "Book Exercise" && "Book"}
-                {diary?.type === "Craft" && "Project"}
-              </p>
-              <p className="text-gray-900">
-                {diary?.type === "Book Exercise" && diary?.book}
-                {diary?.type === "Craft" && diary?.project}
-              </p>
-            </div>
-            <div className="grid">
-              <p
-                className={classNames(
-                  "font-semibold text-xs",
-                  !diary?.complete && !diary?.overdue && "text-orange-700",
-                  diary?.overdue && "text-red-700",
-                  diary?.complete && "text-green-700"
-                )}
-              >
-                {diary?.type === "Book Exercise" && "Page(s)"}
-                {diary?.type === "Craft" && "Materials"}
-              </p>
-              <p className="text-gray-900">
-                {diary?.type === "Book Exercise" && diary?.pages}
-                {diary?.type === "Craft" && diary?.materials}
-              </p>
-            </div>
-          </div>
-          <div className="mt-4">
-            <p
-              className={classNames(
-                "font-semibold text-xs",
-                !diary?.complete && !diary?.overdue && "text-orange-700",
-                diary?.overdue && "text-red-700",
-                diary?.complete && "text-green-700"
-              )}
-            >
-              Instructions
-            </p>
-            <p className="text-gray-900">{diary?.instructions}</p>
-          </div>
-          <div className="grid place-content-center gap-2 xxs:grid-cols-3">
-            <div>
-              <p
-                className={classNames(
-                  "font-semibold text-xs",
-                  !diary?.complete && !diary?.overdue && "text-orange-700",
-                  diary?.overdue && "text-red-700",
-                  diary?.complete && "text-green-700"
-                )}
-              >
-                Issued On
-              </p>
-              <p className="text-gray-900 text-sm">{diaryTime?.issued}</p>
-            </div>
-            <div>
-              <p
-                className={classNames(
-                  "font-semibold text-xs",
-                  !diary?.complete && !diary?.overdue && "text-orange-700",
-                  diary?.overdue && "text-red-700",
-                  diary?.complete && "text-green-700"
-                )}
-              >
-                Time Left
-              </p>
-              <p className="text-gray-900 text-sm">{diaryTime?.left}</p>
-            </div>
-            <div>
-              <p
-                className={classNames(
-                  "font-semibold text-xs",
-                  !diary?.complete && !diary?.overdue && "text-orange-700",
-                  diary?.overdue && "text-red-700",
-                  diary?.complete && "text-green-700"
-                )}
-              >
-                Due On
-              </p>
-              <p className="text-gray-900 text-sm">{diaryTime?.due}</p>
-            </div>
-          </div>
-          <div className="mt-4">
-            <p
-              className={classNames(
-                "font-semibold text-xs",
-                !diary?.complete && !diary?.overdue && "text-orange-700",
-                diary?.overdue && "text-red-700",
-                diary?.complete && "text-green-700"
-              )}
-            >
-              Comment
-            </p>
-            <p className="text-gray-900">{data?.message}</p>
-          </div>
-        </div>
-      </motion.div>
+      <div ref={ref}>
+        <CirclesCardHomework data={diary} index={0} comment={data?.message} />
+      </div>
     );
   }
 }

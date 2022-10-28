@@ -1,5 +1,8 @@
+
+import { toast } from "react-toastify";
+import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+
 //hooks
 import useTeacherFetch from "../../../helpers/hooks/teacher";
 //custom
@@ -8,7 +11,7 @@ import { classNames, isEmpty } from "../../../helpers/utility";
 import DatePickerComp from "../../../components/elements/datePickerComp";
 
 export default function CreateReminder() {
-  const { selReminder, SetAlert } = useData();
+  const { selReminder } = useData();
   const { updateReminderInfo } = useTeacherFetch();
   const [loading, setLoading] = useState(false);
   //form data
@@ -110,17 +113,27 @@ export default function CreateReminder() {
           console.log(res);
           clear();
           setLoading(false);
-          SetAlert({
-            type: "success",
-            message: "Saved Successfully",
-          });
+          toast.success(
+            <div>
+              <h5 className="font-medium text-gray-900">Success</h5>
+              <h6>Reminder created successfully</h6>
+            </div>,
+            {
+              closeOnClick: true,
+            }
+          );
         })
         .catch((err) => {
           console.log(err);
-          SetAlert({
-            type: "error",
-            message: "Error occurred when trying to save the homework",
-          });
+          toast.error(
+            <div>
+              <h5 className="font-medium text-gray-900">Success</h5>
+              <h6>Error occurred when trying to save the reminder</h6>
+            </div>,
+            {
+              closeOnClick: true,
+            }
+          );
           setLoading(false);
         });
     }

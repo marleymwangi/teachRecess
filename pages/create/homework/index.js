@@ -1,4 +1,5 @@
 import Router from "next/router";
+import { toast } from "react-toastify";
 import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 //hooks
@@ -11,7 +12,7 @@ import { classNames, isEmpty } from "../../../helpers/utility";
 import TimeSpanPickerInput from "../../../components/elements/timeSpanPickerInput";
 
 export default function CreateHomework() {
-  const { selHomeworkMode, selHomework, SetAlert } = useData();
+  const { selHomeworkMode, selHomework } = useData();
   const { updateHomeworkInfo } = useTeacherFetch();
   const [loading, setLoading] = useState(false);
   //form data
@@ -139,18 +140,28 @@ export default function CreateHomework() {
           console.log(res);
           clear();
           setLoading(false);
-          SetAlert({
-            type: "success",
-            message: "Saved Successfully",
-          });
+          toast.success(
+          <div>
+            <h5 className="font-medium text-gray-900">Success</h5>
+            <h6>Homework created successfully</h6>
+          </div>,
+          {
+            closeOnClick: true,
+          }
+        );
           Router.push("/homework/homework");
         })
         .catch((err) => {
           console.log(err);
-          SetAlert({
-            type: "error",
-            message: "Error occurred when trying to save the homework",
-          });
+          toast.error(
+            <div>
+              <h5 className="font-medium text-gray-900">Error</h5>
+              <h6>Error occurred when trying to save the homework</h6>
+            </div>,
+            {
+              closeOnClick: true,
+            }
+          );
           setLoading(false);
         });
     }

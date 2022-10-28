@@ -7,10 +7,20 @@ import CardWelcome from "../cards/Welcome";
 export default function CarouselWelcome() {
   const [selected, setSelected] = useState(0);
 
+  const moveBack = () => {
+    let tmp = selected > 0 ? selected - 1 : 0;
+    setSelected(tmp);
+  };
+
+  const moveForward = () => {
+    let tmp = selected < 3 ? selected + 1 : 2;
+    setSelected(tmp);
+  };
+
   return (
-    <div className="flex flex-col w-full">
+    <div>
       <div className="carousel carousel-center w-full flex-1">
-      <CardWelcome
+        <CardWelcome
           id="item1"
           index={0}
           setFunc={setSelected}
@@ -18,7 +28,7 @@ export default function CarouselWelcome() {
           top="Get involved"
           bottom={`Participate in your child${"'s"} learning on a daily.`}
         />
-         <CardWelcome
+        <CardWelcome
           id="item2"
           index={1}
           setFunc={setSelected}
@@ -40,17 +50,32 @@ export default function CarouselWelcome() {
         <Indicator id="item2" index={1} selected={selected} />
         <Indicator id="item3" index={2} selected={selected} />
       </div>
-      {selected === 2 ? (
-        <Link href="/auth/signin">
-          <div className="my-6 grid gap-4">
-            <button className="btn btn-primary font-poppins text-white btn-lg w-full mx-auto">
-              Sign In
+
+      <div className="grid grid-cols-2 gap-16 px-6 pt-[10vh]">
+        <div onClick={moveBack} className="my-6 grid gap-4 container mx-auto">
+          <button className="btn btn-primary font-poppins text-white w-full max-w-md mx-auto">
+            Back
+          </button>
+        </div>
+        {selected === 2 ? (
+          <Link href="/auth/signin">
+            <div className="my-6 grid gap-4 container mx-auto">
+              <button className="btn btn-primary font-poppins text-white w-full max-w-md mx-auto">
+                Sign In
+              </button>
+            </div>
+          </Link>
+        ) : (
+          <div
+            onClick={moveForward}
+            className="my-6 grid gap-4 container mx-auto"
+          >
+            <button className="btn btn-primary font-poppins text-white w-full max-w-md mx-auto">
+              Next
             </button>
           </div>
-        </Link>
-      ) : (
-        <div className="h-28"></div>
-      )}
+        )}
+      </div>
     </div>
   );
 }
@@ -63,7 +88,7 @@ const Indicator = ({ id, index, selected }) => {
       href={link}
       className={classNames(
         "rounded-full h-6 text-center",
-        highlight ? "bg-emma-600 w-12" : "bg-emma-300 w-8"
+        highlight ? "bg-cyan-700 w-12" : "bg-cyan-500 w-8"
       )}
     />
   );

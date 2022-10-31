@@ -189,8 +189,8 @@ export default function CreateHomework() {
       text: "Kiswahili",
     },
     {
-      value: "evironment",
-      text: "Evironment",
+      value: "evironmental",
+      text: "Evironmental",
     },
     {
       value: "math",

@@ -13,7 +13,7 @@ export default function Welcome() {
   },[session])
   
   return (
-    <main className="min-h-screen bg-teal-100 pt-20 px-6">
+    <main className="min-h-screen bg-gradient-to-b from-sky-100 via-sky-100 to-sky-100 pt-20">
       <CarouselWelcome/>
     </main>
   );

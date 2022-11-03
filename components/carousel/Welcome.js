@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Router from "next/router";
 import Link from "next/link";
 //custom
 import { classNames } from "../../helpers/utility";
@@ -10,11 +11,13 @@ export default function CarouselWelcome() {
   const moveBack = () => {
     let tmp = selected > 0 ? selected - 1 : 0;
     setSelected(tmp);
+    Router.push(`/welcome#item${tmp + 1}`);
   };
 
   const moveForward = () => {
     let tmp = selected < 3 ? selected + 1 : 2;
     setSelected(tmp);
+    Router.push(`/welcome#item${tmp + 1}`);
   };
 
   return (

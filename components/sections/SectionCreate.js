@@ -1,16 +1,27 @@
 import { useRouter } from "next/router";
+import { useData } from "../../context/dataContext";
 //custom
 import CircleButton from "../cards/CircleButton";
 
 export default function SectionCreate() {
   const router = useRouter();
+  const {
+    setSelHomework,
+    setSelHomeworkMode,
+    setSelReminder,
+    setSelReminderMode,
+  } = useData();
 
   const handleHomeWorkClick = () => {
-      router.push(`/create/homework`);
+    setSelHomework(null);
+    setSelHomeworkMode("add");
+    router.push(`/create/homework`);
   };
 
   const handleRemindersClick = () => {
-      router.push(`/create/reminders`);
+    setSelReminder(null);
+    setSelReminderMode("add");
+    router.push(`/create/reminders`);
   };
   return (
     <section className="mt-6">
@@ -18,8 +29,16 @@ export default function SectionCreate() {
         Create
       </p>
       <div className="grid grid-cols-2">
-        <CircleButton data={{ text: "Homework" }} index={0} func={handleHomeWorkClick}/>
-        <CircleButton data={{ text: "Reminders" }} index={1} func={handleRemindersClick}/>
+        <CircleButton
+          data={{ text: "Homework" }}
+          index={0}
+          func={handleHomeWorkClick}
+        />
+        <CircleButton
+          data={{ text: "Reminders" }}
+          index={1}
+          func={handleRemindersClick}
+        />
       </div>
     </section>
   );

@@ -1,5 +1,6 @@
-import { motion } from "framer-motion";
 import Router from "next/router";
+import { motion } from "framer-motion";
+import { toast } from "react-toastify";
 import { useState, useEffect } from "react";
 //hooks
 import useTeacherFetch from "../../../helpers/hooks/teacher";
@@ -8,7 +9,7 @@ import { useData } from "../../../context/dataContext";
 import { classNames, isEmpty } from "../../../helpers/utility";
 
 export default function CreateDiary() {
-  const { selReminder, SetAlert } = useData();
+  const { selReminder } = useData();
   const { updateDiaryInfo } = useTeacherFetch();
   const [loading, setLoading] = useState(false);
   //form data

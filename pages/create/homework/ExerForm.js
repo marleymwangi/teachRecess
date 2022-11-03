@@ -37,7 +37,7 @@ export default function ExerForm({
         </label>
         <input
           type="text"
-          placeholder={selHomework?.page ? selHomework.page : "22, 24, 25"}
+          placeholder={selHomework?.pages ? selHomework.pages : "22, 24, 25"}
           onChange={(event) => change(event, setPages)}
           className={classNames(
             "input input-primary w-full input-bordered focus:bg-white focus:border-2",

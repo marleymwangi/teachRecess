@@ -1,6 +1,7 @@
 import Router from "next/router";
 import { useState } from "react";
 import dynamic from "next/dynamic";
+import { toast } from "react-toastify";
 //hooks
 import { useData } from "../../context/dataContext";
 import useTeacherFetch from "../../helpers/hooks/teacher";
@@ -16,11 +17,11 @@ const RiDeleteBin7Line = dynamic(
 
 export default function ModalHomework() {
   const [loading, setLoading] = useState(false);
-  const { selHomework, SetAlert, setSelHomeworkMode } = useData();
+  const { selHomework, setSelHomeworkMode } = useData();
   const { removeHomework } = useTeacherFetch();
 
   const handleEdit = () => {
-    setSelHomeworkMode("edit")
+    setSelHomeworkMode("edit");
     Router.push("/create/homework");
     handleCloseModal();
   };
@@ -30,19 +31,29 @@ export default function ModalHomework() {
       .then((res) => {
         console.log(res);
         setLoading(false);
-        SetAlert({
-          type: "success",
-          message: "Deleted Successfully",
-        });
+        toast.success(
+          <div>
+            <h5 className="font-medium text-gray-900">Success</h5>
+            <h6>Homework deleted successfully</h6>
+          </div>,
+          {
+            closeOnClick: true,
+          }
+        );
         Router.push("/homework/homework");
         handleCloseModal();
       })
       .catch((err) => {
         console.log(err);
-        SetAlert({
-          type: "error",
-          message: "Error occurred when trying to delete the homework",
-        });
+        toast.error(
+          <div>
+            <h5 className="font-medium text-gray-900">Error</h5>
+            <h6>Error occurred when trying to delete the homework</h6>
+          </div>,
+          {
+            closeOnClick: true,
+          }
+        );
         setLoading(false);
       });
   };

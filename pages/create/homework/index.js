@@ -49,10 +49,17 @@ export default function CreateHomework() {
         break;
 
       case "str":
-        setFunction({
-          data: event.target.value,
-          state: "success",
-        });
+        if (event.target.value?.length < 1) {
+          setFunction({
+            data: event.target.value,
+            state: "error",
+          });
+        } else {
+          setFunction({
+            data: event.target.value,
+            state: "success",
+          });
+        }
         break;
       case "sel":
         if (event.target.value !== "default") {
@@ -141,14 +148,14 @@ export default function CreateHomework() {
           clear();
           setLoading(false);
           toast.success(
-          <div>
-            <h5 className="font-medium text-gray-900">Success</h5>
-            <h6>Homework created successfully</h6>
-          </div>,
-          {
-            closeOnClick: true,
-          }
-        );
+            <div>
+              <h5 className="font-medium text-gray-900">Success</h5>
+              <h6>Homework created successfully</h6>
+            </div>,
+            {
+              closeOnClick: true,
+            }
+          );
           Router.push("/homework/homework");
         })
         .catch((err) => {
@@ -355,7 +362,7 @@ export default function CreateHomework() {
                   />
                 )}
               </AnimatePresence>
-              {(selHomework?.type?.length < 1 && type.state === "error") && (
+              {selHomework?.type?.length < 1 && type.state === "error" && (
                 <p className="text-error text-xs italic text-center mt-1">
                   Please select an option.
                 </p>

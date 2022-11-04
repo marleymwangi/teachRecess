@@ -21,7 +21,7 @@ export default function CardWelcome({ id, index, setFunc, image, top, bottom }) 
         <p className="w-[70vw] font-poppins font-semibold text-cyan-900 text-center text-3xl md:text-5xl">{top}</p>
         <div className="grid place-content-center">
           <div className="relative w-[40vw] h-[40vw] max-h-[600px] max-w-[600px]">
-            <Image src={image} layout="fill" priority="high"/>
+            <Image src={image} layout="fill" priority="eager"/>
           </div>
         </div>
         <p className="w-[70vw] mx-auto font-medium text-cyan-800 mt-5 text-center text-sm md:text-base">{bottom}</p>

@@ -41,8 +41,14 @@ const useUserFetch = () => {
 
         return onSnapshot(docRef, (doc) => {
           if (!doc.exists()) {
-            setUserDataDb().then((res) => resolve("done"));
+            let user = parseSession(session);
+            delete user.id;
+            setUserDataDb(user).then((res) => console.log("User Created"));
           } else {
+            let user = parseSession(session);
+            delete user.id;
+            setUserDataDb(user).then((res) => console.log("User Updated"));
+
             let u = { id: doc.id, ...doc.data() };
             if (u !== user) {
               setUser(u);

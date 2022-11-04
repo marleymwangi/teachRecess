@@ -8,7 +8,7 @@ export default function Logo() {
       <div className="absolute bg-cyan-400 w-screen h-[20vh] z-10 top-[40vh] -right-[30vw] -rotate-45"/>
       <div className="absolute w-screen h-[50vh] z-10 top-0 -left-[25vw] rotate-45">
         <Image
-          priority="high"
+          priority="eager"
           src="/images/waves.svg"
           layout="fill"
           objectFit="contain"
@@ -17,7 +17,7 @@ export default function Logo() {
       </div>
       <div className="absolute w-[8vh] h-[8vh] z-40 top-10 left-10">
         <Image
-          priority="high"
+          priority="eager"
           src="/images/cloud.png"
           layout="fill"
           objectFit="contain"
@@ -26,7 +26,7 @@ export default function Logo() {
       </div>
       <div className="absolute w-[8vh] h-[8vh] z-40 top-4 right-14">
         <Image
-          priority="high"
+          priority="eager"
           src="/images/cloud.png"
           layout="fill"
           objectFit="contain"
@@ -35,7 +35,7 @@ export default function Logo() {
       </div>
       <div className="absolute w-[8vh] h-[8vh] z-40 top-28 right-32">
         <Image
-          priority="high"
+          priority="eager"
           src="/images/jet.png"
           layout="fill"
           objectFit="contain"
@@ -44,7 +44,7 @@ export default function Logo() {
       </div>
       <div className="absolute w-screen h-[50vh] z-10 top-0 -right-[25vw] -rotate-45">
         <Image
-          priority="high"
+          priority="eager"
           src="/images/waves.svg"
           layout="fill"
           objectFit="contain"
@@ -53,7 +53,7 @@ export default function Logo() {
       </div>
       <div className="relative h-[25vh] mt-[25vh] z-50">
         <Image
-          priority="high"
+          priority="eager"
           src="/images/recess.png"
           layout="fill"
           objectFit="contain"

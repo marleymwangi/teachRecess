@@ -17,7 +17,7 @@ export default function Profile({ data }) {
     Router.push("/student?id=" + data?.id);
   };
   return (
-    <div onClick={handleClick} className="rounded-box bg-white shadow-lg">
+    <div onClick={handleClick} className="w-full rounded-box bg-white shadow-lg">
       <div className="flex items-center gap-6 py-8 px-6">
         <div className="avatar">
           <div className="w-20 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">

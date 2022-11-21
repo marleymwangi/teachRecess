@@ -102,6 +102,7 @@ export default function Message({ chatId, data }) {
     );
   } else {
     let diary = data.attachment.diary;
+    console.log(diary)
     return (
       <div ref={ref}>
         <CirclesCardHomework data={diary} index={0} comment={data?.message} />

@@ -13,29 +13,37 @@ const HiDotsVertical = dynamic(
   async () => (await import("react-icons/hi")).HiDotsVertical
 );
 
-export default function CirclesCardHomework({ data, index, color, instr }) {
+export default function CirclesCardHomework({
+  data,
+  index,
+  color,
+  instr,
+  comment,
+}) {
   let colors = ["cyan", "sky"];
   return (
     <CirclesCard
       color={color || colors[index % colors.length]}
-      content={<Homework data={data} index={index} instr={instr} />}
+      content={
+        <Homework data={data} index={index} instr={instr} comment={comment} />
+      }
     />
   );
 }
 
-const Homework = ({ data, index, instr }) => {
+const Homework = ({ data, index, instr, comment }) => {
   const { setSelHomework } = useData();
   const [time, setTime] = useState();
   const { getTimeFormatted } = useHomeworkFetch();
 
   useEffect(() => {
-    if (
-      !isEmpty(data) &&
-      data.timestamp instanceof Date &&
-      data.due instanceof Date
-    ) {
-      let t = getTimeFormatted(data.timestamp, data.due);
-      setTime(t);
+    if (!isEmpty(data) && data?.timestamp && data?.due) {
+      let tmstmp = data.timestamp.toDate();
+      let due = data.due.toDate();
+      if (tmstmp instanceof Date && due instanceof Date) {
+        let t = getTimeFormatted(data.timestamp.toDate(), data.due.toDate());
+        setTime(t);
+      }
     }
   }, [data]);
 
@@ -120,11 +128,11 @@ const Homework = ({ data, index, instr }) => {
 
   const handleSelect = () => {
     setSelHomework(data);
-  }
+  };
 
   return (
     <div className="relative z-10 p-6 font-medium">
-      <div className="flex justify-around">
+      <div className="flex justify-center">
         <div className="flex text-white items-center gap-4">
           <div
             className={classNames(
@@ -143,13 +151,6 @@ const Homework = ({ data, index, instr }) => {
             {formatSubjectNames(data?.subject)} Class
           </p>
         </div>
-        <label
-          onClick={handleSelect}
-          htmlFor="homework_modal"
-          className="btn btn-circle btn-ghost modal-button"
-        >
-          <HiDotsVertical size="1.5em" />
-        </label>
       </div>
       <div onClick={handleHomeWorkClick}>
         <div className="text-center grid grid-cols-2 mt-4">
@@ -200,6 +201,12 @@ const Homework = ({ data, index, instr }) => {
             <p className={classNames("text-sm", getTextDark())}>{time?.due}</p>
           </div>
         </div>
+        {comment && (
+          <div className="mt-2 text-center">
+            <p className={classNames("text-xs", getTextLight())}>Comment</p>
+            <p className={classNames("text-sm", getTextDark())}>{comment}</p>
+          </div>
+        )}
       </div>
     </div>
   );

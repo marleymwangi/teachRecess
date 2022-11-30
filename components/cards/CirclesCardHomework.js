@@ -37,11 +37,18 @@ const Homework = ({ data, index, instr, comment }) => {
   const { getTimeFormatted } = useHomeworkFetch();
 
   useEffect(() => {
-    if (!isEmpty(data) && data?.timestamp && data?.due) {
-      let tmstmp = data.timestamp.toDate();
-      let due = data.due.toDate();
-      if (tmstmp instanceof Date && due instanceof Date) {
-        let t = getTimeFormatted(data.timestamp.toDate(), data.due.toDate());
+    if (
+      !isEmpty(data) &&
+      data.timestamp instanceof Date &&
+      data.due instanceof Date
+    ) {
+      let t = getTimeFormatted(data.timestamp, data.due);
+      setTime(t);
+    } else if (comment) {
+      let tmstp = data?.timestamp.toDate();
+      let tmdue = data?.due.toDate();
+      if (!isEmpty(data) && tmstp instanceof Date && tmdue instanceof Date) {
+        let t = getTimeFormatted(tmstp, tmdue);
         setTime(t);
       }
     }

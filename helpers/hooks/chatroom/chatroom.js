@@ -127,7 +127,7 @@ const useChatroomFetch = (id) => {
           (part) => part !== session.user.id
         );
 
-        let docRef = doc(db, "guardians", parts[0]?.id);
+        let docRef = doc(db, "guardians", parts[0]);
 
         return onSnapshot(
           docRef,
@@ -209,7 +209,7 @@ const useChatroomFetch = (id) => {
             where(
               "searchIndex",
               "array-contains",
-              session.user.id + participant
+              session.user.id + participant.id
             ),
             orderBy("timestamp", "asc"),
             limit(1)

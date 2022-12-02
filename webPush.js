@@ -15,8 +15,7 @@ const firebaseCloudMessaging = {
       const status = await Notification.requestPermission();
       if (status && status === "granted") {
         const fcmToken = await getToken(messaging, {
-          vapidKey:
-            "BGngsUnWdky4Adfy3K16eGknd_BxJ4cGrBlhWo-A3I27l7nrtmNQb8MmARCTuBhsvOaZMTR2yaUbmdr_5nc7FaA",
+          vapidKey: "BP1hIo46ExLM0m-JfnuFdoJ_CjctNZ3VHKLQgbctChKy6uOVKxNGQ6bmUm1nvVuDSYlmRWHKnP6wEaypM2itr0Y",
         });
 
         if (fcmToken) {

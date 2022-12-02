@@ -1,16 +1,10 @@
 import Router from "next/router";
-//hooks
-import useSchoolInfoFetch from "../../helpers/hooks/schoolInfo";
 //custom
 import ImageLoader from "../elements/imageLoader";
 import { useData } from "../../context/dataContext";
 
 export default function Profile({ data }) {
   const { setSelStudent } = useData();
-  const { school, classroom } = useSchoolInfoFetch(
-    data?.schoolId,
-    data?.classId
-  );
 
   const handleClick = (e) => {
     setSelStudent(data);
@@ -27,7 +21,7 @@ export default function Profile({ data }) {
         <div className="grid font-poppins">
           <p className="font-medium">{data?.name}</p>
           <p className="text-xs text-gray-500">
-            {school?.name} Class: {classroom?.name}
+            Class: {data?.class?.name}
           </p>
         </div>
       </div>

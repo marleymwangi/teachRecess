@@ -3,14 +3,16 @@ import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 import { useState, useEffect } from "react";
 //hooks
-import useTeacherFetch from "../../../helpers/hooks/teacher";
+import useUserFetch from "../../../helpers/hooks/user";
+import useClassroomFetch from "../../../helpers/hooks/classroom";
 //custom
 import { useData } from "../../../context/dataContext";
 import { classNames, isEmpty } from "../../../helpers/utility";
 
 export default function CreateDiary() {
   const { selReminder } = useData();
-  const { updateDiaryInfo } = useTeacherFetch();
+  const { user } = useUserFetch();
+  const { updateDiaryInfo } = useClassroomFetch(user);
   const [loading, setLoading] = useState(false);
   //form data
   const [content, setContent] = useState({ data: "", state: null });

@@ -4,7 +4,8 @@ import dynamic from "next/dynamic";
 import { toast } from "react-toastify";
 //hooks
 import { useData } from "../../context/dataContext";
-import useTeacherFetch from "../../helpers/hooks/teacher";
+import useUserFetch from "../../helpers/hooks/user";
+import useClassroomFetch from "../../helpers/hooks/classroom";
 //custom
 import { classNames } from "../../helpers/utility";
 //dynamic
@@ -18,7 +19,8 @@ const RiDeleteBin7Line = dynamic(
 export default function ModalHomework() {
   const [loading, setLoading] = useState(false);
   const { selHomework, setSelHomeworkMode } = useData();
-  const { removeHomework } = useTeacherFetch();
+  const { user } = useUserFetch();
+  const { removeHomework } = useClassroomFetch (user);
 
   const handleEdit = () => {
     setSelHomeworkMode("edit");

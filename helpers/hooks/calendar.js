@@ -26,7 +26,7 @@ import {
   endOfWeek,
   startOfWeek,
 } from "date-fns";
-import { db } from "../../../firebase";
+import { db } from "../../firebase";
 //custom
 
 const useCalendarFetch = (schId, clsId, currentWeek, selectedDay) => {
@@ -76,14 +76,8 @@ const useCalendarFetch = (schId, clsId, currentWeek, selectedDay) => {
         start instanceof Date &&
         end instanceof Date
       ) {
-        let homeRef = collection(
-          db,
-          "schools",
-          schId,
-          "classes",
-          clsId,
-          "homeworks"
-        );
+        let schClsId = schId + clsId;
+        let homeRef = collection(db, "institutionGroup", schClsId, "homework");
 
         let queryRef = query(
           homeRef,
@@ -117,7 +111,10 @@ const useCalendarFetch = (schId, clsId, currentWeek, selectedDay) => {
         }
       }
     } catch (error) {
-      console.log("Calendar Hook: getHomeworksTimestampFromDb useEffect: ", error);
+      console.log(
+        "Calendar Hook: getHomeworksTimestampFromDb useEffect: ",
+        error
+      );
       setHomeworksError(error);
     }
   }, [schId, clsId, currentWeek]);
@@ -130,14 +127,8 @@ const useCalendarFetch = (schId, clsId, currentWeek, selectedDay) => {
         start instanceof Date &&
         end instanceof Date
       ) {
-        let homeRef = collection(
-          db,
-          "schools",
-          schId,
-          "classes",
-          clsId,
-          "homeworks"
-        );
+        let schClsId = schId + clsId;
+        let homeRef = collection(db, "institutionGroup", schClsId, "homework");
 
         let queryRef = query(
           homeRef,
@@ -179,7 +170,7 @@ const useCalendarFetch = (schId, clsId, currentWeek, selectedDay) => {
   useEffect(() => {
     try {
       if (schId?.length > 0 && start instanceof Date && end instanceof Date) {
-        let homeRef = collection(db, "schools", schId, "reminders");
+        let homeRef = collection(db, "institutionGroup", schId, "reminders");
 
         let queryRef = query(
           homeRef,
@@ -224,14 +215,8 @@ const useCalendarFetch = (schId, clsId, currentWeek, selectedDay) => {
         start instanceof Date &&
         end instanceof Date
       ) {
-        let homeRef = collection(
-          db,
-          "schools",
-          schId,
-          "classes",
-          clsId,
-          "reminders"
-        );
+        let schClsId = schId + clsId;
+        let homeRef = collection(db, "institutionGroup", schClsId, "reminders");
 
         let queryRef = query(
           homeRef,
@@ -278,14 +263,9 @@ const useCalendarFetch = (schId, clsId, currentWeek, selectedDay) => {
         start instanceof Date &&
         end instanceof Date
       ) {
-        let diaryRef = collection(
-          db,
-          "schools",
-          schId,
-          "classes",
-          clsId,
-          "diaries"
-        );
+
+        let schClsId = schId + clsId;
+        let diaryRef = collection(db, "institutionGroup", schClsId, "diaries");
 
         let queryRef = query(
           diaryRef,

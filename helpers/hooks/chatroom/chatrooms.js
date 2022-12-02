@@ -49,10 +49,16 @@ const useChatroomsFetch = () => {
 
           setChatrooms(tmp);
           setPending(false);
+        },
+        (error) => {
+          console.info(
+            "Chatroooms Hook: getChatroomsDataFromDb useEffect: ",
+            error
+          );
         });
       }
     } catch (error) {
-      console.warn(
+      console.info(
         "Chatroooms Hook: getChatroomsDataFromDb useEffect: ",
         JSON.stringify(error)
       );

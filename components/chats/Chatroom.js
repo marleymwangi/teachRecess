@@ -9,7 +9,9 @@ import useChatroomFetch from "../../helpers/hooks/chatroom/chatroom";
 
 export default function Chatroom({ room }) {
   const { setSelChatroom, setSelChatPart } = useData();
-  const { chatroom, participant, time } = useChatroomFetch(room.id);
+  const { chatroom, participant, partPending, time } = useChatroomFetch(
+    room.id
+  );
 
   const handleClick = () => {
     setSelChatPart(participant);
@@ -28,7 +30,23 @@ export default function Chatroom({ room }) {
       >
         <div className="avatar mr-2">
           <div className="w-16 rounded-full ">
-            <ImageLoader src={participant?.image} />
+            {participant?.image?.length > 0 ? (
+              <ImageLoader
+                src={participant?.image}
+                fallbackSrc="/assets/person.webp"
+              />
+            ) : (
+              <div
+                className={classNames(
+                  "relative w-full h-full",
+                  partPending ? "bg-gray-100" : "bg-primary"
+                )}
+              >
+                <p className="abs-center text-white">
+                  {participant?.name?.slice(0, 1)}
+                </p>
+              </div>
+            )}
           </div>
         </div>
         <div className="grid gap-2 !w-full">

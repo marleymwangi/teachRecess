@@ -1,14 +1,12 @@
 import { useEffect } from "react";
 import dynamic from "next/dynamic";
 //custom
-import TopNavbar from "../components/navbar/topNavbar";
-import BottomNavbar from "../components/navbar/bottomNavbar";
-import Modals from "../components/modal";
+import TopNavbar from "../components/navbar/TopNavbar";
+import BottomNavbar from "../components/navbar/BottomNavbar";
 import Banner from "../components/elements/Banner";
 //dynamic
-const HiOutlineInformationCircle = dynamic(
-  async () => (await import("react-icons/hi")).HiOutlineInformationCircle
-);
+const Modals = dynamic(() => import("../components/modal"));
+
 
 export default function Layout({ children }) {
   const enableDarkMode = () => {

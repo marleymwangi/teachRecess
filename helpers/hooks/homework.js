@@ -24,9 +24,9 @@ import {
   isYesterday,
   formatDistanceToNow,
 } from "date-fns";
-import { db } from "../../../firebase";
+import { db } from "../../firebase";
 //custom
-import { useData } from "../../../context/dataContext";
+import { useData } from "../../context/dataContext";
 
 const useHomeworkFetch = (schId, clsId, id) => {
   const { selHomework } = useData();
@@ -37,20 +37,9 @@ const useHomeworkFetch = (schId, clsId, id) => {
 
   useEffect(() => {
     try {
-      if (
-        schId?.length > 0 &&
-        clsId?.length > 0 &&
-        id?.length > 0
-      ) {
-        let docRef = doc(
-          db,
-          "schools",
-          schId,
-          "classes",
-          clsId,
-          "homeworks",
-          id
-        );
+      if (schId?.length > 0 && clsId?.length > 0 && id?.length > 0) {
+        let schClsId = schId + clsId  ;
+        let docRef = doc(db, "institutionGroup", schClsId, "homework", id);
 
         return onSnapshot(docRef, (doc) => {
           if (doc.exists()) {

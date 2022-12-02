@@ -1,19 +1,22 @@
 import Router from "next/router";
+import { useEffect } from "react";
 import { motion } from "framer-motion";
 //hooks
-import useTeacherFetch from "../../helpers/hooks/teacher";
+import useUserFetch from "../../helpers/hooks/user";
+import useClassroomFetch from "../../helpers/hooks/classroom";
 //custom
 import { classNames } from "../../helpers/utility";
 
-export default function TeacherComment({data}) {
-  const { diaries } = useTeacherFetch();
+export default function TeacherComment({ data }) {
+  const { user } = useUserFetch();
+  const { diaries } = useClassroomFetch(user);
 
   const handleClick = () => {
     if (diaries.length < 1) {
       Router.push("/create/diary");
     }
   };
-  
+
   return (
     <div>
       <p className="font-semibold text-cyan-800 text-2xl mb-2 font-inter">

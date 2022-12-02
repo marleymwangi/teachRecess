@@ -1,9 +1,10 @@
+import Image from "next/image";
 import Router from "next/router";
 import dynamic from "next/dynamic";
 import { useState, useEffect } from "react";
 //hooks
 import { useData } from "../../context/dataContext";
-import useHomeworkFetch from "../../helpers/hooks/homework/homework";
+import useHomeworkFetch from "../../helpers/hooks/homework";
 //custom
 import CirclesCard from "./CirclesCard";
 import ImageLoader from "../elements/imageLoader";
@@ -182,6 +183,11 @@ const Homework = ({ data, index, instr, comment }) => {
             </p>
           </div>
         </div>
+        {data?.type === "image" && data?.image && (
+          <div className="relative w-full h-[10vh]">
+            <Image src={data?.image} alt="" layout="fill" objectFit="cover" objectPosition="top"/>
+          </div>
+        )}
         {instr && (
           <div className="mt-2 text-center">
             <p className={classNames("text-xs", getTextLight())}>

@@ -1,15 +1,17 @@
 import { useState } from "react";
 import dynamic from "next/dynamic";
 //hooks
-import useTeacherFetch from "../../helpers/hooks/teacher";
+import useUserFetch from "../../helpers/hooks/user";
+import useClassroomFetch from "../../helpers/hooks/classroom";
 //custom
-import Profile from "../../components/child/profile";
+import Profile from "../../components/child/Profile";
 import { AuthGuard } from "../../components/elements/authGuard";
 //dynamic
 const FaSearch = dynamic(async () => (await import("react-icons/fa")).FaSearch);
 
 export default function Profiles() {
-  const { students } = useTeacherFetch();
+  const { user } = useUserFetch();
+  const { students } = useClassroomFetch(user);
   const [text, setText] = useState("");
 
   const handleChange = (e) => {
@@ -47,4 +49,3 @@ export default function Profiles() {
     </AuthGuard>
   );
 }
-

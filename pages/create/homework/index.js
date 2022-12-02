@@ -3,21 +3,24 @@ import { toast } from "react-toastify";
 import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 //hooks
+import useUserFetch from "../../../helpers/hooks/user";
 import { useData } from "../../../context/dataContext";
-import useTeacherFetch from "../../../helpers/hooks/teacher";
+import useClassroomFetch from "../../../helpers/hooks/classroom";
 //custom
 import ExerForm from "./ExerForm";
 import CraftForm from "./CraftForm";
+import UploadForm from "./UploadForm";
 import { classNames, isEmpty } from "../../../helpers/utility";
 import TimeSpanPickerInput from "../../../components/elements/timeSpanPickerInput";
 
 export default function CreateHomework() {
   const { selHomeworkMode, selHomework } = useData();
-  const { updateHomeworkInfo } = useTeacherFetch();
+  const { user } = useUserFetch();
+  const { updateHomeworkInfo } = useClassroomFetch(user);
   const [loading, setLoading] = useState(false);
   //form data
-  const [subject, setSubject] = useState({ data: "", state: null });
-  const [type, setType] = useState({ data: "", state: null });
+  const [subject, setSubject] = useState({ data: "default", state: null });
+  const [type, setType] = useState({ data: "default", state: null });
   const [book, setBook] = useState({ data: "", state: null });
   const [pages, setPages] = useState({ data: "", state: null });
   const [project, setProject] = useState({ data: "", state: null });
@@ -25,6 +28,7 @@ export default function CreateHomework() {
   const [instr, setInstr] = useState({ data: "", state: null });
   const [due, setDue] = useState(null);
   const [timestamp, setTimestamp] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
 
   useEffect(() => {
     //console.log("due", due);
@@ -83,6 +87,28 @@ export default function CreateHomework() {
     setProject({ data: "", state: null });
     setMaterials({ data: "", state: null });
     setInstr({ data: "", state: null });
+    setSelectedFile(null);
+  };
+
+  const typeValidated = () => {
+    switch (type?.data) {
+      case "exer":
+        if (book.state === "success" && pages.state === "success") {
+          return true;
+        }
+        break;
+      case "craft":
+        if (project.state === "success" && materials.state === "success") {
+          return true;
+        }
+        break;
+      case "image":
+        if (selectedFile) {
+          return true;
+        }
+      default:
+        return false;
+    }
   };
 
   const isValidated = () => {
@@ -90,9 +116,7 @@ export default function CreateHomework() {
       subject.state === "success" &&
       instr.state === "success" &&
       type.state === "success" &&
-      (type.data === "exer"
-        ? book.state === "success" && pages.state === "success"
-        : project.state === "success" && materials.state === "success")
+      typeValidated()
     ) {
       return true;
     } else {
@@ -131,8 +155,8 @@ export default function CreateHomework() {
       setLoading(true);
       //validate()
       let obj = {};
-      !isEmpty(subject.data) && (obj.subject = subject.data.trim());
-      !isEmpty(type.data) && (obj.type = type.data.trim());
+      !isEmpty(subject.data) && subject.data !== "default" && (obj.subject = subject.data.trim());
+      !isEmpty(type.data) && type.data !== "default" && (obj.type = type.data.trim());
       !isEmpty(book.data) && (obj.book = book.data.trim());
       !isEmpty(pages.data) && (obj.pages = pages.data.trim());
       !isEmpty(project.data) && (obj.project = project.data.trim());
@@ -140,6 +164,7 @@ export default function CreateHomework() {
       !isEmpty(instr.data) && (obj.instructions = instr.data.trim());
       !isEmpty(due) && (obj.due = due);
       !isEmpty(timestamp) && (obj.timestamp = timestamp);
+      !isEmpty(selectedFile) && (obj.selectedFile = selectedFile);
 
       console.log(obj);
       updateHomeworkInfo(obj)
@@ -221,8 +246,10 @@ export default function CreateHomework() {
               <span className="label-text text-cyan-500">Subject</span>
             </label>
             <select
-              defaultValue={
-                selHomeworkMode === "edit" ? selHomework?.subject : "default"
+              value={
+                selHomeworkMode === "edit" && subject.data === "default"
+                  ? selHomework.subject
+                  : subject.data
               }
               onChange={(event) => change(event, setSubject, "sel")}
               className={classNames(
@@ -252,8 +279,10 @@ export default function CreateHomework() {
               <span className="label-text text-cyan-500">Homework Type</span>
             </label>
             <select
-              defaultValue={
-                selHomeworkMode === "edit" ? selHomework?.type : "default"
+              value={
+                selHomeworkMode === "edit" && type.data === "default"
+                  ? selHomework.type
+                  : type.data
               }
               onChange={(event) => change(event, setType, "sel")}
               className={classNames(
@@ -268,6 +297,7 @@ export default function CreateHomework() {
               </option>
               <option value={"exer"}>Book Exercise</option>
               <option value={"craft"}>Craft</option>
+              <option value={"image"}>Image</option>
             </select>
             {type.state === "error" && (
               <p className="text-error text-xs italic text-center mt-1">
@@ -278,21 +308,23 @@ export default function CreateHomework() {
           {selHomeworkMode === "add" && (
             <>
               <AnimatePresence>
-                {type.data !== "exer" && type.data !== "craft" && (
-                  <div
-                    key="_"
-                    className="grid place-content-center w-full min-h-[190px]"
-                  >
-                    <p
-                      className={classNames(
-                        "text-center",
-                        type.state === "error" && "text-error"
-                      )}
+                {type.data !== "exer" &&
+                  type.data !== "craft" &&
+                  type.data !== "image" && (
+                    <div
+                      key="_"
+                      className="grid place-content-center w-full min-h-[190px]"
                     >
-                      Select Homework Type
-                    </p>
-                  </div>
-                )}
+                      <p
+                        className={classNames(
+                          "text-center",
+                          type.state === "error" && "text-error"
+                        )}
+                      >
+                        Select Homework Type
+                      </p>
+                    </div>
+                  )}
                 {type?.data === "exer" && (
                   <ExerForm
                     key="exe"
@@ -313,6 +345,13 @@ export default function CreateHomework() {
                     setMaterials={setMaterials}
                   />
                 )}
+                {type?.data === "image" && (
+                  <UploadForm
+                    key="img"
+                    selectedFile={selectedFile}
+                    setSelectedFile={setSelectedFile}
+                  />
+                )}
               </AnimatePresence>
               {type.state === "error" && (
                 <p className="text-error text-xs italic text-center mt-1">
@@ -324,21 +363,22 @@ export default function CreateHomework() {
           {selHomeworkMode === "edit" && (
             <>
               <AnimatePresence>
-                {selHomework.type !== "exer" && selHomework.type !== "craft" && (
-                  <div
-                    key="_"
-                    className="grid place-content-center w-full min-h-[190px]"
-                  >
-                    <p
-                      className={classNames(
-                        "text-center",
-                        type.state === "error" && "text-error"
-                      )}
+                {selHomework.type !== "exer" &&
+                  selHomework.type !== "craft" && (
+                    <div
+                      key="_"
+                      className="grid place-content-center w-full min-h-[190px]"
                     >
-                      Select Homework Type
-                    </p>
-                  </div>
-                )}
+                      <p
+                        className={classNames(
+                          "text-center",
+                          type.state === "error" && "text-error"
+                        )}
+                      >
+                        Select Homework Type
+                      </p>
+                    </div>
+                  )}
                 {(selHomework?.type === "exer" || type?.data === "exer") && (
                   <ExerForm
                     key="exe"

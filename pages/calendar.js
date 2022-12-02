@@ -16,8 +16,8 @@ import {
   startOfToday,
 } from "date-fns";
 //hooks
-import useTeacherFetch from "../helpers/hooks/teacher";
-import useCalendarFetch from "../helpers/hooks/calendar/calendar";
+import useUserFetch from "../helpers/hooks/user";
+import useCalendarFetch from "../helpers/hooks/calendar";
 //custom
 import Calendar from "../components/calender";
 import { AuthGuard } from "../components/elements/authGuard";
@@ -35,10 +35,10 @@ export default function CalendarPage() {
     weekStartsOn: 1,
   });
 
-  const { teacher } = useTeacherFetch();
+  const { user } = useUserFetch();
   const { diaries, homeworks, schReminders, clsReminders } = useCalendarFetch(
-    teacher?.schoolId,
-    teacher?.classId,
+    user?.school_id,
+    user?.class?.id,
     currentWeek
   );
 

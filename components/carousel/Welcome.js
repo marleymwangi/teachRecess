@@ -55,11 +55,21 @@ export default function CarouselWelcome() {
       </div>
 
       <div className="grid grid-cols-2 gap-16 px-6 pt-[10vh]">
-        <div onClick={moveBack} className="my-6 grid gap-4 container mx-auto">
+      {selected === 0 ? (
+          <Link href="/auth/signin">
+            <div className="my-6 grid gap-4 container mx-auto">
+              <button className="btn btn-primary font-poppins text-white w-full max-w-md mx-auto">
+                Skip
+              </button>
+            </div>
+          </Link>
+        ) : (
+          <div onClick={moveBack} className="my-6 grid gap-4 container mx-auto">
           <button className="btn btn-primary font-poppins text-white w-full max-w-md mx-auto">
             Back
           </button>
         </div>
+        )}
         {selected === 2 ? (
           <Link href="/auth/signin">
             <div className="my-6 grid gap-4 container mx-auto">

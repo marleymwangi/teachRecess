@@ -4,27 +4,16 @@ export default function Logo() {
   return (
     <section className="relative mb-5 overflow-hidden">
       <div className="absolute z-0 bg-purple-800 w-screen h-[40vh]"/>
-      <div className="absolute bg-cyan-400 w-screen h-[20vh] z-10 top-[40vh] -left-[30vw] rotate-45"/>
-      <div className="absolute bg-cyan-400 w-screen h-[20vh] z-10 top-[40vh] -right-[30vw] -rotate-45"/>
-      <div className="absolute w-screen h-[50vh] z-10 top-0 -left-[25vw] rotate-45">
+      <div className="absolute w-screen h-[40vh] z-10">
         <Image
           priority="eager"
-          src="/images/waves.svg"
+          src="/images/wave.svg"
           layout="fill"
           objectFit="contain"
           objectPosition="botttom"
         />
       </div>
-      <div className="absolute w-[8vh] h-[8vh] z-40 top-10 left-10">
-        <Image
-          priority="eager"
-          src="/images/cloud.png"
-          layout="fill"
-          objectFit="contain"
-          objectPosition="botttom"
-        />
-      </div>
-      <div className="absolute w-[8vh] h-[8vh] z-40 top-4 right-14">
+      <div className="absolute w-[4vh] h-[4vh] z-40 top-[5vh] left-[15vw]">
         <Image
           priority="eager"
           src="/images/cloud.png"
@@ -33,7 +22,16 @@ export default function Logo() {
           objectPosition="botttom"
         />
       </div>
-      <div className="absolute w-[8vh] h-[8vh] z-40 top-28 right-32">
+      <div className="absolute w-[6vh] h-[6vh] z-40 top-[2vh] right-[10vw]">
+        <Image
+          priority="eager"
+          src="/images/cloud.png"
+          layout="fill"
+          objectFit="contain"
+          objectPosition="botttom"
+        />
+      </div>
+      <div className="absolute w-[4vh] h-[4vh] z-40 top-[3vh] right-[40vw] rotate-45">
         <Image
           priority="eager"
           src="/images/jet.png"
@@ -42,16 +40,7 @@ export default function Logo() {
           objectPosition="botttom"
         />
       </div>
-      <div className="absolute w-screen h-[50vh] z-10 top-0 -right-[25vw] -rotate-45">
-        <Image
-          priority="eager"
-          src="/images/waves.svg"
-          layout="fill"
-          objectFit="contain"
-          objectPosition="botttom"
-        />
-      </div>
-      <div className="relative h-[25vh] mt-[25vh] z-50">
+      <div className="relative h-[15vh] mt-[8vh] mb-[2vh] z-50">
         <Image
           priority="eager"
           src="/images/recess.png"

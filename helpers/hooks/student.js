@@ -20,11 +20,11 @@ import {
   isYesterday,
   formatDistanceToNow,
 } from "date-fns";
-import { db, storage } from "../../../firebase";
+import { db, storage } from "../../firebase";
 import { ref, getDownloadURL, uploadString } from "@firebase/storage";
 //custom
-import { isEmpty } from "../../utility";
-import { useData } from "../../../context/dataContext";
+import { isEmpty } from "../utility";
+import { useData } from "../../context/dataContext";
 
 const useStudentFetch = () => {
   const { selStudent } = useData();

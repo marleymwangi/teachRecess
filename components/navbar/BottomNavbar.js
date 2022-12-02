@@ -2,9 +2,7 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { useState } from "react";
 //custom
-import { useData } from "../../context/dataContext";
-import useStudentsFetch from "../../helpers/hooks/students/students";
-import NavItem from "../elements/navItem";
+import NavItem from "../elements/NavItem";
 
 //dynamic
 const RiHome2Line = dynamic(
@@ -45,36 +43,28 @@ export default function BottomNavbar() {
     return (
       <div className="fixed bottom-0 z-40 w-screen border-t border-yellow-500 bg-base-100 text-primary grid grid-cols-4">
         <NavItem
-          id="home"
           href="/"
-          selected={selected}
+          selected={router.pathname === "/"}
           iconOn={RiHome2Fill}
           iconOff={RiHome2Line}
-          setFunc={setSelected}
         />
         <NavItem
-          id="chat"
           href="/chats"
-          selected={selected}
+          selected={router.pathname.indexOf("/chats") === 0}
           iconOn={RiChat1Fill}
           iconOff={RiChat1Line}
-          setFunc={setSelected}
         />
         <NavItem
-          id="calendar"
           href="/calendar"
-          selected={selected}
+          selected={router.pathname.indexOf("/calendar") === 0}
           iconOn={RiBookletFill}
           iconOff={RiBookletLine}
-          setFunc={setSelected}
         />
         <NavItem
-          id="student"
           href={link}
-          selected={selected}
+          selected={router.pathname.indexOf("/student/") === 0}
           iconOn={BsPeopleFill}
           iconOff={BsPeople}
-          setFunc={setSelected}
         />
       </div>
     );

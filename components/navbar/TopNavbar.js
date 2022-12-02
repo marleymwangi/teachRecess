@@ -41,7 +41,18 @@ export default function TopNavbar() {
               <div className="avatar flex items-center">
                 <h1 className="mr-2 font-semibold">{selChatPart?.name}</h1>
                 <div className="w-6 rounded-full">
-                  <ImageLoader src={selChatPart?.image} />
+                  {selChatPart?.image?.length > 0 ? (
+                    <ImageLoader
+                      src={selChatPart?.image}
+                      fallbackSrc="/assets/selChatPart.webp"
+                    />
+                  ) : (
+                    <div className="relative bg-primary w-full h-full">
+                      <p className="abs-center text-white">
+                        {selChatPart?.name?.slice(0, 1)}
+                      </p>
+                    </div>
+                  )}
                 </div>
               </div>
             ) : router.pathname.indexOf("/chats/") === 0 ? (

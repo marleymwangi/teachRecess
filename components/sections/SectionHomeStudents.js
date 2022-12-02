@@ -1,10 +1,13 @@
 //custom
 import HomeworkStudent from "../child/HomeworkStudent";
 
-export default function SectionHomeStudents({ list }) {
+export default function SectionHomeStudents({ students, completed }) {
   return (
     <section className="grid gap-4">
-      {list && list?.map((h, i) => <HomeworkStudent key={h + i} data={h} />)}
+      {students?.length > 0 &&
+        students?.map((h, i) => (
+          <HomeworkStudent key={h + i} data={h} completed={completed} />
+        ))}
     </section>
   );
 }

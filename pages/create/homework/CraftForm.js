@@ -21,7 +21,7 @@ export default function CraftForm({
           placeholder={selHomework?.project || "Project Name"}
           onChange={(event) => change(event, setProject)}
           className={classNames(
-            "input input-primary w-full input-bordered focus:bg-white focus:border-2",
+            "input input-primary w-full input-bordered focus:bg-white",
             project?.state === "error" && "input-error"
           )}
         />
@@ -40,7 +40,7 @@ export default function CraftForm({
           placeholder={selHomework?.materials || "Sticks, Rope, etc."}
           onChange={(event) => change(event, setMaterials)}
           className={classNames(
-            "input input-primary w-full input-bordered focus:bg-white focus:border-2",
+            "input input-primary w-full input-bordered focus:bg-white",
             materials?.state === "error" && "input-error"
           )}
         />

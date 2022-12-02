@@ -2,8 +2,9 @@ import dynamic from "next/dynamic";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 //hooks
-import useStudentFetch from "../../helpers/hooks/students/student";
-import useStudentsFetch from "../../helpers/hooks/students/students";
+import useUserFetch from "../../helpers/hooks/user";
+import useClassroomFetch from "../../helpers/hooks/classroom";
+import useStudentFetch from "../../helpers/hooks/student";
 //custom
 import { isEmpty } from "../../helpers/utility";
 import { useData } from "../../context/dataContext";
@@ -21,9 +22,10 @@ export default function Portfolio() {
   const router = useRouter();
   const { id } = router.query;
 
-  const { students, getStudentById } = useStudentsFetch();
-  const { student, portfolio } = useStudentFetch();
+  const { user } = useUserFetch();
+  const { students, getStudentById } = useClassroomFetch(user);
   const { selStudent, setSelStudent } = useData();
+  const { portfolio } = useStudentFetch();
 
   useEffect(() => {
     if (id?.length > 0 && isEmpty(selStudent)) {
@@ -40,7 +42,7 @@ export default function Portfolio() {
             <div className="flex items-center">
               <div className="avatar mr-2">
                 <div className="w-10 mask mask-squircle">
-                  <ImageLoader src={student?.image} />
+                  <ImageLoader src={selStudent?.image} />
                 </div>
               </div>
               {!selStudent?.name && (

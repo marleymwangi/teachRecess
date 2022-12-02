@@ -2,8 +2,8 @@ import { useEffect } from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 //hooks
-import useStudentFetch from "../../helpers/hooks/students/student";
-import useStudentsFetch from "../../helpers/hooks/students/students";
+import useUserFetch from "../../helpers/hooks/user";
+import useClassroomFetch from "../../helpers/hooks/classroom";
 //custom
 import { isEmpty } from "../../helpers/utility";
 import { useData } from "../../context/dataContext";
@@ -34,8 +34,8 @@ export default function StudentProfile() {
   const router = useRouter();
   const { id } = router.query;
 
-  const { students, getStudentById } = useStudentsFetch();
-  const { student, school, classroom } = useStudentFetch();
+  const { user } = useUserFetch();
+  const { students, school, getStudentById } = useClassroomFetch(user);
   const { selStudent, setSelStudent } = useData();
 
   useEffect(() => {
@@ -51,15 +51,15 @@ export default function StudentProfile() {
         <section className="flex flex-col items-center">
           <div className="avatar">
             <div className="w-24 mask mask-squircle">
-              <ImageLoader src={student?.image} />
+              <ImageLoader src={selStudent?.image} />
             </div>
           </div>
-          {!student?.name && (
+          {!selStudent?.name && (
             <span className="bg-gray-300 animate-pulse my-2 rounded w-12 h-7" />
           )}
-          {student?.name && (
+          {selStudent?.name && (
             <p className="font-semibold text-2xl my-2 font-poppins">
-              {student?.name}
+              {selStudent?.name}
             </p>
           )}
           <div className="flex items-center gap-2 text-sm text-gray-400">
@@ -68,10 +68,10 @@ export default function StudentProfile() {
             )}
             {school?.name && <span>{school?.name}</span>}
             {" . "}
-            {!classroom?.name && (
+            {!selStudent?.class?.name && (
               <span className="bg-gray-300 animate-pulse rounded w-7 h-5" />
             )}
-            {classroom?.name && <span>{classroom?.name}</span>}
+            {selStudent?.class?.name && <span>{selStudent?.class?.name}</span>}
           </div>
         </section>
         <section className="p-6">
@@ -105,24 +105,12 @@ export default function StudentProfile() {
             {"Allergies"}
           </p>
           <div className="flex flex-wrap gap-3 font-poppins">
-            <span className="badge badge-primary p-3">
-              Apple
-            </span>
-            <span className="badge badge-primary p-3">
-              Watermelon
-            </span>
-            <span className="badge badge-primary p-3">
-              Beef
-            </span>
-            <span className="badge badge-primary p-3">
-              Eggs
-            </span>
-            <span className="badge badge-primary p-3">
-              Chapati
-            </span>
-            <span className="badge badge-primary p-3">
-              Bacon
-            </span>
+            <span className="badge badge-primary p-3">Apple</span>
+            <span className="badge badge-primary p-3">Watermelon</span>
+            <span className="badge badge-primary p-3">Beef</span>
+            <span className="badge badge-primary p-3">Eggs</span>
+            <span className="badge badge-primary p-3">Chapati</span>
+            <span className="badge badge-primary p-3">Bacon</span>
           </div>
         </section>
         <section className="p-6">

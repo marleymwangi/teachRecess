@@ -21,7 +21,7 @@ export default function ExerForm({
           placeholder={selHomework?.book ? selHomework.book : "Book Name"}
           onChange={(event) => change(event, setBook)}
           className={classNames(
-            "input input-primary w-full input-bordered focus:bg-white focus:border-2",
+            "input input-primary w-full input-bordered focus:bg-white",
             book?.state === "error" && "input-error"
           )}
         />
@@ -40,7 +40,7 @@ export default function ExerForm({
           placeholder={selHomework?.pages ? selHomework.pages : "22, 24, 25"}
           onChange={(event) => change(event, setPages)}
           className={classNames(
-            "input input-primary w-full input-bordered focus:bg-white focus:border-2",
+            "input input-primary w-full input-bordered focus:bg-white",
             pages?.state === "error" && "input-error"
           )}
         />

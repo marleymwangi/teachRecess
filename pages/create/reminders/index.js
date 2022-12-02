@@ -1,9 +1,9 @@
 import { toast } from "react-toastify";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
-
 //hooks
-import useTeacherFetch from "../../../helpers/hooks/teacher";
+import useUserFetch from "../../../helpers/hooks/user";
+import useClassroomFetch from "../../../helpers/hooks/classroom";
 //custom
 import { useData } from "../../../context/dataContext";
 import { classNames, isEmpty } from "../../../helpers/utility";
@@ -11,11 +11,12 @@ import DatePickerComp from "../../../components/elements/datePickerComp";
 
 export default function CreateReminder() {
   const { selReminder } = useData();
-  const { updateReminderInfo } = useTeacherFetch();
+  const { user } = useUserFetch();
+  const { updateReminderInfo } = useClassroomFetch(user);
   const [loading, setLoading] = useState(false);
   //form data
-  const [scope, setScope] = useState({ data: "", state: null });
-  const [type, setType] = useState({ data: "", state: null });
+  const [scope, setScope] = useState({ data: "default", state: null });
+  const [type, setType] = useState({ data: "default", state: null });
   const [eventType, setEventType] = useState({ data: "", state: null });
   const [content, setContent] = useState({ data: "", state: null });
   const [timestamp, setTimestamp] = useState(null);
@@ -64,8 +65,8 @@ export default function CreateReminder() {
 
   const clear = () => {
     setEventType({ data: "", state: null });
-    setType({ data: "", state: null });
-    setScope({ data: "", state: null });
+    setType({ data: "default", state: null });
+    setScope({ data: "default", state: null });
     setContent({ data: "", state: null });
   };
 
@@ -78,14 +79,14 @@ export default function CreateReminder() {
     ) {
       return true;
     } else {
-      if (scope.state !== "success") {
+      if (scope.state !== "success" || scope.data === "default") {
         setScope({ ...scope, state: "error" });
+      }
+      if (type.state !== "success" || type.data === "default") {
+        setType({ ...type, state: "error" });
       }
       if (eventType.state !== "success") {
         setEventType({ ...eventType, state: "error" });
-      }
-      if (type.state !== "success") {
-        setType({ ...type, state: "error" });
       }
       if (content.state !== "success") {
         setContent({ ...content, state: "error" });
@@ -150,7 +151,7 @@ export default function CreateReminder() {
               <span className="label-text text-cyan-500">Reminder Scope</span>
             </label>
             <select
-              defaultValue={"default"}
+              value={scope.data}
               onChange={(event) => change(event, setScope, "sel")}
               className={classNames(
                 "select w-full",
@@ -176,7 +177,7 @@ export default function CreateReminder() {
               <span className="label-text text-cyan-500">Reminder Type</span>
             </label>
             <select
-              defaultValue={"default"}
+              value={type?.data}
               onChange={(event) => change(event, setType, "sel")}
               className={classNames(
                 "select w-full",
@@ -203,10 +204,11 @@ export default function CreateReminder() {
             </label>
             <input
               type="text"
+              value={eventType?.data}
+              onChange={(event) => change(event, setEventType)}
               placeholder={
                 selReminder?.eventType ? selReminder.eventType : "Opening Day"
               }
-              onChange={(event) => change(event, setEventType)}
               className={classNames(
                 "input input-primary w-full input-bordered focus:bg-white focus:border-2",
                 eventType?.state === "error" && "input-error"
@@ -218,8 +220,7 @@ export default function CreateReminder() {
               </p>
             )}
           </motion.div>
-          {
-           /**
+          {/**
              
           <motion.div variants={riseVar} className="form-control w-full">
             <label className="label">
@@ -250,19 +251,19 @@ export default function CreateReminder() {
             )}
           </motion.div>
 
-            */
-          }
-          
+            */}
+
           <motion.div variants={riseVar} className="form-control w-full">
             <label className="label">
               <span className="label-text text-cyan-500">Content</span>
             </label>
             <textarea
               type="text"
+              value={content?.data}
+              onChange={(event) => change(event, setContent)}
               placeholder={
                 selReminder?.content ? selReminder.content : "content"
               }
-              onChange={(event) => change(event, setContent)}
               className={classNames(
                 "input input-primary w-full input-bordered focus:bg-white focus:border-2",
                 content.state === "error" && "input-error"

@@ -1,7 +1,9 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 //hooks
-import useTeacherFetch from "../../helpers/hooks/teacher";
+import useUserFetch from "../../helpers/hooks/user";
+import useClassroomFetch from "../../helpers/hooks/classroom";
+import useHomeworkFetch from "../../helpers/hooks/homework";
 //custom
 import { isEmpty } from "../../helpers/utility";
 import { useData } from "../../context/dataContext";
@@ -9,51 +11,42 @@ import { AuthGuard } from "../../components/elements/authGuard";
 import RadialProgress from "../../components/elements/RadialProgress";
 import SectionHomeStudents from "../../components/sections/SectionHomeStudents";
 import SquareCardHomeWork from "../../components/cards/SquareCardHomeWork";
-import useHomeworkFetch from "../../helpers/hooks/homework/homework";
 
 export default function Homework() {
   const router = useRouter();
   const { id } = router.query;
 
   const { selHomework, setSelHomework } = useData();
-  const {
-    teacher,
-    students,
-    classroom,
-    getHomeworkById,
-    getStudentsHomeworks,
-  } = useTeacherFetch();
-  const { homework } = useHomeworkFetch(teacher?.schoolId, teacher?.classId, id);
+  const { user } = useUserFetch();
+  const { students, classroom, getHomeworkById } = useClassroomFetch(user);
+  const { homework } = useHomeworkFetch(
+    user?.school_id,
+    user?.class?.id,
+    id
+  );
 
-  const [hmwrks, setHmwrks] = useState([]);
   const [percent, setPercent] = useState(0);
   const [over, setOver] = useState(0);
 
   useEffect(() => {
-    if (students?.length > 0) {
-      getStudentsHomeworks(id).then((res) => {
-        setHmwrks(res);
-      });
-    }
-  }, [id, students]);
-
-  useEffect(() => {
-    if (hmwrks?.length > 0) {
-      getOverDue();
+    if (students?.length > 0 && homework) {
       getCompletePercentage();
+      getOverDue();
     }
-  }, [hmwrks]);
+  }, [id, students, homework]);
 
   useEffect(() => {
     if (id?.length > 0 && isEmpty(selHomework)) {
       let d = getHomeworkById(id);
       d && setSelHomework(d);
     }
-  }, [id, teacher, selHomework, setSelHomework, getHomeworkById]);
+  }, [id, user, selHomework, setSelHomework, getHomeworkById]);
 
   const getOverDue = () => {
-    let tmp = hmwrks.filter((diary) => diary.overdue === true);
-    setOver(tmp.length);
+    let tmp = homework?.overdue
+      ? students.length - homework?.completed?.length || 0
+      : 0;
+    setOver(tmp);
   };
 
   const getPercentage = (a, b) => {
@@ -63,8 +56,7 @@ export default function Homework() {
   };
 
   const getCompletePercentage = () => {
-    let comp = hmwrks.filter((diary) => diary.complete === true);
-    let perc = getPercentage(comp.length, hmwrks.length);
+    let perc = getPercentage(homework?.completed?.length || 0, students.length);
     setPercent(perc);
   };
 
@@ -101,7 +93,10 @@ export default function Homework() {
             <SquareCardHomeWork data={homework} instr />
           </div>
           <div className="my-6">
-            <SectionHomeStudents list={hmwrks} />
+            <SectionHomeStudents
+              students={students}
+              completed={homework?.completed}
+            />
           </div>
         </section>
       </main>

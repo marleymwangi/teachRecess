@@ -9,14 +9,16 @@ import {
   orderBy,
   collection,
   onSnapshot,
+  serverTimestamp,
 } from "@firebase/firestore";
 import { db } from "../../firebase";
 import { useSession } from "next-auth/react";
+import { isEqual } from "lodash";
 //custom
 import { isEmpty } from "../utility";
 
 const useUserFetch = () => {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const [user, setUser] = useState(null);
   const [notifications, setNotifications] = useState([]);
 
@@ -27,35 +29,38 @@ const useUserFetch = () => {
   const [notsError, setNotsError] = useState(null);
 
   useEffect(() => {
-    if (!isEmpty(session)) {
-      let user = parseSession(session);
-      setUser(user);
-      setUserPending(false);
-    }
-  }, [db, session]);
-
-  useEffect(() => {
     try {
-      if (!isEmpty(user)) {
-        let docRef = doc(db, "users", user.id);
+      if (status === "authenticated" && !isEmpty(session)) {
+        let docRef = doc(db, "teachers", session.user.id);
 
-        return onSnapshot(docRef, (doc) => {
-          if (!doc.exists()) {
-            let user = parseSession(session);
-            delete user.id;
-            setUserDataDb(user).then((res) => console.log("User Created"));
-          } else {
-            let user = parseSession(session);
-            delete user.id;
-            setUserDataDb(user).then((res) => console.log("User Updated"));
+        return onSnapshot(
+          docRef,
+          (doc) => {
+            if (!doc.exists()) {
+              throw "Teacher wasnt found in the database";
+            } else {
+              let usr = parseSession(session);
+              delete usr.id;
 
-            let u = { id: doc.id, ...doc.data() };
-            if (u !== user) {
-              setUser(u);
-              setUserPending(false);
+              let data = doc.data();
+              let updated = { ...data, ...usr };
+
+              if (!isEqual(user, updated)) {
+                setUser(updated);
+                setUserPending(false);
+              }
+
+              if (!isEqual(data, updated)) {
+                setUserDataDb(updated).then((res) =>
+                  console.log("User Updated")
+                );
+              }
             }
+          },
+          (error) => {
+            console.warn("User Hook: getUserDataFromDb useEffect: ", error);
           }
-        });
+        );
       }
     } catch (error) {
       console.warn(
@@ -71,29 +76,35 @@ const useUserFetch = () => {
     try {
       if (!isEmpty(session) && session?.user?.id.length > 0) {
         let queryRef = query(
-          collection(db, "users", session.user.id, "notifications"),
+          collection(db, "teachers", session.user.id, "notifications"),
           orderBy("timestamp", "desc")
         );
 
-        return onSnapshot(queryRef, (snapshot) => {
-          let tmp = [];
-          snapshot.forEach((doc) => {
-            let timestm = doc.data().timestamp.toDate();
-            let not = {
-              id: doc.id,
-              ...doc.data(),
-              timestamp: timestm,
-            };
+        return onSnapshot(
+          queryRef,
+          (snapshot) => {
+            let tmp = [];
+            snapshot.forEach((doc) => {
+              let timestm = doc.data().timestamp.toDate();
+              let not = {
+                id: doc.id,
+                ...doc.data(),
+                timestamp: timestm,
+              };
 
-            tmp.push(not);
-          });
+              tmp.push(not);
+            });
 
-          setNotifications(tmp);
-          setNotsPending(false);
-        });
+            setNotifications(tmp);
+            setNotsPending(false);
+          },
+          (error) => {
+            console.warn("User Hook: getUserDataFromDb useEffect: ", error);
+          }
+        );
       }
     } catch (error) {
-      console.log("User Hook: getUserNotifications: ", error);
+      console.warn("User Hook: getUserNotifications: ", error);
       setNotsError(error);
       setNotsPending(false);
     }
@@ -103,9 +114,8 @@ const useUserFetch = () => {
     if (!isEmpty(session)) {
       let obj = {};
       obj.id = session.user.id;
-      obj.name = session.user.name;
       obj.email = session.user.email;
-      obj.image = session.user.image;
+      obj.emailVerified = session.user.emailVerified;
       return obj;
     }
   }
@@ -116,7 +126,8 @@ const useUserFetch = () => {
         if (isEmpty(session?.user?.id)) {
           reject({ message: "Missing user Id" });
         } else {
-          let docRef = doc(db, "users", session.user.id);
+          let docRef = doc(db, "teachers", session.user.id);
+          updateObj.date_updated = serverTimestamp();
 
           setDoc(docRef, updateObj, { merge: true }).then((res) =>
             resolve("done")

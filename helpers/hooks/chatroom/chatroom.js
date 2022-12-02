@@ -48,19 +48,25 @@ const useChatroomFetch = (id) => {
       if (id?.length > 0) {
         let docRef = doc(db, "chatrooms", id);
 
-        return onSnapshot(docRef, (doc) => {
-          if (doc.exists()) {
-            let time = doc.data().timestamp.toDate();
-            let chtroom = { id: doc.id, ...doc.data(), timestamp: time };
-            setChatroom(chtroom);
-            setChatPending(false);
+        return onSnapshot(
+          docRef,
+          (doc) => {
+            if (doc.exists()) {
+              let time = doc.data().timestamp.toDate();
+              let chtroom = { id: doc.id, ...doc.data(), timestamp: time };
+              setChatroom(chtroom);
+              setChatPending(false);
+            }
+          },
+          (error) => {
+            console.info("Chatroom Hook: getChatroomData useEffect: ", error);
           }
-        });
+        );
       } else {
         throw "Invalid selected chatroom id";
       }
     } catch (error) {
-      console.log("Chatroom Hook: getChatroomData useEffect: ", error);
+      console.info("Chatroom Hook: getChatroomData useEffect: ", error);
       setChatError(error);
       setChatPending(false);
     }
@@ -77,19 +83,24 @@ const useChatroomFetch = (id) => {
 
           return onSnapshot(queryRef, (snapshot) => {
             let tmp = [];
-            snapshot.forEach((doc) => {
-              let timestm = doc.data().timestamp.toDate();
-              let type =
-                doc.data()?.sender === session.user.id ? "mine" : "other";
-              let mess = {
-                type,
-                id: doc.id,
-                timestamp: timestm,
-                ...doc.data(),
-              };
+            snapshot.forEach(
+              (doc) => {
+                let timestm = doc.data().timestamp.toDate();
+                let type =
+                  doc.data()?.sender === session.user.id ? "mine" : "other";
+                let mess = {
+                  type,
+                  id: doc.id,
+                  timestamp: timestm,
+                  ...doc.data(),
+                };
 
-              tmp.push(mess);
-            });
+                tmp.push(mess);
+              },
+              (error) => {
+                console.info("Chatroom Hook: getMessages useEffect: ", error);
+              }
+            );
 
             setMessages(tmp);
             setMessPending(false);
@@ -103,7 +114,7 @@ const useChatroomFetch = (id) => {
         }
       }
     } catch (error) {
-      console.log("Chatroom Hook: getMessages useEffect: ", error);
+      console.info("Chatroom Hook: getMessages useEffect: ", error);
       setMessError(error);
       setMessPending(false);
     }
@@ -116,20 +127,29 @@ const useChatroomFetch = (id) => {
           (part) => part !== session.user.id
         );
 
-        let docRef = doc(db, "users", parts[0]);
+        let docRef = doc(db, "guardians", parts[0]?.id);
 
-        return onSnapshot(docRef, (doc) => {
-          if (doc.exists()) {
-            let person = { id: doc.id, ...doc.data() };
-            setParticipant(person);
-            setPartPending(false);
+        return onSnapshot(
+          docRef,
+          (doc) => {
+            if (doc.exists()) {
+              let person = { id: doc.id, ...doc.data() };
+              setParticipant(person);
+              setPartPending(false);
+            }
+          },
+          (error) => {
+            console.info(
+              "Chatroom Hook: getChatroomParticipant useEffect: ",
+              error
+            );
           }
-        });
+        );
       } else {
         throw "No chatroom participants";
       }
     } catch (error) {
-      console.log("Chatroom Hook: getChatroomParticipant useEffect: ", error);
+      console.info("Chatroom Hook: getChatroomParticipant useEffect: ", error);
       setPartError(error);
       setPartPending(false);
     }
@@ -167,7 +187,7 @@ const useChatroomFetch = (id) => {
         searchIndex: [id + participant, participant + id],
         timestamp: new Date(),
       };
-      console.log(obj)
+      console.log(obj);
       addDoc(collection(db, "chatrooms"), obj).then((docRef) => {
         resolve(docRef.id);
       });

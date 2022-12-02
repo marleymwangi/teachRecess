@@ -26,7 +26,7 @@ const usePersonFetch = (id) => {
   useEffect(() => {
     try {
       if (id?.length > 0) {
-        let docRef = doc(db, "users", id);
+        let docRef = doc(db, "guardians", id);
 
         return onSnapshot(docRef, (doc) => {
           if (doc.exists()) {

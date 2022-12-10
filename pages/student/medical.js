@@ -7,7 +7,7 @@ import useClassroomFetch from "../../helpers/hooks/classroom";
 //custom
 import { isEmpty } from "../../helpers/utility";
 import { useData } from "../../context/dataContext";
-import { AuthGuard } from "../../components/elements/authGuard";
+import { AuthGuard } from "../../components/elements/AuthGuard";
 import ImageLoader from "../../components/elements/imageLoader";
 //dynamic
 const FaRegHospital = dynamic(

@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import useChatroomsFetch from "../../helpers/hooks/chatroom/chatrooms";
 //custom
 import ChatRoom from "../../components/chats/Chatroom";
-import { AuthGuard } from "../../components/elements/authGuard";
+import { AuthGuard } from "../../components/elements/AuthGuard";
 //dynamic
 const SiGooglemessages = dynamic(async () => (await import("react-icons/si")).SiGooglemessages);
 

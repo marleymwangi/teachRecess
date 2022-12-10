@@ -1,6 +1,6 @@
 //custom
 import TeacherComment from "../components/cards/TeacherComment";
-import { AuthGuard } from "../components/elements/authGuard";
+import { AuthGuard } from "../components/elements/AuthGuard";
 import SectionCreate from "../components/sections/SectionCreate";
 import CirclesCardUser from "../components/cards/CirclesCardUser";
 import SectionLists from "../components/sections/SectionLists";

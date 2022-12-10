@@ -3,7 +3,7 @@ import { isAfter, isBefore } from "date-fns";
 import useUserFetch from "../helpers/hooks/user";
 import useClassroomFetch from "../helpers/hooks/classroom";
 //custom
-import { AuthGuard } from "../components/elements/authGuard";
+import { AuthGuard } from "../components/elements/AuthGuard";
 import CardReminder from "../components/cards/reminder";
 
 export default function Reminders() {

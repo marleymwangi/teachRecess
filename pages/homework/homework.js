@@ -2,7 +2,7 @@
 import useUserFetch from "../../helpers/hooks/user";
 import useClassroomFetch from "../../helpers/hooks/classroom";
 //custom
-import { AuthGuard } from "../../components/elements/authGuard";
+import { AuthGuard } from "../../components/elements/AuthGuard";
 import CirclesCardHomework from "../../components/cards/CirclesCardHomework";
 
 export default function Homework() {

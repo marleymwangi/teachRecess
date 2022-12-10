@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
 //hooks
+import { useAuth } from "../../context/authContext";
 import useClassroomFetch from "../../helpers/hooks/classroom";
 //custom
 import Contact from "../elements/Contact";
 import useUserFetch from "../../helpers/hooks/user";
 
 export default function ModalContact() {
-  const { data: session } = useSession();
+  const { user: session } = useAuth();
   const [guardians, setGuardians] = useState([]);
 
   const { user } = useUserFetch();

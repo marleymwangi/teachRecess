@@ -21,13 +21,13 @@ import {
   differenceInDays,
   formatDistanceToNow,
 } from "date-fns";
+import { isEmpty } from "lodash";
 import { db } from "../../../firebase";
-import { useSession } from "next-auth/react";
 //custom
-import { isEmpty } from "../../utility";
+import { useAuth } from "../../../context/authContext";
 
 const useChatroomFetch = (id) => {
-  const { data: session, status } = useSession();
+  const { user: session, status } = useAuth();
 
   const [chatroom, setChatroom] = useState({});
   const [participant, setParticipant] = useState({});
@@ -75,7 +75,7 @@ const useChatroomFetch = (id) => {
   useEffect(() => {
     try {
       if (status === "authenticated") {
-        if (id?.length > 0 && session?.user?.id?.length > 0) {
+        if (id?.length > 0 && session?.id?.length > 0) {
           let queryRef = query(
             collection(db, "chatrooms", id, "messages"),
             orderBy("timestamp", "asc")
@@ -87,7 +87,7 @@ const useChatroomFetch = (id) => {
               (doc) => {
                 let timestm = doc.data().timestamp.toDate();
                 let type =
-                  doc.data()?.sender === session.user.id ? "mine" : "other";
+                  doc.data()?.sender === session.id ? "mine" : "other";
                 let mess = {
                   type,
                   id: doc.id,
@@ -108,7 +108,7 @@ const useChatroomFetch = (id) => {
         } else {
           if (id?.length < 1) {
             throw "Missing chatroom Id";
-          } else if (session?.user?.id?.length < 1) {
+          } else if (session?.id?.length < 1) {
             throw "Missing chatroom user";
           }
         }
@@ -124,7 +124,7 @@ const useChatroomFetch = (id) => {
     try {
       if (chatroom?.participants?.length > 0) {
         let parts = chatroom.participants.filter(
-          (part) => part !== session.user.id
+          (part) => part !== session.id
         );
 
         let docRef = doc(db, "guardians", parts[0]);
@@ -199,7 +199,7 @@ const useChatroomFetch = (id) => {
   function createChatroom(participant) {
     return new Promise((resolve, reject) => {
       try {
-        if (session?.user?.id.length < 1) {
+        if (session?.id.length < 1) {
           throw "Invalid user id";
         } else if (participant?.length < 1) {
           throw "Invalid chat Participant";
@@ -209,7 +209,7 @@ const useChatroomFetch = (id) => {
             where(
               "searchIndex",
               "array-contains",
-              session.user.id + participant.id
+              session.id + participant.id
             ),
             orderBy("timestamp", "asc"),
             limit(1)
@@ -217,7 +217,7 @@ const useChatroomFetch = (id) => {
 
           getDocs(q).then((snapshot) => {
             if (snapshot.empty) {
-              createRoom(resolve, reject, session.user.id, participant);
+              createRoom(resolve, reject, session.id, participant);
             } else {
               snapshot.forEach((doc) => {
                 // doc is never undefined for query doc snapshots
@@ -241,12 +241,12 @@ const useChatroomFetch = (id) => {
       try {
         if (id.length < 1) {
           throw "Missing chatroom Id";
-        } else if (session.user.id.length < 1) {
+        } else if (session.id.length < 1) {
           throw "Missing user";
         } else {
           addDoc(collection(db, "chatrooms", id, "messages"), {
             message: text,
-            sender: session.user.id,
+            sender: session.id,
             timestamp: new Date(),
           }).then((res) => {
             resolve(res);
@@ -268,14 +268,14 @@ const useChatroomFetch = (id) => {
           throw "Invalid charoom Id";
         } else if (text?.length < 1) {
           throw "Empty text";
-        } else if (session?.user?.id?.length < 1) {
+        } else if (session?.id?.length < 1) {
           throw "Missing user";
         } else {
           console.log("diary", diary);
           console.log("text", text);
           addDoc(collection(db, "chatrooms", id, "messages"), {
             message: text,
-            sender: session.user.id,
+            sender: session.id,
             timestamp: new Date(),
             attachment: {
               type: "diary",
@@ -299,7 +299,7 @@ const useChatroomFetch = (id) => {
           throw "Invalid charoom Id";
         } else if (mesId?.length < 1) {
           throw "Invalid message Id";
-        } else if (session?.user?.id?.length < 1) {
+        } else if (session?.id?.length < 1) {
           throw "Missing user";
         } else {
           let docRef = doc(db, "chatrooms", id, "messages", mesId);

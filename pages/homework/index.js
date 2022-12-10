@@ -7,7 +7,7 @@ import useHomeworkFetch from "../../helpers/hooks/homework";
 //custom
 import { isEmpty } from "../../helpers/utility";
 import { useData } from "../../context/dataContext";
-import { AuthGuard } from "../../components/elements/authGuard";
+import { AuthGuard } from "../../components/elements/AuthGuard";
 import RadialProgress from "../../components/elements/RadialProgress";
 import SectionHomeStudents from "../../components/sections/SectionHomeStudents";
 import SquareCardHomeWork from "../../components/cards/SquareCardHomeWork";

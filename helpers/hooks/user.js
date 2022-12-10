@@ -12,13 +12,12 @@ import {
   serverTimestamp,
 } from "@firebase/firestore";
 import { db } from "../../firebase";
-import { useSession } from "next-auth/react";
-import { isEqual } from "lodash";
+import { isEqual, isEmpty } from "lodash";
 //custom
-import { isEmpty } from "../utility";
+import { useAuth } from "../../context/authContext";
 
 const useUserFetch = () => {
-  const { data: session, status } = useSession();
+  const { user: session, status } = useAuth();
   const [user, setUser] = useState(null);
   const [notifications, setNotifications] = useState([]);
 
@@ -31,19 +30,16 @@ const useUserFetch = () => {
   useEffect(() => {
     try {
       if (status === "authenticated" && !isEmpty(session)) {
-        let docRef = doc(db, "teachers", session.user.id);
+        let docRef = doc(db, "teachers", session.id);
 
         return onSnapshot(
           docRef,
           (doc) => {
             if (!doc.exists()) {
-              throw "Teacher wasnt found in the database";
+              throw "Guardian wasnt found in the database";
             } else {
-              let usr = parseSession(session);
-              delete usr.id;
-
               let data = doc.data();
-              let updated = { ...data, ...usr };
+              let updated = { ...data, ...session };
 
               if (!isEqual(user, updated)) {
                 setUser(updated);
@@ -58,7 +54,7 @@ const useUserFetch = () => {
             }
           },
           (error) => {
-            console.warn("User Hook: getUserDataFromDb useEffect: ", error);
+            console.info("User Hook: getUserDataFromDb useEffect: ", error);
           }
         );
       }
@@ -70,13 +66,13 @@ const useUserFetch = () => {
       setUserError(error);
       setUserPending(false);
     }
-  }, [session, session?.user?.id]);
+  }, [session, session?.id]);
 
   useEffect(() => {
     try {
-      if (!isEmpty(session) && session?.user?.id.length > 0) {
+      if (!isEmpty(session) && session?.id.length > 0) {
         let queryRef = query(
-          collection(db, "teachers", session.user.id, "notifications"),
+          collection(db, "teachers", session.id, "notifications"),
           orderBy("timestamp", "desc")
         );
 
@@ -108,25 +104,15 @@ const useUserFetch = () => {
       setNotsError(error);
       setNotsPending(false);
     }
-  }, [session, session?.user?.id]);
-
-  function parseSession(session) {
-    if (!isEmpty(session)) {
-      let obj = {};
-      obj.id = session.user.id;
-      obj.email = session.user.email;
-      obj.emailVerified = session.user.emailVerified;
-      return obj;
-    }
-  }
+  }, [session, session?.id]);
 
   function setUserDataDb(updateObj) {
     return new Promise((resolve, reject) => {
       try {
-        if (isEmpty(session?.user?.id)) {
+        if (isEmpty(session?.id)) {
           reject({ message: "Missing user Id" });
         } else {
-          let docRef = doc(db, "teachers", session.user.id);
+          let docRef = doc(db, "teachers", session.id);
           updateObj.date_updated = serverTimestamp();
 
           setDoc(docRef, updateObj, { merge: true }).then((res) =>
@@ -144,7 +130,7 @@ const useUserFetch = () => {
   function updateNotId(obj) {
     if (isEmpty(obj)) {
       reject({ message: "No data to update" });
-    } else if (isEmpty(session?.user?.id)) {
+    } else if (isEmpty(session?.id)) {
       return;
     } else if (user?.notId === obj.notId) {
       return;

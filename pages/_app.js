@@ -1,4 +1,4 @@
-import { SessionProvider } from "next-auth/react";
+import { ProvideAuth } from "../context/authContext";
 import { ProvideData } from "../context/dataContext";
 import Layout from "../layout";
 //css
@@ -7,17 +7,17 @@ import "react-toastify/dist/ReactToastify.css";
 //messaging
 import Notification from "../components/elements/ToastNotifications";
 
-function MyApp({ Component, pageProps: { session, ...pageProps } }) {
+function MyApp({ Component }) {
   return (
-    <SessionProvider session={session}>
+    <ProvideAuth>
       <ProvideData>
         <Layout>
           <Notification>
-            <Component {...pageProps} />
+            <Component />
           </Notification>
         </Layout>
       </ProvideData>
-    </SessionProvider>
+    </ProvideAuth>
   );
 }
 

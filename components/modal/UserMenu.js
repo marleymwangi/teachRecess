@@ -1,18 +1,18 @@
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { signOut, useSession } from "next-auth/react";
 //custom
 import ImageLoader from "../elements/imageLoader";
 import useUserFetch from "../../helpers/hooks/user";
+import { useAuth } from "../../context/authContext";
 //dynamic
 const HiBell = dynamic(async () => (await import("react-icons/hi")).HiBell);
 
 export default function ModalUser() {
-  const { data: session } = useSession();
+  const { user: session, Logout } = useAuth();
   const { user } = useUserFetch();
 
   const handleLogout = () => {
-    signOut();
+    Logout();
     handleCloseModal();
   };
 

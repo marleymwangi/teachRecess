@@ -8,7 +8,7 @@ import useChatroomFetch from "../../helpers/hooks/chatroom/chatroom";
 import { isEmpty } from "../../helpers/utility";
 import { useData } from "../../context/dataContext";
 import Message from "../../components/chats/Message";
-import { AuthGuard } from "../../components/elements/authGuard";
+import { AuthGuard } from "../../components/elements/AuthGuard";
 import useChatroomsFetch from "../../helpers/hooks/chatroom/chatrooms";
 //dynamic
 const IoSend = dynamic(async () => (await import("react-icons/io5")).IoSend);

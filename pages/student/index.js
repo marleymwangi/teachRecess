@@ -10,7 +10,7 @@ import useClassroomFetch from "../../helpers/hooks/classroom";
 import { isEmpty } from "../../helpers/utility";
 import UserWarn from "../../components/users/Warn";
 import { useData } from "../../context/dataContext";
-import { AuthGuard } from "../../components/elements/authGuard";
+import { AuthGuard } from "../../components/elements/AuthGuard";
 import ImageLoader from "../../components/elements/imageLoader";
 //dynamic
 const FaBriefcaseMedical = dynamic(async () => (await import("react-icons/fa")).FaBriefcaseMedical);

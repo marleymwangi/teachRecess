@@ -1,6 +1,5 @@
 import { useState, useEffect, createContext, useContext } from "react";
 //custom packs
-import { useSession } from "next-auth/react";
 import localforage from "localforage";
 
 

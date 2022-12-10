@@ -5,7 +5,7 @@ import useUserFetch from "../../helpers/hooks/user";
 import useClassroomFetch from "../../helpers/hooks/classroom";
 //custom
 import Profile from "../../components/child/Profile";
-import { AuthGuard } from "../../components/elements/authGuard";
+import { AuthGuard } from "../../components/elements/AuthGuard";
 //dynamic
 const FaSearch = dynamic(async () => (await import("react-icons/fa")).FaSearch);
 

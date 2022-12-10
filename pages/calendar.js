@@ -20,7 +20,7 @@ import useUserFetch from "../helpers/hooks/user";
 import useCalendarFetch from "../helpers/hooks/calendar";
 //custom
 import Calendar from "../components/calender";
-import { AuthGuard } from "../components/elements/authGuard";
+import { AuthGuard } from "../components/elements/AuthGuard";
 import CirclesCardHomework from "../components/cards/CirclesCardHomework";
 import CardReminder from "../components/cards/reminder";
 import TeacherComment from "../components/cards/TeacherComment";

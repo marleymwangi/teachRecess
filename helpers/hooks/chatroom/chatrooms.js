@@ -14,13 +14,13 @@ import {
   onSnapshot,
   serverTimestamp,
 } from "@firebase/firestore";
+import { isEmpty } from "lodash";
 import { db } from "../../../firebase";
-import { useSession } from "next-auth/react";
 //custom
-import { isEmpty } from "../../utility";
+import { useAuth } from "../../../context/authContext";
 
 const useChatroomsFetch = () => {
-  const { data: session } = useSession();
+  const { user: session } = useAuth();
 
   const [chatrooms, setChatrooms] = useState([]);
   const [pending, setPending] = useState(true);
@@ -28,10 +28,10 @@ const useChatroomsFetch = () => {
 
   useEffect(() => {
     try {
-      if (!isEmpty(session) && session?.user?.id.length > 0) {
+      if (!isEmpty(session) && session?.id.length > 0) {
         let queryRef = query(
           collection(db, "chatrooms"),
-          where("participants", "array-contains", session.user.id),
+          where("participants", "array-contains", session.id),
           orderBy("timestamp", "asc")
         );
 
@@ -65,7 +65,7 @@ const useChatroomsFetch = () => {
       setError(error);
       setPending(false);
     }
-  }, [session, session?.user?.id]);
+  }, [session, session?.id]);
 
   const getChatroomById = (id) => {
     let found =

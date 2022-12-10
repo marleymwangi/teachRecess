@@ -10,7 +10,7 @@ import { isEmpty } from "../../helpers/utility";
 import { useData } from "../../context/dataContext";
 import CardProject from "../../components/cards/project";
 import ImageLoader from "../../components/elements/imageLoader";
-import { AuthGuard } from "../../components/elements/authGuard";
+import { AuthGuard } from "../../components/elements/AuthGuard";
 //icons
 import { BsCameraFill } from "react-icons/bs";
 //dynamic

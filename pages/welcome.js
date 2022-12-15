@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import Router from "next/router";
-import { useSession } from "next-auth/react";
 //hooks
 import { useAuth } from "../context/authContext";
 //custom

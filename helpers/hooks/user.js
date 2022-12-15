@@ -20,12 +20,15 @@ const useUserFetch = () => {
   const { user: session, status } = useAuth();
   const [user, setUser] = useState(null);
   const [notifications, setNotifications] = useState([]);
+  const [portfolios, setPortfolios] = useState([]);
 
   const [userPending, setUserPending] = useState(true);
   const [notsPending, setNotsPending] = useState(true);
+  const [portsPending, setPortsPending] = useState(true);
 
   const [userError, setUserError] = useState(null);
   const [notsError, setNotsError] = useState(null);
+  const [portsError, setPortsError] = useState(null);
 
   useEffect(() => {
     try {
@@ -36,15 +39,13 @@ const useUserFetch = () => {
           docRef,
           (doc) => {
             if (!doc.exists()) {
-              throw "Guardian wasnt found in the database";
+              throw "Teacher wasnt found in the database";
             } else {
               let data = doc.data();
               let updated = { ...data, ...session };
 
-              if (!isEqual(user, updated)) {
-                setUser(updated);
-                setUserPending(false);
-              }
+              setUser(updated);
+              setUserPending(false);
 
               if (!isEqual(data, updated)) {
                 setUserDataDb(updated).then((res) =>
@@ -67,6 +68,51 @@ const useUserFetch = () => {
       setUserPending(false);
     }
   }, [session, session?.id]);
+
+  useEffect(() => {
+    try {
+      if (
+        !isEmpty(user) &&
+        user?.class_id?.length > 0 &&
+        user?.school_id?.length > 0
+      ) {
+        let queryRef = query(
+          collection(db, "eportfolio"),
+          where("class_id", "==", user.class_id),
+          where("school_id", "==", user.school_id),
+          orderBy("timestamp", "desc")
+        );
+
+        return onSnapshot(
+          queryRef,
+          (snapshot) => {
+            let tmp = [];
+            snapshot.forEach((doc) => {
+              let timestm = doc.data().timestamp.toDate();
+              let not = {
+                id: doc.id,
+                ...doc.data(),
+                timestamp: timestm,
+              };
+
+              tmp.push(not);
+            });
+            
+            console.log(tmp)
+            setPortfolios(tmp);
+            setPortsPending(false);
+          },
+          (error) => {
+            console.warn("User Hook: getAllPortfolios useEffect: ", error);
+          }
+        );
+      }
+    } catch (error) {
+      console.warn("User Hook getAllPortfolios: ", error);
+      setPortsError(error);
+      setPortsPending(false);
+    }
+  }, [user, user?.class_id, user?.school_id]);
 
   useEffect(() => {
     try {
@@ -142,11 +188,13 @@ const useUserFetch = () => {
   return {
     user,
     notifications,
+    portfolios,
     notsPending,
     userPending,
+    portsPending,
     notsError,
     userError,
-    userPending,
+    portsError,
     updateNotId,
   };
 };

@@ -13,19 +13,19 @@ export default function UserWarn({ data }) {
           <div className="w-10 rounded-full">
             {person?.image?.length > 0 ? (
               <ImageLoader
-                src={person?.image}
+                src={data?.image}
                 fallbackSrc="/assets/person.webp"
               />
             ) : (
               <div className="relative bg-primary w-full h-full">
                 <p className="abs-center text-white">
-                  {person?.name?.slice(0, 1)}
+                  {data?.name?.slice(0, 1)}
                 </p>
               </div>
             )}
           </div>
         </div>
-        <p className="font-nexa text-gray-400">{person?.name}</p>
+        <p className="font-nexa text-gray-400">{data?.name}</p>
       </div>
       <button className="btn btn-sm btn-outline btn-error text-red-500 w-10 h-10 p-0 rounded-full shadow">
         <MdReport size="2em" />

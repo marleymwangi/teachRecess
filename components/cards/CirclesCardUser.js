@@ -17,9 +17,20 @@ const Homework = () => {
     <div className="relative z-10 p-6">
       <div className="flex flex-col">
         <div className="">
-          <div className="avatar">
-            <div className="w-14 rounded-full shadow-lg">
-              <ImageLoader src={user?.image} objectPosition={"top"} />
+        <div className="avatar">
+            <div className="w-16 rounded-full mx-auto">
+              {user?.image?.length > 0 ? (
+                <ImageLoader
+                  src={user?.image}
+                  fallbackSrc="/assets/person.webp"
+                />
+              ) : (
+                <div className="relative bg-primary w-full h-full">
+                  <p className="abs-center text-white">
+                    {user?.name?.slice(0, 1)}
+                  </p>
+                </div>
+              )}
             </div>
           </div>
           <p className="text-xl text-white font-bold">{user?.name}</p>

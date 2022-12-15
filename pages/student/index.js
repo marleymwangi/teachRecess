@@ -114,7 +114,7 @@ export default function StudentProfile() {
             <div className="collapse-content">
               <div className="grid gap-4 pt-4">
                 {selStudent?.guardians?.length > 0 &&
-                  selStudent?.guardians.map((g) => <UserWarn key={g} data={g} />)}
+                  selStudent?.guardians.map((g,i) => <UserWarn key={i} data={g} />)}
               </div>
             </div>
           </div>

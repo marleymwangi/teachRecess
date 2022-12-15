@@ -31,12 +31,12 @@ export default function SectionCreate() {
       </p>
       <div className="grid grid-cols-2">
         <CircleButton
-          data={{ text: "Homework" }}
+          data={{ text: "Homework", image: "/images/books.webp" }}
           index={0}
           func={handleHomeWorkClick}
         />
         <CircleButton
-          data={{ text: "Reminders" }}
+          data={{ text: "Reminders", image: "/images/remind.webp" }}
           index={1}
           func={handleRemindersClick}
         />

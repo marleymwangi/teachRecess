@@ -19,6 +19,9 @@ const FaImages = dynamic(
 export default function SectionLists() {
   return (
     <section className="mt-6">
+      <p className="font-semibold text-gray-500 text-2xl mb-2 font-inter">
+        Content
+      </p>
       <div className="grid gap-4 w-full">
         <Link href="student/profiles">
           <div className="flex items-center justify-between bg-gradient-to-r from-cyan-700 to-cyan-500 w-full p-4 shadow-lg text-white rounded-md">

@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 //hooks
 import { useData } from "../../context/dataContext";
 //custom
-import CircleButton from "../cards/CircleButton";
+import CircleButton from "../elements/CircleButton";
 
 export default function SectionCreate() {
   const router = useRouter();
@@ -24,9 +24,22 @@ export default function SectionCreate() {
     setSelReminderMode("add");
     router.push(`/create/reminders`);
   };
+
+  const handleDiaryClick = () => {
+    setSelReminder(null);
+    setSelReminderMode("add");
+    router.push(`/create/diary`);
+  };
+
+  const handleBNoteClick = () => {
+    setSelReminder(null);
+    setSelReminderMode("add");
+    router.push(`/create/bnote`);
+  };
+  
   return (
     <section className="mt-6">
-      <p className="font-semibold text-cyan-800 text-2xl mb-2 font-inter">
+      <p className="font-semibold text-gray-500 text-2xl mb-2 font-inter">
         Create
       </p>
       <div className="grid grid-cols-2">
@@ -36,9 +49,19 @@ export default function SectionCreate() {
           func={handleHomeWorkClick}
         />
         <CircleButton
-          data={{ text: "Reminders", image: "/images/remind.webp" }}
+          data={{ text: "Reminders", image: "/images/remind1.webp" }}
           index={1}
           func={handleRemindersClick}
+        />
+        <CircleButton
+          data={{ text: "Diary Note", image: "/images/remind.webp" }}
+          index={0}
+          func={handleDiaryClick}
+        />
+        <CircleButton
+          data={{ text: "Behavioral Note", image: "/images/mood.webp" }}
+          index={1}
+          func={handleBNoteClick}
         />
       </div>
     </section>

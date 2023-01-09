@@ -49,6 +49,7 @@ function useProvideAuth() {
 
   const SignIn = async (credentials) => {
     setStatus("loading");
+    setError(null);
     const { email, password } = credentials;
     await signInWithEmailAndPassword(auth, email, password).catch((error) => {
       const errorCode = error.code;

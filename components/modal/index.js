@@ -1,5 +1,6 @@
 import ModalContact from "./Contact";
 import ModalHomework from "./HomeworkModal";
+import ModalStudents from "./Students";
 import ModalUser from "./UserMenu";
 
 export default function Modals() {
@@ -8,6 +9,7 @@ export default function Modals() {
       <ModalUser/>
       <ModalHomework/>
       <ModalContact />
+      <ModalStudents/>
     </div>
   );
 }

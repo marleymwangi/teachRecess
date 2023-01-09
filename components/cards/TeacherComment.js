@@ -9,7 +9,9 @@ import { classNames } from "../../helpers/utility";
 
 export default function TeacherComment({ data }) {
   const { user } = useUserFetch();
-  const { diaries } = useClassroomFetch(user);
+  const { diaries, bnotes } = useClassroomFetch(user);
+
+  console.log(bnotes)
 
   const handleClick = () => {
     if (diaries.length < 1) {

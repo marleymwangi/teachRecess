@@ -64,39 +64,28 @@ export default function Message({ chatId, data }) {
       <motion.div
         ref={ref}
         variants={messageAnim}
-        custom={data?.type}
         className={classNames(
-          "text-sm max-h-fit max-w-fit p-4 rounded-xl shadow-md font-medium",
-          data?.type === "mine" && "ml-auto",
-          data?.type === "other" ? "bg-white" : "bg-cyan-600"
+          "chat",
+          data?.type === "mine" ? "chat-end" : "chat-start"
         )}
       >
-        <p
-          className={classNames(
-            data?.type === "mine" ? "text-white" : "text-cyan-600"
-          )}
-        >
-          {data?.message}
-        </p>
-        <div className="flex gap-4 items-center justify-between">
+        <div className="chat-header">
+          <time className="text-xs opacity-50">{time}</time>
+        </div>
+        <div className={classNames("chat-bubble",
+          data?.type === "mine" ? "chat-bubble-primary" : "chat-bubble-accent"
+        )}>{data?.message}</div>
+        <div className="chat-footer">
           <div
             className={classNames(
               "swap min-w-[20px] ",
-              data?.type === "mine" ? "text-gray-100" : "text-cyan-400",
+              data?.read === "mine" ? "text-cyan-400" : "text-gray-400",
               data?.read && "swap-active"
             )}
           >
             <BiCheckDouble className="swap-on" size="1.25em" />
             <BiCheck className="swap-off" size="1.25em" />
           </div>
-          <p
-            className={classNames(
-              "text-xs float-right",
-              data?.type === "mine" ? "text-gray-100" : "text-cyan-400"
-            )}
-          >
-            {time}
-          </p>
         </div>
       </motion.div>
     );

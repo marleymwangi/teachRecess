@@ -55,13 +55,13 @@ export default function Chat() {
   return (
     <AuthGuard>
       <main className="relative bg-gray-100 w-full h-full pt-20 pb-10">
-        <section className="w-full px-4 my-2 chat-height  overflow-y-scroll custom-scroll">
+        <section className="w-full px-4 my-2 chat-height overflow-y-scroll custom-scroll">
           {messages?.length > 0 && (
             <motion.section
               variants={contAnim}
               initial="hide"
               animate="rest"
-              className="flex flex-col justify-end gap-2 pb-4"
+              className="flex flex-col justify-end pb-4"
             >
               {messages.map((mess) => (
                 <Message key={mess.id} data={mess} />

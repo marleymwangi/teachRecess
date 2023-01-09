@@ -63,6 +63,10 @@ export default function TopNavbar() {
               router.pathname.slice(8)
             ) : router.pathname.indexOf("/homework/") === 0 ? (
               router.pathname.slice(10)
+            ) : router.pathname === "/_error" ? (
+              router.pathname.slice(2)
+            ) : router.pathname === "/_offline" ? (
+              router.pathname.slice(2)
             ) : (
               router.pathname.slice(1)
             )}

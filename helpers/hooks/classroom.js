@@ -26,11 +26,14 @@ import { useData } from "../../context/dataContext";
 const useClassroomFetch = (teacher) => {
   const {
     selDiary,
-    selDiaryMode,
+    selBNote,
     selHomework,
     selReminder,
+    selDiaryMode,
+    selBnoteMode,
     selHomeworkMode,
     selReminderMode,
+    setSelBnoteMode,
     setSelHomeworkMode,
     setSelRemindersMode,
   } = useData();
@@ -686,14 +689,59 @@ const useClassroomFetch = (teacher) => {
               setSelHomeworkMode("add");
             }
           } else if (selDiaryMode === "add") {
+            let docRef = collection(db, "institutionGroup", schClsId, "diaries");
+            console.log("runn add");
+            addDoc(docRef, info).then((res) => {
+              resolve("success");
+            });
+          }
+        }
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  async function updateBnoteInfo(obj) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (teacher?.school_id?.length < 1 || teacher?.class?.id?.length < 1) {
+          throw "Missing school or class Id";
+        } else if (isEmpty(obj)) {
+          throw "Nothing in update object";
+        } else {
+          let schClsId = teacher.school_id + teacher.class.id;
+          if (selBnoteMode === "edit") {
+            if (isEmpty(selDiary)) {
+              throw "No selected bnote";
+            } else {
+              let docRef = doc(
+                db,
+                "institutionGroup",
+                schClsId,
+                "bnotes",
+                selDiary?.id
+              );
+
+              setDoc(docRef, obj, { merge: true }).then((res) => {
+                resolve("success");
+              });
+              setSelBnoteMode("add");
+            }
+          } else if (selBnoteMode === "add") {
             let docRef = collection(
               db,
               "institutionGroup",
               schClsId,
-              "diaries"
+              "bnotes",
             );
+            let info = {
+              school_id: teacher.school_id,
+              class_id: teacher.class.id,
+            }
+            obj.info = info;
             console.log("runn add");
-            addDoc(docRef, info).then((res) => {
+            addDoc(docRef, obj).then((res) => {
               resolve("success");
             });
           }
@@ -737,6 +785,7 @@ const useClassroomFetch = (teacher) => {
     getHomeworkById,
     updateHomeworkInfo,
     updateDiaryInfo,
+    updateBnoteInfo,
     updateReminderInfo,
     removeHomework,
     removeReminderInfo,

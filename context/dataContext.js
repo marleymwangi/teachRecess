@@ -17,14 +17,17 @@ export const useData = () => {
 function useProvideData() {
   //shared app data
   const [selStudent, setSelStudent] = useState(null);
+  const [selStudents, setSelStudents] = useState([]);
   const [selChatroom, setSelChatroom] = useState(null);
   const [selHomework, setSelHomework] = useState(null);
   const [selDiary, setSelDiary] = useState(null);
+  const [selBnote, setSelBnote] = useState(null);
   const [selReminder, setSelReminder] = useState(null);
   const [selChatPart, setSelChatPart] = useState(null);
 
   //data creation mode
   const [selDiaryMode, setSelDiaryMode] = useState("add");
+  const [selBnoteMode, setSelBnoteMode] = useState("add");
   const [selHomeworkMode, setSelHomeworkMode] = useState("add");
   const [selReminderMode, setSelReminderMode] = useState("add");
 
@@ -38,6 +41,9 @@ function useProvideData() {
     selStudent,
     setSelStudent,
 
+    selStudents,
+    setSelStudents,
+
     selHomework,
     setSelHomework,
     selHomeworkMode,
@@ -47,6 +53,11 @@ function useProvideData() {
     setSelDiary,
     selDiaryMode,
     setSelDiaryMode,
+
+    selBnote,
+    setSelBnote,
+    selBnoteMode,
+    setSelBnoteMode,
 
     selReminder,
     setSelReminder,

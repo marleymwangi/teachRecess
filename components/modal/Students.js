@@ -52,6 +52,11 @@ export default function ModalStudents() {
               ✕
             </label>
           </div>
+          <div className="flex gap-2 flex-wrap items-center justify-start pb-6">
+            {selStudents.map((stud, i) => (
+              <div key={i} className="badge badge-primary">{stud.name}</div>
+            ))}
+          </div>
           <div className="grid gap-4 w-full text-center text-primary font-poppins">
             <div className="relative form-control w-full">
               <input
